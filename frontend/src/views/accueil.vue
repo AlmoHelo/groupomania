@@ -1,8 +1,7 @@
 <template>
-  <header>
-    <img src="../components/images/logo-white.png" alt="logo groupomania" />
-  </header>
-  
+  <headerPage/>
+
+  <articleAccueil/>
 
   <footer>
     <p>Groupomania 2021 - Tout droits réservés.</p>
@@ -10,7 +9,18 @@
 </template>
 
 <script>
+import headerPage from "../components/headerpage.vue";
+import articleAccueil from "../components/articleAccueil.vue"
+export default {
+  name: "accueil",
+  components:{
+     headerPage,
+     articleAccueil
+  }
+}
+</script>
 
-</script> 
 <style lang="scss">
+
+
 </style>
