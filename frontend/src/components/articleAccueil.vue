@@ -1,11 +1,13 @@
   <template>
-  <section>
+  <section class="touslesarticles">
     <article>
       <div class="entete">
         <p>Nom utilisateur</p>
         <p>Date</p>
       </div>
-      <p class="contenu">Contenu de l'article<br><br><br><br><br><br></p>
+      <p class="contenu">
+        Contenu de l'article<br /><br /><br /><br /><br /><br />
+      </p>
       <div class="bas">
         <p>Like/Dislike</p>
         <p>Commentaires</p>
@@ -22,8 +24,11 @@ export default {
 </script>
 
 <style lang="scss">
+.touslesarticles {
+  width: 50%;
+}
 article {
-  width: 60%;
+  width: 90%;
   max-height: 300px;
   background-color: white;
   border-radius: 5px;
