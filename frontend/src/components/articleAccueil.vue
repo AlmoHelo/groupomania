@@ -45,6 +45,7 @@ export default {
 }
 .touslesarticles {
   width: 50%;
+  border-radius: 10px;
   border: 1px solid white;
 }
 article {
