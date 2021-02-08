@@ -1,38 +1,52 @@
 <template>
-  <header>
+  <header class="headerAccueil">
     <img src="../components/images/logo-white.png" alt="logo groupomania" />
-    <main class="menu">
-      <accueilLink/>
-      <decoLink/>
-    </main>
+    <input type="search" placeholder="rechercher" />
+    <div class="menu">
+      <accueilLink />
+      <decoLink />
+    </div>
   </header>
 </template>
 
 <script>
 import accueilLink from "../components/accueilLink.vue";
-import decoLink from "../components/decoLink.vue"
+import decoLink from "../components/decoLink.vue";
 export default {
-    name: "header",
-    components: {
-      accueilLink,
-      decoLink
-    }
-}
+  name: "header",
+  components: {
+    accueilLink,
+    decoLink,
+  },
+};
 </script>
 
 <style lang="scss">
-header{
+.headerAccueil {
   width: 100%;
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  & .menu{
-    width: 150px;
+  align-items: center;
+  & input {
+    width: 50%;
+    height: 30px;
+    border-radius: 8px;
+    border: none;
+    background-color: rgb(88, 84, 84);
+    padding-left: 20px;
+    &::placeholder {
+      font-size: 15px;
+      color: rgb(153, 150, 150);
+    }
   }
-  & img{
-  width: 250px;
-  height: 60px;
+  & .menu {
+    width: 150px;
+    display: flex;
+    flex-direction: column;
+  }
+  & img {
+    width: 250px;
+    height: 50px;
+  }
 }
-}
-
 </style>

@@ -25,7 +25,8 @@ export default {
 </script>
 
 <style lang="scss">
-.sectionAccueil {
+.sectionAccueil { 
   display: flex;
+  margin-top: 10px;
 }
 </style>
