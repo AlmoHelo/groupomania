@@ -3,7 +3,8 @@
     <img src="../components/images/logo-white.png" alt="logo groupomania" />
     <input type="search" placeholder="rechercher" />
     <div class="menu">
-      <accueilLink />
+      <accueilLink/>
+      <profilLink/>
       <decoLink />
     </div>
   </header>
@@ -11,12 +12,14 @@
 
 <script>
 import accueilLink from "../components/accueilLink.vue";
+import profilLink from "../components/profilLink.vue";
 import decoLink from "../components/decoLink.vue";
 export default {
   name: "header",
   components: {
     accueilLink,
-    decoLink,
+    profilLink,
+    decoLink
   },
 };
 </script>
