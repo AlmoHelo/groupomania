@@ -1,5 +1,8 @@
   <template>
   <section class="touslesarticles">
+    <div class="secCreer">
+      <button class="creer">Créer un message</button>
+    </div>
     <article>
       <div class="entete">
         <p>Nom utilisateur</p>
@@ -24,14 +27,33 @@ export default {
 </script>
 
 <style lang="scss">
+.secCreer {
+  border-bottom: 1px solid white;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+.creer {
+  border: none;
+  width: 200px;
+  height: 20px;
+  background-color: rgb(88, 84, 84);
+  border-radius: 8px;
+}
 .touslesarticles {
   width: 50%;
+  border: 1px solid white;
 }
 article {
   width: 90%;
   max-height: 300px;
   background-color: white;
   border-radius: 5px;
+  margin: auto;
+  margin-bottom: 20px;
 }
 .entete {
   border-bottom: 2px solid #2c3f5d;

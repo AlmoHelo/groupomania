@@ -1,9 +1,5 @@
 <template>
   <headerPage />
-
-    <section class="secCreer">
-      <button class="creer">Créer un message</button>
-    </section>
   <section class="sectionAccueil">
     <articleAccueil />
     <top />
@@ -29,17 +25,6 @@ export default {
 </script>
 
 <style lang="scss">
-.secCreer{
-  border-bottom: 3px solid white;
-  padding-bottom: 20px;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-}
-.creer{
-  border: 1px solid red;
-}
-
 .sectionAccueil {
   display: flex;
 }
