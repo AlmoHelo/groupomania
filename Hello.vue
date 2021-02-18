@@ -1,11 +1,10 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/img/logo-white.png">
-    <h1>Bienvenue sur le réseau social de votre entreprise !</h1>
+  <div class="hello">
+    <h1>{{ msg }}</h1>
     
     <ul>
-      <router-link to="/login" class="bouton" @click="pagelogin">M'identifier </router-link>
-      <router-link to="/signup" class="bouton" @click="pagesignup">S'inscrire </router-link>
+      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-babel" target="_blank" rel="noopener">S'identifier</a></li>
+      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-eslint" target="_blank" rel="noopener">S'inscrire</a></li>
     </ul>
   </div>
 
@@ -13,14 +12,16 @@
 </template>
 
 <script>
-
 export default {
   name: 'Home',
+  props: {
+    msg: String
+  }
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style>
+<style scoped>
 h1 {
   margin: 80px 0 80px 0;
   font-size: 40px;
@@ -30,22 +31,23 @@ ul {
   padding: 0;
   margin-bottom: 150px;
 }
-.bouton {
+li {
   display: inline-block;
-  border: 1px solid #5a85b1;
-  background-color: #5a85b1;
+  border: 1px solid #42b983;
+  background-color: #42b983;
   border-radius: 10px;
   line-height: 40px;
   width: 200px;
   height: 40px;
   margin: 0 10px;
+}
+a {
   color: white;
   text-decoration: none;
   font-size: 22px;
   font-weight: bold;
 }
-
-.bouton:hover{
+li:hover{
   opacity: 0.7;
   border: 2px solid white;
 }

@@ -1,12 +1,11 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const mongoose = require('mongoose');
 const path = require('path');
 const helmet = require('helmet');
 const mysql = require('mysql');
+const db = require('./database')
 
 const rateLimit = require('express-rate-limit');
-const mongoSanitize = require('express-mongo-sanitize');
 /*
 //constante à utiliser avec le package rateLimit
 const limiter = rateLimit({
@@ -15,23 +14,12 @@ const limiter = rateLimit({
 });
 */
 const userRoutes = require('./routes/user');
+const itemRoutes = require('./routes/item');
+const commentRoutes = require('./routes/comment')
 
 const app = express();
 
-const db = mysql.createConnection({ 
-  host: "localhost",
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_DATABASE 
-});
 
-db.connect(function(err) {
-
-  if (err) throw err;
-
-  console.log("Connecté à la base de données MySQL!");
-
-});
 
 //configuration CORS
 app.use((req, res, next) => {
@@ -47,9 +35,10 @@ app.use(bodyParser.json());
 
 app.use(helmet());    //sécurise HTTP headers
 /*app.use(limiter);*/
-app.use(mongoSanitize());
 
 // Routes
 app.use('/api/auth', userRoutes);
+app.use('/api/item', itemRoutes);
+app.use('/api/comment', commentRoutes);
 
 module.exports = app;
