@@ -3,17 +3,20 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const crypt = require('crypto-js');
 require('dotenv').config()
-
-
+/*
+let pass = "123456"
+bcrypt.hash(pass, 10)
+.then((hash) => {
+    db.query(`INSERT INTO user (email, pseudo, password, creationDate) VALUES ("almoyner.heloise@gmail.com", "almohelo", "`+ hash + `", "2021-02-24")`)
+})*/
 //Inscription de l'utilisateur
 exports.signup = (req, res, next) => {
     const user = req.body
     bcrypt.hash(user.password, 10)
         .then((hash) => {
-            user.email = crypt.MD5(email).toString();
-            user.pseudo = crypt.MD5(pseudo).toString();
             user.password = hash
-            db.query(`INSERT INTO user VALUES ?`, user, (err, result, field) => {
+            const insertUser = `INSERT INTO user (email, pseudo, password, biographie, creationDate) VALUES ("` + user.email + `", "` + user.pseudo +`", "` + user.password +`", "` + user.biographie + `", NOW() )`
+            db.query(insertUser, (err, result, field) => {
                 if (err) {
                     console.log(err)
                     return res.status(400).json("erreur")
@@ -26,64 +29,34 @@ exports.signup = (req, res, next) => {
 
 //Connexion de l'utilisateur
 exports.login = (req, res, next) => {
-    const email = req.body.email
-    const pseudo = req.body.pseudo
-    const password = req.body.password
-    if (email && password) {                                                                            //avec l'adresse mail
-        db.query('SELECT * FROM user WHERE email= ?', email, (error, results, _fields) => {
-            if (results.length > 0) {
-                bcrypt.compare(password, results[0].password)
-                .then((valid) => {
-                    if (!valid) {
-                        res.status(401).json({ message: 'Utilisateur ou mot de passe inconnu' })
-                    } else {
-                        console.log(email, "s'est connecté")
-                        res.status(200).json({
-                            userId: results[0].id,
-                            email: results[0].email,
-                            token: jwt.sign(
-                                { userId: results[0].id },
-                                process.env.TOKEN,
-                                { expiresIn: '24h' }
-                            )
-                        })
-                    }
-                })
-            }
-            else {
-                res.status(401).json({ message: 'Utilisateur ou mot de passe inconnu' })
-            }
-        })
-        if (pseudo && password) {                                                                            //avec le pseudo
-            db.query('SELECT * FROM user WHERE pseudo= ?', pseudo, (error, results, _fields) => {
-                if (results.length > 0) {
-                    bcrypt.compare(password, results[0].password).then((valid) => {
-                        if (!valid) {
-                            res.status(401).json({ message: 'Utilisateur ou mot de passe inconnu' })
-                        } else {
-                            console.log(pseudo, "s'est connecté")
-                            res.status(200).json({
-                                userId: results[0].id,
-                                pseudo: results[0].pseudo,
-                                token: jwt.sign(
-                                    { userId: results[0].id },
-                                    process.env.TOKEN,
-                                    { expiresIn: '24h' }
-                                )
-                            })
-                        }
-                    })
-                }
-                else {
-                    res.status(401).json({ message: 'Utilisateur ou mot de passe inconnu' })
-                }
-            }
-            )
+    const email = req.body.email;
+    const password = req.body.password;
+    let token = process.env.DB_TOKEN;
+
+    const sqlFindUser = "SELECT userId, password FROM user WHERE email = ?";
+
+    db.query(sqlFindUser, [email], function (err, result) {
+        if (err) {
+            return res.status(500).json(err.message);
+        };
+        if (result.length == 0) {
+            return res.status(401).json({ error: "Utilisateur non trouvé !" });
         }
-    }
-    else {
-        res.status(500).json({ message: "Entrez votre email et votre mot de passe" })
-    }
+        bcrypt.compare(password, result[0].password)
+            .then(valid => {
+                if (!valid) {
+                    return res.status(401).json({ error: "Mot de passe incorrect !" });
+                } else {
+                    res.status(200).json({
+                        token: jwt.sign(
+                            { userId: result[0].userId },
+                            token,
+                            { expiresIn: "24h" }
+                        )
+                    });
+                }
+            })
+    });
 }
 
 // Suppression Utilisateur

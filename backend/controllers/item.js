@@ -16,9 +16,11 @@ exports.getOne = (req, res, next) => {
 exports.getAll = (req, res, next) => {
     db.query('SELECT * FROM item  ORDER BY created_at DESC', (error, result, field) => {
         if (error) {
-            return res.status(400).json({ error })
+            return res.status(400).json({ error },
+                console.log("ici"))
         }
-        return res.status(200).json(result)
+        return res.status(200).json(result), 
+        console.log("là")
     })
 }
 

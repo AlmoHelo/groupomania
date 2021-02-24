@@ -1,36 +1,34 @@
 <template>
-  <main>
-    <h1 class="id">Identifiez-vous</h1>
-
-    <form method="POST" id="formulaire" @submit.prevent="envoie">
+  <main id="formLog">
+    <h2 class="id">Identifiez-vous</h2>
+    <form method="POST" id="formulaireLog" @submit.prevent="envoie">
       <label for="email">E-mail ou nom d'utilisateur<span>*</span> :</label>
       <input
-        id="email"
+        id="emailLog"
         type="email"
         placeholder="groupomania@gmail.com"
-        v-model="email"
+        v-model="emailLog"
         required
       />
-
-      <label for="password">Mot de passe<span>*</span> :</label>
+      <label for="passwordLog">Mot de passe<span>*</span> :</label>
       <input
         type="password"
         id="password"
         placeholder="*******"
-        v-model="password"
+        v-model="passwordLog"
         required
       />
-
       <div class="error-message">{{ message }}</div>
-
       <p class="champ">* : Champs obligatoires</p>
-
-      <button type="submit">S'identifier</button>
+      <router-link to="/accueil" class="bouton" type="submit"
+        >S'identifier</router-link
+      ><small id="smallpass" class="text-danger"></small>
     </form>
-
     <p class="nouveau">
       Nouveau ?
-      <router-link to="/signup" class="bouton2">S'inscrire </router-link>
+      <button @click="signupPage2()" to="/signup" id="signupPage2">
+        S'inscrire
+      </button>
     </p>
   </main>
 
@@ -42,52 +40,55 @@
 <script>
 import axios from "axios";
 export default {
-  name: "loginForm",
+  name: "LoginForm",
+  el: "#logPage",
   data() {
     return {
-      email: "",
-      password: "",
+      emailLog: "",
+      passwordLog: "",
       message: "",
     };
   },
   methods: {
     envoie: function () {
-      //envoie des informations de connexion à l'API pour authentification
-      let token = ""
-      if (this.email == "" || this.password == "") {
+      //let myEmail = document.getElementById("emailLog").value;
+      //let myPassword = document.getElementById("passwordLog").value;
+      let token = "";
+      if (this.emailLog == "" || this.passwordLog == "") {
         alert(
           "Veuillez entrer votre email et votre mot de passe pour vous connecter"
         );
       } else {
         axios
           .post(
-            "http://localhost:3000/api/auth/login",
-            {
-              email: this.email,
-              password: this.password,
-            },
+            "http://localhost:3000/api/login",
+            { email: this.emailLog, password: this.passwordLog },
             {
               headers: {
                 "Content-type": "application/json",
-                Authorization: `Bearer ` + token , //Renvoi du token par l'api en cas d'authentification
+                Authorization: `Bearer${token}`,
               },
             }
           )
           .then((response) => {
-            let reponse = response.data;
-            let mail = this.email
-            let all = {reponse, mail}
-            console.log("Connexion réussi !");
-            let userObject = JSON.stringify(all);
-            localStorage.setItem('user', userObject)
-
-            /*let user = JSON.parse(localStorage.getItem("user"));
-            token = user.reponse.token;*/
-            window.location.href = "http://localhost:8080/item"
+            let rep = response.data;
+            console.log("Connexion réussie !");
+            let userObj = JSON.stringify(rep);
+            this.$localStorage.setItem("user", userObj);
+            let user = JSON.parse(this.$localStorage.get("user"));
+            token = user.token;
+            if (user.email == this.emailLog) {
+              window.location.href = "http://localhost:8080/accueil";
+              location.reload(true);
+            } else {
+              alert("Utilisateur non trouvé !");
+            }
           })
-          .catch((err) => {
-            console.log("la connexion a échouée" + err); //En cas d'echec envoie de l'information à l'utilisateur
-            this.message = "E-mail ou mot de passe incorrect !"
+          .catch(() => {
+            console.log("La connexion a échouée !");
+            alert("Pseudo ou mot de passe incorrect");
+            document.querySelector("#smallpass").innerHTML =
+              "pseudo ou mot de  passe incorrect";
           });
       }
     },

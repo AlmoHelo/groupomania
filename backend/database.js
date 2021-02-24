@@ -8,12 +8,12 @@ const db = mysql.createConnection({
     database: "groupomania"
 });
 
-db.connect(function (err) {
 
-    if (err) throw err;
-
-    console.log("Connecté à la base de données MySQL!");
-
+db.connect((err) => {
+    if (err) {
+        throw err;
+    }
+    console.log('Connecté a mysql ');
 });
 
 
