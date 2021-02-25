@@ -69,7 +69,7 @@ export default {
             {
               headers: {
                 "Content-type": "application/json",
-                Authorization: `Bearer ` + token , //Renvoi du token par l'api en cas d'authentification
+                Authorization: `Bearer ` + token , //Renvoie du token par l'api en cas d'authentification
               },
             }
           )
@@ -80,9 +80,8 @@ export default {
             console.log("Connexion réussi !");
             let userObject = JSON.stringify(all);
             localStorage.setItem('user', userObject)
-
-            /*let user = JSON.parse(localStorage.getItem("user"));
-            token = user.reponse.token;*/
+            let user = JSON.parse(localStorage.getItem("user"));
+            token = user.reponse.token;
             window.location.href = "http://localhost:8080/item"
           })
           .catch((err) => {

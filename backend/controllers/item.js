@@ -4,7 +4,7 @@ require('dotenv').config()
 
 //Affichage un item
 exports.getOne = (req, res, next) => {
-    db.query('SELECT * FROM item WHERE id= ?', req.params.id, (error, result, field) => {
+    db.query('SELECT * FROM item WHERE userId= ?', req.params.id, (error, result, field) => {
         if (error) {
             return res.status(400).json({ error })
         }
@@ -14,13 +14,11 @@ exports.getOne = (req, res, next) => {
 
 //Affichage de tous les items dans ordre descendant
 exports.getAll = (req, res, next) => {
-    db.query('SELECT * FROM item  ORDER BY created_at DESC', (error, result, field) => {
+    db.query('SELECT * FROM item ORDER BY date DESC', (error, result, field) => {
         if (error) {
-            return res.status(400).json({ error },
-                console.log("ici"))
+            return res.status(400).json({ error })
         }
-        return res.status(200).json(result), 
-        console.log("là")
+        return res.status(200).json(result)
     })
 }
 

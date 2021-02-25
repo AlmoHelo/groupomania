@@ -38,7 +38,7 @@ app.use(helmet());    //sécurise HTTP headers
 
 // Routes
 app.use('/api/auth', userRoutes);
-app.use('/api/item', itemRoutes);
+app.use('/api/items', itemRoutes);
 app.use('/api/comment', commentRoutes);
 
 module.exports = app;
