@@ -30,7 +30,7 @@ export default {
 
         for (let i = 0; i < test.length; i++) {
           let myArticle = document.createElement("div");
-          myArticle.className = "article"
+          myArticle.style.border = "1px solid white";
           mySection.appendChild(myArticle);
           let myHead = document.createElement("div")
           myArticle.appendChild(myHead)
@@ -53,18 +53,10 @@ export default {
           insertHeat(myPseudo, test[i].pseudoUser)
           insertHeat(myDate, test[i].date);
           insertDescription(myDescription, test[i].description);
+          
         }
       })
       .catch((error) => console.log(error));
-
-    /*let data = JSON.parse(localStorage.getItem("user"));
-    //Appel à l'Api pour l'affichage des informations utilisateurs
-    axios
-      .get(`api/item/${data.userId}`)
-      .then(response => {
-        this.user = response.data;
-      })
-      .catch(error => console.log(error));*/
   },
 };
 </script>
@@ -77,17 +69,14 @@ section {
   border-radius: 20px;
   & .create {
     border-bottom: 1px solid white;
-    padding: 10px 0;
+    padding: 20px 0;
     & a {
       font-size: 20px;
       font-weight: bold;
     }
   }
 }
-#articles {
-  border: 1px solid red;
-  & .article{
-    font-size: 100px;
-  }
+#articles{
+  margin: 20px 10px;
 }
 </style>
