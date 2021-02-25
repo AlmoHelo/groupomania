@@ -3,7 +3,6 @@ import Home from '../views/Home.vue'
 import Login from '../views/Login.vue'
 import Signup from '../views/Signup.vue'
 import Items from '../views/Items.vue'
-//import Item from "../components/itemAll"
 
 const routes = [
   {

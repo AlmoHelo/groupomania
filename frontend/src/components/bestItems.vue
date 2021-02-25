@@ -63,6 +63,7 @@ section {
   border: 1px solid white;
   border-radius: 20px;
   width: 40%;
+  max-height: 420px;
   margin-top: 50px;
   overflow: hidden;
   & h2 {

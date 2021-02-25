@@ -77,13 +77,15 @@ export default {
           .then((response) => {
             console.log("Inscription réussi !");
             let reponse = response.data;
-            console.log(response)
+            console.log(response);
             let userObject = JSON.stringify(reponse);
             localStorage.setItem("user", userObject);
 
             let user = JSON.parse(localStorage.getItem("user"));
             token = user.token; //Token d'authentification
-            alert('Félicitation vous êtes désormais inscrit ! Vous pouvez vous connecter !')
+            alert(
+              "Félicitation vous êtes désormais inscrit ! Vous pouvez vous connecter !"
+            );
             window.location.href = "http://localhost:8080/login";
           })
           .catch((err) => {
@@ -118,20 +120,23 @@ form {
   & label {
     margin-bottom: 15px;
     margin-top: 10px;
+    text-align: start;
   }
   & input {
     border: none;
     border-radius: 8px;
-    background-color: rgb(88, 84, 84);
+    background-color: rgb(119, 114, 114);
     width: 500px;
     height: 30px;
     margin-left: 20px;
+    margin-bottom: 10px;
     &::placeholder {
       font-size: 15px;
-      color: rgb(153, 150, 150);
+      color: rgb(39, 38, 38);
     }
   }
 }
+button,
 .bouton {
   width: 300px;
   margin: auto;
@@ -156,8 +161,60 @@ textarea {
   height: 70px;
   margin-left: 20px;
   margin-bottom: 20px;
-  background-color: rgb(88, 84, 84);
+  background-color: rgb(119, 114, 114);
   border-radius: 8px;
   border: none;
+}
+@media screen and (max-width: 767px) {
+  main {
+    width: 90%;
+    margin-top: 30px;
+    & h1 {
+      font-size: 30px;
+    }
+  }
+  form {
+    width: 90%;
+    & label {
+      font-size: 18px;
+    }
+    & input {
+      width: 80%;
+      height: 20px;
+      border-radius: 5px;
+      &::placeholder {
+        font-size: 12px;
+      }
+    }
+  }
+  button,
+  .bouton {
+    width: 90%;
+  }
+  .nouveau,
+  .champ {
+    margin-bottom: 30px;
+  }
+  textarea {
+    width: 80%;
+    height: 35px;
+  }
+}
+@media (min-width: 768px) and (max-width: 991px) {
+  main {
+    width: 90%;
+    & h1 {
+      font-size: 45px;
+    }
+  }
+  form {
+    width: 90%;
+    & label {
+      font-size: 25px;
+    }
+    & input {
+      width: 90%;
+    }
+  }
 }
 </style>

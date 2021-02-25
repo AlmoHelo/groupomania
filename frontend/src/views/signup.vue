@@ -14,3 +14,16 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+@media screen and (max-width: 767px) {
+  img {
+    width: 100%;
+  }
+}
+@media (min-width: 768px) and (max-width: 991px) {
+  img {
+    width: 100%;
+  }
+}
+</style>

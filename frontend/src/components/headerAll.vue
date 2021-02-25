@@ -1,7 +1,7 @@
 <template>
   <header>
     <img alt="Vue logo" src="../assets/img/logo-white.png" />
-    <input type="search"/>
+    <div class="search"><span>🔍</span><input type="search" /></div>
     <ul>
       <a href="/accueil"> Accueil </a>
       <a href="#"> Profil </a>
@@ -27,11 +27,16 @@ header {
     height: 70px;
     margin: 0;
   }
-  & input {
-      width: 35%;
+  & .search {
+    width: 40%;
+    display: flex;
+    align-items: center;
+    & input {
+      width: 100%;
       height: 30px;
       background-color: rgb(148, 147, 147);
       border: none;
+    }
   }
   & ul {
     display: flex;
