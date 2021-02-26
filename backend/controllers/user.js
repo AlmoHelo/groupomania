@@ -52,7 +52,7 @@ exports.login = (req, res, next) => {
                             { userId: result[0].userId },
                             token,
                             { expiresIn: "24h" }
-                        )
+                        ), userId: result[0].userId
                     });
                 }
             })
@@ -98,9 +98,9 @@ exports.updateUser = (req, res, next) => {
 
 //Affichage de l'utilisateur selectionné
 exports.getOneUser = (req, res, next) => {
-    const id = req.params.id
-    db.query(
-        'SELECT id, email, pseudo, biographie, creationDate FROM user WHERE id=?', id, (error, results) => {
+    const userId = JSON.parse(JSON.stringify(req.params.id))
+    const oneU = 'SELECT userId, email, pseudo, biographie, creationDate FROM user WHERE userId=' + userId 
+    db.query(oneU, (error, results) => {
             if (error) {
                 return res.status(400).json(error)
             }

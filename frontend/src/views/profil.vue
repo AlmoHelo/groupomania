@@ -1,38 +1,62 @@
 <template>
-  <section>
-    <div class="create">
-      <router-link to="/items/create" class="creation" @click="createItem">Créer un article </router-link>
-    </div>
-    <div id="articles"></div>
+  <headerAll />
+  <h1>Bonjour {{ pseudo }}, vous êtes sur votre profil !</h1>
+  <section class="profil">
+    <p>Adresse mail : {{ mail }}</p>
+    <p>Inscrit depuis le : {{ date }}</p>
+    <p>Biographie : {{ biographie }}</p>
+  </section>
+  <section id="articlesPerso">
+    <h2>Tous vos articles</h2>
   </section>
 </template>
 
 <script>
 import axios from "axios";
+import headerAll from "../components/headerAll";
 export default {
-  name: "itemAll",
+  name: "Profil",
+  components: { headerAll },
+  data() {
+    return {
+      pseudo: "",
+      mail: "",
+      date: "",
+      biographie: "",
+    };
+  },
   mounted() {
-    //Appel à l'api pour l'affichage de tous les messages
+    let profil = JSON.parse(localStorage.getItem("userProfil"));
+    console.log(profil);
+    this.pseudo = profil.pseudo;
+    this.mail = profil.email;
+    this.date = profil.creationDate;
+    if (profil.biographie != null) {
+      this.biographie = profil.biographie;
+    } else {
+      this.biographie = "Modifier votre profil pour ajouter une biographie";
+    }
+    let userId = profil.userId;
     let user = JSON.parse(localStorage.getItem("user"));
     axios
-      .get("http://localhost:3000/api/items/", {
+      .get("http://localhost:3000/api/items/" + userId, {
         headers: {
           authorization: "Bearer " + user.reponse.token,
         },
       })
       .then((response) => {
-        let tableau = JSON.stringify(response.data);
-        localStorage.setItem("itemAll", tableau);
-        let itemTable = localStorage.getItem("itemAll");
-        let test = JSON.parse(itemTable);
+        console.log(response);
+        let tableau = JSON.parse(JSON.stringify(response.data));
+        console.log(tableau);
 
-        let mySection = document.getElementById("articles");
+        let mySection = document.getElementById("articlesPerso");
 
-        for (let i = 0; i < test.length; i++) {
+        for (let i = 0; i < tableau.length; i++) {
           let myArticle = document.createElement("div");
           myArticle.className = "articles";
           myArticle.style.border = "1px solid white";
           myArticle.style.marginBottom = "20px";
+
           let myHead = document.createElement("div");
           myHead.style.display = "flex";
           myHead.style.justifyContent = "space-between";
@@ -56,8 +80,8 @@ export default {
             let myDiv = document.createElement("p");
             myDiv.innerHTML = description;
             myDiv.style.color = "black";
-            myDiv.style.fontWeight = "bold"
-            myDiv.style.marginBottom = "50px"
+            myDiv.style.fontWeight = "bold";
+            myDiv.style.marginBottom = "50px";
             myArticle.appendChild(myDiv);
           };
           const insertLike = (div, like) => {
@@ -79,15 +103,15 @@ export default {
           let share = document.createElement("p");
           share.innerHTML = "💬 Partager";
 
-          insertHeat(myPseudo, test[i].pseudoUser);
-          insertHeat(myDate, test[i].date);
-          insertDescription(myDescription, test[i].description);
+          insertHeat(myPseudo, tableau[i].pseudoUser);
+          insertHeat(myDate, tableau[i].date);
+          insertDescription(myDescription, tableau[i].description);
           myArticle.appendChild(myFoot);
           myFoot.appendChild(myLikes);
           myLikes.appendChild(firstI);
-          insertLike(like, test[i].likes);
+          insertLike(like, tableau[i].likes);
           myLikes.appendChild(secondI);
-          insertLike(like, test[i].dislikes);
+          insertLike(like, tableau[i].dislikes);
           myFoot.appendChild(comments);
           myFoot.appendChild(share);
         }
@@ -97,27 +121,20 @@ export default {
 };
 </script>
 
-<style lang="scss">
-section {
-  width: 40%;
-  margin-top: 50px;
-  border: 1px solid white;
-  border-radius: 20px;
-  & .create {
-    border-bottom: 1px solid white;
-    padding: 20px 0;
-    & .creation {
-      font-size: 20px;
-      font-weight: bold;
-      text-decoration: none;
-      color: white;
-    }
+<style lang="scss" scoped>
+.profil {
+  box-shadow: 1px 1px 0px white;
+  width: 70%;
+  margin: auto;
+  margin-bottom: 50px;
+}
+#articlesPerso {
+  padding: 10px;
+  width: 70%;
+  margin: auto;
+  & h2 {
+    font-size: 25px;
+    width: 100%;
   }
-}
-#articles {
-  margin: 20px 10px;
-}
-.articles {
-  border: 1px solid red;
 }
 </style>

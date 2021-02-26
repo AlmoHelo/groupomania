@@ -6,7 +6,7 @@
       ><input
         type="text"
         id="pseudo"
-        v-model="pseudo"
+        v-model="pseudoUser"
         placeholder="Votre Pseudo"
         required
       />
@@ -26,24 +26,47 @@
 </template>
 
 <script>
-import axios from 'axios';
+import axios from "axios";
 export default {
   name: "createForm",
   data() {
     return {
-      pseudo: "",
+      pseudoUser: "",
       description: "",
     };
   },
   methods: {
     envoie: function () {
-      if (this.description == "" || this.pseudo == "") {
+      let tableau =localStorage.getItem("user");
+      let tab = JSON.parse(tableau)
+      let token = tab.reponse.token
+      if (this.description == "" || this.pseudoUser == "") {
         alert(
           "Veuillez remplir tous les champs avant d'envoyer le formulaire !"
         );
-      }else{
-          axios
-          .post("http://localhost:3000/api/item/")
+      } else {
+        axios
+          .post(
+            "http://localhost:3000/api/items/create",
+            {
+              pseudoUser: this.pseudoUser,
+              description: this.description,
+            },
+            {
+              headers: {
+                "Content-type": "application/json",
+                Authorization: `Bearer ` + token, //Renvoie du token par l'api en cas d'authentification
+              },
+            }
+          )
+          .then((response) => {
+            console.log(response)
+            window.location.href="http://localhost:8080/item/"
+          })
+          .catch(() => {
+            console.log("l'envoi a échouée"); //En cas d'echec envoie de l'information à l'utilisateur
+            //this.message = "E-mail ou mot de passe incorrect !";
+          });
       }
     },
   },

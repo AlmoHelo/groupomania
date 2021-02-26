@@ -1,25 +1,43 @@
 <template>
   <header>
     <img alt="Vue logo" src="../assets/img/logo-white.png" />
-    <div class="search"><span>🔍</span><input type="search" /></div>
     <ul id="menu">
       <a href="/item"> Accueil </a>
-      <a href="#"> Profil </a>
+      <a v-on:click="profil"> Profil </a>
       <a v-on:click="deconnexion"> Deconnexion </a>
     </ul>
   </header>
 </template>
 
 <script>
+import axios from "axios";
 export default {
   name: "headerAll",
   el: "menu",
   methods: {
-    deconnexion: function (){
-      localStorage.removeItem("user")
-      window.location.href = "http://localhost:8080/"
-    }
-  }
+    profil: function () {
+      //Appel à l'api pour l'affichage de tous les messages
+      let user = JSON.parse(localStorage.getItem("user"));
+      let userId = user.reponse.userId;
+      axios
+        .get("http://localhost:3000/api/auth/" + userId, {
+          headers: {
+            authorization: "Bearer " + user.reponse.token,
+          },
+        })
+        .then((response) => {
+          console.log(response.data[0]);
+          let profil = JSON.stringify(response.data[0]);
+          localStorage.setItem("userProfil", profil);
+          window.location.href = "http://localhost:8080/items/profil/";
+        })
+        .catch((error) => console.log(error));
+    },
+    deconnexion: function () {
+      localStorage.clear();
+      window.location.href = "http://localhost:8080/";
+    },
+  },
 };
 </script>
 

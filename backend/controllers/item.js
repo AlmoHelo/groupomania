@@ -4,7 +4,8 @@ require('dotenv').config()
 
 //Affichage un item
 exports.getOne = (req, res, next) => {
-    db.query('SELECT * FROM item WHERE userId= ?', req.params.id, (error, result, field) => {
+    const userId = JSON.parse(JSON.stringify(req.params.id))
+    db.query('SELECT * FROM item WHERE userItemId= ?', userId, (error, result, field) => {
         if (error) {
             return res.status(400).json({ error })
         }
@@ -24,30 +25,28 @@ exports.getAll = (req, res, next) => {
 
 //Créer un item
 exports.create = (req, res, next) => {
-    const userId = req.body.userId;
     const date = new Date();
     const currentDate = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + ' ' + date.getHours() + ":" + date.getMinutes + ":" + date.getSeconds;
     const description = req.body.description;
+    console.log(description)
+    const pseudoUser = req.body.pseudoUser
+    console.log(pseudoUser)
     //const imageURL
-    const itemPost = new Item({
-        userId,
-        currentDate,
-        description,
-        imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
-        likes: 0,
-        dislikes: 0,
-        pseudoUser
-    });
-    const sqlItemPost = "INSERT INTO item SET ?"
-    const postItem = db.format(sqlItemPost, [itemPost])
-    itemPost.then(() =>
-        db.query(postItem, (error, result, field) => {
-            if (error) {
-                return res.status(400).json({ error })
-            }
-            return res.status(201).json({ message: 'Votre message a été posté !' })
-        })
-    )
+    db.query(`SELECT userId FROM user INNER JOIN item ON pseudo = pseudoUser WHERE pseudo= "` + pseudoUser + `"`, (err, response, fields) => {
+        if (err) {
+            console.log(err)
+        } else {
+            const userItemId = JSON.parse(JSON.stringify(response));
+            const sqlItemPost = "INSERT INTO item (date, description, likes, dislikes, pseudoUser, userItemId) VALUES ( NOW(), ?, 0, 0, ?, ?)"
+            const postItem = db.format(sqlItemPost, [description, pseudoUser, userItemId[0].userId])
+            db.query(postItem, (error, result) => {
+                if (error) {
+                    return res.status(400).json("erreur")
+                }
+                return res.status(201).json('Votre message a été posté !')
+            })
+        }
+    })
 }
 
 //Modifier un message 
