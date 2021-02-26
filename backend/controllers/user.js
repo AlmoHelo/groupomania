@@ -61,8 +61,9 @@ exports.login = (req, res, next) => {
 
 // Suppression Utilisateur
 exports.deleteUser = (req, res, next) => {
+    const userId = JSON.parse(JSON.stringify(req.params.id))
     db.query(
-        'DELETE FROM user WHERE id= ?', req.body.userId, (error, result, field) => {
+        'DELETE FROM user WHERE userId= ?', userId, (error, result, field) => {
             if (error) {
                 console.log(error)
                 return res.status(400).json(error)

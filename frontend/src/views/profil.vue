@@ -5,6 +5,10 @@
     <p>Adresse mail : {{ mail }}</p>
     <p>Inscrit depuis le : {{ date }}</p>
     <p>Biographie : {{ biographie }}</p>
+    <div>
+      <button>Modifier</button>
+      <button @click="supprimer">Supprimer</button>
+    </div>
   </section>
   <section id="articlesPerso">
     <h2>Tous vos articles</h2>
@@ -17,6 +21,26 @@ import headerAll from "../components/headerAll";
 export default {
   name: "Profil",
   components: { headerAll },
+  methods: {
+    supprimer: function () {
+      let profil = JSON.parse(localStorage.getItem("userProfil"));
+      let userId = profil.userId;
+      let user = JSON.parse(localStorage.getItem("user"));
+      axios
+        .delete("http://localhost:3000/api/auth/" + userId, {
+          headers: {
+            authorization: "Bearer " + user.reponse.token,
+          },
+        })
+        .then((response) => {
+          let message = JSON.parse(JSON.stringify(response));
+          alert(message.data.message);
+          window.location.href = "http://localhost:8080/";
+          localStorage.clear()
+        })
+        .catch((error) => console.log(error));
+    },
+  },
   data() {
     return {
       pseudo: "",
@@ -136,5 +160,11 @@ export default {
     font-size: 25px;
     width: 100%;
   }
+}
+button {
+  font-size: 15px;
+  border: none;
+  background: none;
+  color: rgb(209, 63, 63);
 }
 </style>
