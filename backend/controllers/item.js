@@ -35,7 +35,8 @@ exports.create = (req, res, next) => {
         description,
         imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
         likes: 0,
-        dislikes: 0
+        dislikes: 0,
+        pseudoUser
     });
     const sqlItemPost = "INSERT INTO item SET ?"
     const postItem = db.format(sqlItemPost, [itemPost])

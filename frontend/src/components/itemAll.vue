@@ -1,7 +1,7 @@
 <template>
   <section>
     <div class="create">
-      <a> Créer un article </a>
+      <router-link to="/create" class="creation" @click="createItem">Créer un article </router-link>
     </div>
     <div id="articles"></div>
   </section>
@@ -73,7 +73,7 @@ export default {
           firstI.innerHTML = "👍";
           let like = document.createElement("p");
           let secondI = document.createElement("p");
-          secondI.innerHTML = "👎 ";
+          secondI.innerHTML = "👎";
           let comments = document.createElement("p");
           comments.innerHTML = "💬 commentaires";
           let share = document.createElement("p");
@@ -99,16 +99,18 @@ export default {
 
 <style lang="scss">
 section {
-  width: 50%;
+  width: 40%;
   margin-top: 50px;
   border: 1px solid white;
   border-radius: 20px;
   & .create {
     border-bottom: 1px solid white;
     padding: 20px 0;
-    & a {
+    & .creation {
       font-size: 20px;
       font-weight: bold;
+      text-decoration: none;
+      color: white;
     }
   }
 }

@@ -2,10 +2,10 @@
   <header>
     <img alt="Vue logo" src="../assets/img/logo-white.png" />
     <div class="search"><span>🔍</span><input type="search" /></div>
-    <ul>
-      <a href="/accueil"> Accueil </a>
+    <ul id="menu">
+      <a href="/item"> Accueil </a>
       <a href="#"> Profil </a>
-      <a href="/"> Deconnexion </a>
+      <a v-on:click="deconnexion"> Deconnexion </a>
     </ul>
   </header>
 </template>
@@ -13,6 +13,13 @@
 <script>
 export default {
   name: "headerAll",
+  el: "menu",
+  methods: {
+    deconnexion: function (){
+      localStorage.removeItem("user")
+      window.location.href = "http://localhost:8080/"
+    }
+  }
 };
 </script>
 
