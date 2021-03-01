@@ -19,9 +19,10 @@ export default {
         },
       })
       .then((response) => {
+        console.log(response.data)
         let tableau = JSON.stringify(response.data);
-        localStorage.setItem("itemAll", tableau);
-        let itemTable = localStorage.getItem("itemAll");
+        localStorage.setItem("itemTop", tableau);
+        let itemTable = localStorage.getItem("itemTop");
         let testBest = JSON.parse(itemTable);
 
         let mySectionBest = document.getElementById("bestArticles");

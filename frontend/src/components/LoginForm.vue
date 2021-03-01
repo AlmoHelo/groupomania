@@ -6,7 +6,6 @@
       <label for="email">E-mail ou nom d'utilisateur<span>*</span> :</label>
       <input
         id="email"
-        type="email"
         placeholder="groupomania@gmail.com"
         v-model="email"
         required

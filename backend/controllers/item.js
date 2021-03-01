@@ -23,6 +23,16 @@ exports.getAll = (req, res, next) => {
     })
 }
 
+//Affichage de tous les items dans ordre descendant
+/*exports.getItemTop = (req, res, next) => {
+    db.query('SELECT * FROM item ORDER BY likes DESC', (error, result, field) => {
+        if (error) {
+            return res.status(400).json({ error })
+        }
+        return res.status(200).json(result)
+    })
+}*/
+
 //Créer un item
 exports.create = (req, res, next) => {
     const date = new Date();

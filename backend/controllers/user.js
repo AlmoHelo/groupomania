@@ -78,15 +78,16 @@ exports.deleteUser = (req, res, next) => {
 exports.updateUser = (req, res, next) => {
     const email = req.body.email
     const pseudo = req.body.pseudo
-    const id = req.params.id
-    const password = req.body.password
+    const id = req.body.id
+    let password = req.body.password
     const biographie = req.body.biographie
-    bcrypt.hash(passwords, 10)
+    bcrypt.hash(password, 10)
         .then((hash) => {
             password = hash
             db.query(
-                `UPDATE user SET email='${email}', pseudo='${pseudo}', password='${password}', biographie=${biographie}  WHERE id=${id}`, (error, results, fields) => {
+                `UPDATE user SET email="` + email + `", pseudo="` + pseudo + `", password="` +password + `", biographie="` + biographie + `" WHERE userId=` + id , (error, results, fields) => {
                     if (error) {
+                        console.log(error)
                         return res.status(400).json(error)
                     }
                     return res.status(200).json({ message: 'Vos information ont bien été modifié !' })

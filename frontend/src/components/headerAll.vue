@@ -16,7 +16,6 @@ export default {
   el: "menu",
   methods: {
     profil: function () {
-      //Appel à l'api pour l'affichage de tous les messages
       let user = JSON.parse(localStorage.getItem("user"));
       let userId = user.reponse.userId;
       axios

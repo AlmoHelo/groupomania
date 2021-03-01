@@ -17,6 +17,15 @@
         v-model="password"
         placeholder="*******  (max 8 caractères)"
       />
+      <label for="password2" maxlength="8"
+        >Confirmation mot de passe<span>*</span> :</label
+      ><input
+        type="password"
+        name="pass"
+        id="Mot de passe2"
+        v-model="password2"
+        placeholder="*******  (max 8 caractères)"
+      />
       <label for="pseudo" maxlength="8">Nom d'utilisateur<span>*</span> :</label
       ><input
         type="name"
@@ -46,6 +55,7 @@ export default {
       email: "",
       pseudo: "",
       password: "",
+      password2: "",
       biographie: "",
     };
   },
@@ -53,44 +63,48 @@ export default {
     envoie: function () {
       //envoie des informations de connexion à l'API pour authentification
       let token = "";
-      if (this.email == "" || this.password == "" || this.pseudo == "") {
-        alert(
-          "Veuillez remplir tous les champs avant d'envoyer le formulaire !"
-        );
+      if (this.password != this.password2) {
+        alert("Veuillez mettre des mots de passe identiques");
       } else {
-        axios
-          .post(
-            "http://localhost:3000/api/auth/signup",
-            {
-              email: this.email,
-              password: this.password,
-              pseudo: this.pseudo,
-              biographie: this.biographie,
-            },
-            {
-              headers: {
-                "Content-type": "application/json",
-                Authorization: `Bearer` + token, //Renvoi du token par l'api en cas d'authentification
+        if (this.email == "" || this.password == "" || this.pseudo == "") {
+          alert(
+            "Veuillez remplir tous les champs avant d'envoyer le formulaire !"
+          );
+        } else {
+          axios
+            .post(
+              "http://localhost:3000/api/auth/signup",
+              {
+                email: this.email,
+                password: this.password,
+                pseudo: this.pseudo,
+                biographie: this.biographie,
               },
-            }
-          )
-          .then((response) => {
-            console.log("Inscription réussi !");
-            let reponse = response.data;
-            console.log(response);
-            let userObject = JSON.stringify(reponse);
-            localStorage.setItem("user", userObject);
+              {
+                headers: {
+                  "Content-type": "application/json",
+                  Authorization: `Bearer` + token, //Renvoi du token par l'api en cas d'authentification
+                },
+              }
+            )
+            .then((response) => {
+              console.log("Inscription réussi !");
+              let reponse = response.data;
+              console.log(response);
+              let userObject = JSON.stringify(reponse);
+              localStorage.setItem("user", userObject);
 
-            let user = JSON.parse(localStorage.getItem("user"));
-            token = user.token; //Token d'authentification
-            alert(
-              "Félicitation vous êtes désormais inscrit ! Vous pouvez vous connecter !"
-            );
-            window.location.href = "http://localhost:8080/login";
-          })
-          .catch((err) => {
-            console.log("la connexion a échouée" + err); //En cas d'echec envoie de l'information à l'utilisateur
-          });
+              let user = JSON.parse(localStorage.getItem("user"));
+              token = user.token; //Token d'authentification
+              alert(
+                "Félicitation vous êtes désormais inscrit ! Vous pouvez vous connecter !"
+              );
+              window.location.href = "http://localhost:8080/login";
+            })
+            .catch((err) => {
+              console.log("la connexion a échouée" + err); //En cas d'echec envoie de l'information à l'utilisateur
+            });
+        }
       }
     },
   },
