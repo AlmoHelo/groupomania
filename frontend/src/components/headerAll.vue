@@ -47,8 +47,7 @@ header {
   align-items: center;
   padding: 0 10px;
   & img {
-    width: 20%;
-    height: 70px;
+    width: 25%;
     margin: 0;
   }
   & .search {
@@ -71,6 +70,39 @@ header {
     & a {
       color: white;
       text-decoration: none;
+    }
+  }
+}
+@media screen and (max-width: 767px) {
+  header {
+    flex-direction: column;
+    margin-bottom: 30px;
+    & img {
+      width: 100%;
+      height: auto;
+      margin-bottom: 20px;
+    }
+    & ul {
+      flex-direction: row;
+      justify-content: space-around;
+      width: 100%;
+    }
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  header {
+    flex-direction: column;
+    & img {
+      width: 100%;
+      height: auto;
+      margin-bottom: 50px;
+    }
+    & ul {
+      flex-direction: row;
+      justify-content: space-around;
+      width: 100%;
+      font-size: 25px;
     }
   }
 }

@@ -86,7 +86,75 @@ exports.delete = (req, res, next) => {
     )
 }
 
+
 exports.like = (req, res, next) => {
+    const like = req.body.like;
+    const userId = JSON.parse(JSON.stringify(req.params.id));
+    const userEmail = JSON.stringify(req.body.email);
+    //const itemId = JSON.parse(JSON.stringify(req.params.idItem));
+    console.log("mon id est : " + userId)
+    console.log("mon email est : " + userEmail)
+    console.log("monlike " + JSON.stringify(req.body.like))
+    const id = req.params.id;
+    switch (like) {
+        case 1: //if user likes the item
+            db.query('SELECT * FROM userLikes WHERE userIdLike=?', userId, (err, res, field) => {  //on vérif si user pas dans le tableau userLikes
+                if (err) {                     //si pas dans le tableau on le rajoute
+                    db.query('INSERT INTO userLikes (userIdLike, userEmailLike, idItemLike) VALUES (' + userId + ', ' + userEmail + ', ' + itemId + ')', (err, res, field) => {
+                        if (err) {
+                            return res.status(400).json(err)
+                        } else {
+                            return res.status(200).json({ message: 'Utilisateur ajouté au tableau like !' })
+                        }
+                    })
+                } else {
+                    console.log(err + " erreur ici")
+                }
+            })
+            break;
+        case -1: //if user dislikes the item 
+            db.query('SELECT * FROM userDislikes WHERE userIdDislike=?', userId, (err, res, field) => {  //on vérif si user pas dans le tableau userDislikes
+                if (err) {                     //si pas dans le tableau on le rajoute
+                    db.query('INSERT INTO userDislikes (userIdDislike, userEmailDislike, idItemDislike) VALUES (' + userId + ', ' + userEmail + ', ' + itemId + ')', (err, res, field) => {
+                        if (err) {
+                            return res.status(400).json(error)
+                        } else {
+                            return res.status(200).json({ message: 'Utilisateur ajouté au tableau dislike !' })
+                        }
+                    })
+                } else {
+                    return res.status(400).json(error)
+                }
+            })
+            break;
+        case 0:
+            db.query('SELECT * FROM userLikes WHERE userIdLike=?', userId, (err, res, field) => {
+                if (res) {
+                    db.query('DELETE FROM userLikes WHERE userIdLike=?', userId, (err, res, field) => {
+                        if (err) {
+                            return res.status(400).json(error)
+                        } else {
+                            return res.status(200).json({ message: 'Utilisateur supprimé au tableau like !' })
+                        }
+                    })
+                }
+            })
+            db.query('SELECT * FROM userDislikes WHERE userIdDislikes=?', userId, (err, res, field) => {
+                if (res) {
+                    db.query('DELETE FROM userDislikes WHERE userIdDislikes=?', userId, (err, res, field) => {
+                        if (err) {
+                            return res.status(400).json(error)
+                        } else {
+                            return res.status(200).json({ message: 'Utilisateur supprimé au tableau dislike !' })
+                        }
+                    })
+                }
+            })
+            break;
+    }
+}
+
+/*exports.like = (req, res, next) => {
     const likeSauce = req.body.like;
     const userId = JSON.parse(JSON.stringify(req.params.id));
     const userEmail = JSON.parse(JSON.stringify(req.params.email));
@@ -138,7 +206,7 @@ exports.like = (req, res, next) => {
                         }
                     })
                 } else {
-                    db.query('INSERT INTO userLlikes (userIdLike, userEmailLike, idItemLike) VALUES (' + userId + ', ' + userEmail + ', ' + itemId + ')', (err, res, field) => {
+                    db.query('INSERT INTO userLikes (userIdLike, userEmailLike, idItemLike) VALUES (' + userId + ', ' + userEmail + ', ' + itemId + ')', (err, res, field) => {
                         if (err) {
                             return res.status(400).json(error)
                         } else {
@@ -149,4 +217,4 @@ exports.like = (req, res, next) => {
             })
         }
     })
-};
+};*/

@@ -22,4 +22,18 @@ div{
   display: flex;
   justify-content: space-around;
 }
+
+@media screen and (max-width: 767px) {
+  div{
+    display: flex;
+    flex-direction: column-reverse;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div{
+    display: flex;
+    flex-direction: column-reverse;
+  }
+}
 </style>
