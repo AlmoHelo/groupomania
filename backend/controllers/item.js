@@ -36,21 +36,20 @@ exports.getAll = (req, res, next) => {
 //Créer un item
 exports.create = (req, res, next) => {
     const date = new Date();
-    const currentDate = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + ' ' + date.getHours() + ":" + date.getMinutes + ":" + date.getSeconds;
+    const currentDate = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + ' ' + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
     const description = req.body.description;
-    console.log(description)
     const pseudoUser = req.body.pseudoUser
-    console.log(pseudoUser)
     //const imageURL
     db.query(`SELECT userId FROM user INNER JOIN item ON pseudo = pseudoUser WHERE pseudo= "` + pseudoUser + `"`, (err, response, fields) => {
         if (err) {
             console.log(err)
         } else {
             const userItemId = JSON.parse(JSON.stringify(response));
-            const sqlItemPost = "INSERT INTO item (date, description, likes, dislikes, pseudoUser, userItemId) VALUES ( NOW(), ?, 0, 0, ?, ?)"
-            const postItem = db.format(sqlItemPost, [description, pseudoUser, userItemId[0].userId])
+            const sqlItemPost = "INSERT INTO item (date, description, likes, dislikes, pseudoUser, userItemId) VALUES ( ?, ?, 0, 0, ?, ?)"
+            const postItem = db.format(sqlItemPost, [currentDate, description, pseudoUser, userItemId[0].userId])
             db.query(postItem, (error, result) => {
                 if (error) {
+                    console.log(error)
                     return res.status(400).json("erreur")
                 }
                 return res.status(201).json('Votre message a été posté !')

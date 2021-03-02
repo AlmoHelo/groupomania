@@ -2,7 +2,7 @@
   <headerAll />
   <h1>Bonjour {{ pseudo }}, vous êtes sur votre profil !</h1>
   <section id="modifier">
-    <div>
+    <div class="headModif">
       <h2>Modifier votre profil</h2>
       <i class="fa fa-times" aria-hidden="true"></i>
     </div>
@@ -56,6 +56,22 @@
   </section>
   <section id="articlesPerso">
     <h2>Tous vos articles</h2>
+    <div v-for="mess in msg" :key="mess.idMessages">
+      <article class="article">
+        <div class="headArt">
+          <p>{{ mess.pseudoUser }}</p>
+          <p>{{ mess.date }}</p>
+        </div>
+        <p class="texte">{{ mess.description }}</p>
+        <div class="footArt">
+          <div class="like">
+            <a><i class="far fa-thumbs-up"></i></a>{{ mess.likes }}
+            <a><i class="far fa-thumbs-down"></i></a>{{ mess.dislikes }}
+          </div>
+          <div><i class="fas fa-comment-dots"></i>Commentaires</div>
+        </div>
+      </article>
+    </div>
   </section>
 </template>
 
@@ -134,6 +150,9 @@ export default {
       mail: "",
       date: "",
       biographie: "",
+      data: JSON.parse(localStorage.getItem("articlesProfil")),
+      message: "",
+      msg: "",
     };
   },
   mounted() {
@@ -141,7 +160,7 @@ export default {
     this.pseudo = profil.pseudo;
     this.mail = profil.email;
     this.date = profil.creationDate;
-    if (profil.biographie != null) {
+    if (profil.biographie != null || profil.biographie != "") {
       this.biographie = profil.biographie;
     } else {
       this.biographie = "Modifier votre profil pour ajouter une biographie";
@@ -155,7 +174,11 @@ export default {
         },
       })
       .then((response) => {
-        let tableau = JSON.parse(JSON.stringify(response.data));
+        let articles = JSON.stringify(response.data);
+        let articlesProfil = localStorage.setItem("articlesProfil", articles);
+        console.log(articlesProfil);
+        this.msg = response.data;
+        /*let tableau = JSON.parse(JSON.stringify(response.data));
 
         let mySection = document.getElementById("articlesPerso");
 
@@ -222,7 +245,7 @@ export default {
           insertLike(like, tableau[i].dislikes);
           myFoot.appendChild(comments);
           myFoot.appendChild(share);
-        }
+        }*/
       })
       .catch((error) => console.log(error));
   },
@@ -240,6 +263,13 @@ export default {
 #modifier {
   display: none;
   padding: 20px;
+  & .headModif {
+    display: flex;
+    & i {
+      color: red;
+      font-size: 20px;
+    }
+  }
   & form {
     display: flex;
     flex-direction: column;
@@ -278,6 +308,28 @@ export default {
     font-size: 25px;
     width: 100%;
   }
+  & .headArt {
+    border-bottom: 1px solid white;
+  }
+  & .texte {
+    padding: 20px;
+  }
+  & .footArt {
+    border-top: 1px solid white;
+    padding: 10px;
+  }
+  & .headArt,
+  .footArt {
+    display: flex;
+    justify-content: space-around;
+  }
+  & i {
+    margin-right: 5px;
+    margin-left: 5px;
+  }
+}
+.article {
+  margin-bottom: 25px;
 }
 button {
   font-size: 15px;
