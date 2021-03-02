@@ -48,26 +48,29 @@
     <p>Adresse mail : {{ mail }}</p>
     <p>Inscrit depuis le : {{ date }}</p>
     <p>Biographie : {{ biographie }}</p>
-    <div>
+    <div class="modifSupp">
       <button @click="modifier">Modifier</button>
       <button @click="supprimer">Supprimer</button>
     </div>
   </section>
   <section id="articlesPerso">
     <h2>Tous vos articles</h2>
-    <div v-for="mess in msg" :key="mess.idMessages">
+    <div v-for="(mess, index) in msg" :key="mess.idMessages">
       <article class="article">
         <div class="headArt">
+          <p>{{index}}</p>
           <p>{{ mess.pseudoUser }}</p>
           <p>{{ mess.date }}</p>
         </div>
         <p class="texte">{{ mess.description }}</p>
-        <div class="footArt">
-          <div class="like">
-            <a><i class="far fa-thumbs-up"></i></a>{{ mess.likes }}
-            <a><i class="far fa-thumbs-down"></i></a>{{ mess.dislikes }}
-          </div>
-          <div><i class="fas fa-comment-dots"></i>Commentaires</div>
+
+        <div class="modifSuppItem">
+          <button @click="modifierItem">
+            <i class="far fa-edit"></i>Modifier
+          </button>
+          <button @click="supprimerItem">
+            <i class="fas fa-trash-alt"></i>Supprimer
+          </button>
         </div>
       </article>
     </div>
@@ -254,10 +257,14 @@ export default {
     border-top: 1px solid white;
     padding: 10px;
   }
-  & .headArt,
-  .footArt {
+  & .headArt {
     display: flex;
     justify-content: space-around;
+  }
+  & .modifSuppItem {
+    & button {
+      color: white;
+    }
   }
   & i {
     margin-right: 5px;
@@ -272,5 +279,58 @@ button {
   border: none;
   background: none;
   color: rgb(209, 63, 63);
+}
+
+@media screen and (max-width: 767px) {
+  h1 {
+    font-size: 25px;
+    margin: 30px 0;
+  }
+  .profil {
+    width: 90%;
+    font-size: 13px;
+    & .modifSupp {
+      display: flex;
+      margin-top: 20px;
+    }
+  }
+  #modifier {
+    width: 90%;
+    padding: 8px;
+    & h2 {
+      font-size: 20px;
+      margin-top: 20px;
+      margin-bottom: 20px;
+    }
+    & label,
+    .champ {
+      font-size: 15px;
+    }
+    & input,
+    textarea {
+      height: 20px;
+      margin: auto;
+      &::placeholder {
+        font-size: 12px;
+      }
+    }
+    & button {
+      width: 150px;
+      font-size: 18px;
+      margin-bottom: 20px;
+    }
+  }
+  #articlesPerso {
+    width: 90%;
+    & h2 {
+      font-size: 20px;
+    }
+  }
+}
+@media (min-width: 768px) and (max-width: 991px) {
+  h1 {
+    font-size: 30px;
+    margin-top: 30px;
+  }
 }
 </style>

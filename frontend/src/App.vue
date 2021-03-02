@@ -1,5 +1,5 @@
 <template>
-  <router-view/>
+  <router-view />
 </template>
 
 <style>
@@ -10,20 +10,8 @@
   text-align: center;
   color: white;
 }
-body{
-  background-color: #2c3e50;
+body {
+  background: linear-gradient(to bottom right, #244769, #4b80b4);
 }
 
-#nav {
-  padding: 30px;
-}
-
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #5a85b1;
-}
 </style>

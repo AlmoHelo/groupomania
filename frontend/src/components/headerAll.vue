@@ -45,7 +45,9 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 10px;
+  height: auto;
+  padding: 30px 10px;
+  background-image: url("../assets/img/batiment.jpg");
   & img {
     width: 25%;
     margin: 0;
@@ -68,7 +70,8 @@ header {
     justify-content: center;
     margin: 0;
     & a {
-      color: white;
+      color: black;
+      font-weight: bold;
       text-decoration: none;
     }
   }

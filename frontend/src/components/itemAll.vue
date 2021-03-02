@@ -129,6 +129,7 @@ section {
   margin-top: 80px;
   border: 1px solid white;
   border-radius: 20px;
+  box-shadow: 1px 2px 2px;
   & .create {
     border-bottom: 1px solid white;
     padding: 20px 0;
