@@ -86,3 +86,67 @@ exports.delete = (req, res, next) => {
     )
 }
 
+exports.like = (req, res, next) => {
+    const likeSauce = req.body.like;
+    const userId = JSON.parse(JSON.stringify(req.params.id));
+    const userEmail = JSON.parse(JSON.stringify(req.params.email));
+    const itemId = JSON.parse(JSON.stringify(req.params.idItem));
+    console.log("mon id est : " + userId)
+    const id = req.params.id;
+
+    db.query('SELECT * FROM userLikes WHERE userIdLike=?', userId, (error, result, field) => {
+        if (error) {
+            db.query('SELECT * FROM userDislikes WHERE userIdDislike=?', userId, (err, res, field) => {
+                if (err) {
+                    db.query('INSERT INTO userDislikes (userIdDislike, userEmailDislike, idItemDislike) VALUES (' + userId + ', ' + userEmail + ', ' + itemId + ')', (err, res, field) => {
+                        if (err) {
+                            return res.status(400).json(error)
+                        } else {
+                            return res.status(200).json({ message: 'Utilisateur ajouté au tableau dislike !' })
+                        }
+                    })
+                } else {
+                    db.query('SELECT * FROM userDislikes WHERE idItemDislike=?', itemId, (err, res, field) => {
+                        if (err) {
+                            db.query('DELETE FROM userDislikes WHERE userIdDislike=?', userId, (err, res, field) => {
+                                if (err) {
+                                    return res.status(400).json(error)
+                                } else {
+                                    return res.status(200).json({ message: 'Utilisateur ajouté au tableau dislike !' })
+                                }
+                            })
+                        } else {
+                            db.query('INSERT INTO userDislikes (userIdDislike, userEmailDislike, idItemDislike) VALUES (' + userId + ', ' + userEmail + ', ' + itemId + ')', (err, res, field) => {
+                                if (err) {
+                                    return res.status(400).json(error)
+                                } else {
+                                    return res.status(200).json({ message: 'Utilisateur ajouté au tableau dislike !' })
+                                }
+                            })
+                        }
+                    })
+                }
+            })
+        } else {
+            db.query('SELECT * FROM userLikes WHERE idItemLike=?', itemId, (err, res, field) => {
+                if (err) {
+                    db.query('DELETE FROM userLikes WHERE userIdLike=?', userId, (err, res, field) => {
+                        if (err) {
+                            return res.status(400).json(error)
+                        } else {
+                            return res.status(200).json({ message: 'Utilisateur ajouté au tableau dislike !' })
+                        }
+                    })
+                } else {
+                    db.query('INSERT INTO userLlikes (userIdLike, userEmailLike, idItemLike) VALUES (' + userId + ', ' + userEmail + ', ' + itemId + ')', (err, res, field) => {
+                        if (err) {
+                            return res.status(400).json(error)
+                        } else {
+                            return res.status(200).json({ message: 'Utilisateur ajouté au tableau dislike !' })
+                        }
+                    })
+                }
+            })
+        }
+    })
+};

@@ -19,7 +19,6 @@ export default {
         },
       })
       .then((response) => {
-        console.log(response.data)
         let tableau = JSON.stringify(response.data);
         localStorage.setItem("itemTop", tableau);
         let itemTable = localStorage.getItem("itemTop");

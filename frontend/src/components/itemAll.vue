@@ -41,6 +41,21 @@ export default {
         this.msg = response.data;
       })
       .catch((error) => console.log(error));
+      
+    axios
+      .post("http://localhost:3000/api/items/" + user.reponse.userId + "/like", 
+      {
+        userId : user.reponse.userId
+      },
+      {
+        headers: {
+          authorization: "Bearer " + user.reponse.token,
+        },
+      })
+      .then((test) => {
+        console.log("mon test est " + test)
+      })
+      .catch((error) => console.log(error));
   },
   data() {
     return {

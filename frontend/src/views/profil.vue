@@ -2,9 +2,8 @@
   <headerAll />
   <h1>Bonjour {{ pseudo }}, vous êtes sur votre profil !</h1>
   <section id="modifier">
-    <div class="headModif">
+    <div class="headModif" id="headModif">
       <h2>Modifier votre profil</h2>
-      <i class="fa fa-times" aria-hidden="true"></i>
     </div>
     <form method="Put" @submit.prevent="sendUpdate">
       <label for="email">E-mail ou nom d'utilisateur<span>*</span> :</label
@@ -174,78 +173,19 @@ export default {
         },
       })
       .then((response) => {
-        let articles = JSON.stringify(response.data);
-        let articlesProfil = localStorage.setItem("articlesProfil", articles);
-        console.log(articlesProfil);
+        localStorage.setItem("articlesProfil", JSON.stringify(response.data));
         this.msg = response.data;
-        /*let tableau = JSON.parse(JSON.stringify(response.data));
 
-        let mySection = document.getElementById("articlesPerso");
-
-        for (let i = 0; i < tableau.length; i++) {
-          let myArticle = document.createElement("div");
-          myArticle.className = "articles";
-          myArticle.style.border = "1px solid white";
-          myArticle.style.marginBottom = "20px";
-
-          let myHead = document.createElement("div");
-          myHead.style.display = "flex";
-          myHead.style.justifyContent = "space-between";
-          myHead.style.marginBottom = "20px";
-          let myFoot = document.createElement("div");
-          myFoot.className = "foot";
-          myFoot.style.borderTop = "1px solid white";
-          myFoot.style.display = "flex";
-          myFoot.style.justifyContent = "space-around";
-          let myLikes = document.createElement("div");
-          myLikes.style.display = "flex";
-          mySection.appendChild(myArticle);
-          myArticle.appendChild(myHead);
-
-          const insertHeat = (div, nom) => {
-            let myP = document.createElement("p");
-            myP.innerHTML = nom;
-            myHead.appendChild(myP);
-          };
-          const insertDescription = (div, description) => {
-            let myDiv = document.createElement("p");
-            myDiv.innerHTML = description;
-            myDiv.style.color = "black";
-            myDiv.style.fontWeight = "bold";
-            myDiv.style.marginBottom = "50px";
-            myArticle.appendChild(myDiv);
-          };
-          const insertLike = (div, like) => {
-            let myDiv = document.createElement("p");
-            myDiv.innerHTML = like;
-            myLikes.appendChild(myDiv);
-          };
-
-          let myPseudo = document.createElement("p");
-          let myDate = document.createElement("p");
-          let myDescription = document.createElement("p");
-          let firstI = document.createElement("p");
-          firstI.innerHTML = "👍";
-          let like = document.createElement("p");
-          let secondI = document.createElement("p");
-          secondI.innerHTML = "👎";
-          let comments = document.createElement("p");
-          comments.innerHTML = "💬 commentaires";
-          let share = document.createElement("p");
-          share.innerHTML = "💬 Partager";
-
-          insertHeat(myPseudo, tableau[i].pseudoUser);
-          insertHeat(myDate, tableau[i].date);
-          insertDescription(myDescription, tableau[i].description);
-          myArticle.appendChild(myFoot);
-          myFoot.appendChild(myLikes);
-          myLikes.appendChild(firstI);
-          insertLike(like, tableau[i].likes);
-          myLikes.appendChild(secondI);
-          insertLike(like, tableau[i].dislikes);
-          myFoot.appendChild(comments);
-          myFoot.appendChild(share);
-        }*/
+        let myDiv = document.getElementById("headModif");
+        let myCross = document.createElement("i");
+        myCross.className = "fa fa-times";
+        myDiv.appendChild(myCross);
+        myCross.addEventListener("click", () => {
+          let myDescription = document.getElementById("profil");
+          let modify = document.getElementById("modifier");
+          modify.style.display = "none";
+          myDescription.style.display = "block";
+        });
       })
       .catch((error) => console.log(error));
   },
@@ -265,10 +205,6 @@ export default {
   padding: 20px;
   & .headModif {
     display: flex;
-    & i {
-      color: red;
-      font-size: 20px;
-    }
   }
   & form {
     display: flex;
