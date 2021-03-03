@@ -55,10 +55,9 @@
   </section>
   <section id="articlesPerso">
     <h2>Tous vos articles</h2>
-    <div v-for="(mess, index) in msg" :key="mess.idMessages">
+    <div v-for="mess in msg" :key="mess.idMessages">
       <article class="article">
         <div class="headArt">
-          <p>{{index}}</p>
           <p>{{ mess.pseudoUser }}</p>
           <p>{{ mess.date }}</p>
         </div>
@@ -80,6 +79,7 @@
 <script>
 import axios from "axios";
 import headerAll from "../components/headerAll";
+import { DATE_FORMAT } from "../service/utility";
 export default {
   name: "Profil",
   components: { headerAll },
@@ -89,6 +89,7 @@ export default {
       let modify = document.getElementById("modifier");
       myDescription.style.display = "none";
       modify.style.display = "block";
+      window.reload()
     },
     sendUpdate: function () {
       let profil = JSON.parse(localStorage.getItem("userProfil"));
@@ -176,9 +177,12 @@ export default {
         },
       })
       .then((response) => {
-        localStorage.setItem("articlesProfil", JSON.stringify(response.data));
-        this.msg = response.data;
+        this.msg = response.data.map((element) => {
+          element.date = DATE_FORMAT(element.date);
+          return element;
+        });
 
+        //croix sur module pour modifier le profil
         let myDiv = document.getElementById("headModif");
         let myCross = document.createElement("i");
         myCross.className = "fa fa-times";

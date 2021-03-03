@@ -2,11 +2,7 @@
   <section>
     <h2>Top 3</h2>
     <div class="allBest">
-      <div
-        class="article"
-        v-for="mess in msg.slice(0, 3)"
-        :key="mess.idMessages"
-      >
+      <div class="article" v-for="mess in msg" :key="mess.idMessages">
         <div class="headArt">
           <p>{{ mess.pseudoUser }}</p>
           <p>{{ mess.date }}</p>
@@ -23,12 +19,12 @@
 </template>
 
 <script>
+import { DATE_FORMAT } from "../service/utility";
 import axios from "axios";
 export default {
   name: "bestItem",
   data() {
     return {
-      data: JSON.parse(localStorage.getItem("itemTop")),
       message: "",
       msg: "",
     };
@@ -43,41 +39,10 @@ export default {
         },
       })
       .then((response) => {
-        let tableau = JSON.stringify(response.data);
-        localStorage.setItem("itemTop", tableau);
-
-        this.msg = response.data;
-        /*let itemTable = localStorage.getItem("itemTop");
-        let testBest = JSON.parse(itemTable);*/
-
-        /* let mySectionBest = document.getElementById("bestArticles");
-
-        for (let i = 0; i < testBest.length; i++) {
-          for (i = 0; i < 3; i++) {
-            let myArticleBest = document.createElement("div");
-            myArticleBest.style.border = "1px solid white";
-            mySectionBest.appendChild(myArticleBest);
-            let myHeadBest = document.createElement("div");
-            myArticleBest.appendChild(myHeadBest);
-
-            const insertPseudoBest = (div, nom) => {
-              let myPBest = document.createElement("p");
-              myPBest.innerHTML = nom;
-              myHeadBest.appendChild(myPBest);
-            };
-            const insertDescriptionBest = (div, description) => {
-              let myDivBest = document.createElement("p");
-              myDivBest.innerHTML = description;
-              myArticleBest.appendChild(myDivBest);
-            };
-
-            let myPseudoBest = document.createElement("p");
-            let myDescriptionBest = document.createElement("p");
-
-            insertPseudoBest(myPseudoBest, testBest[i].pseudoUser);
-            insertDescriptionBest(myDescriptionBest, testBest[i].description);
-          }
-        }*/
+        this.msg = response.data.map((element) => {
+          element.date = DATE_FORMAT(element.date);
+          return element;
+        });
       })
       .catch((error) => console.log(error));
   },
@@ -142,11 +107,11 @@ section {
         flex-direction: column;
         justify-content: flex-start;
         max-height: 50px;
-        & p{
+        & p {
           margin: 5px 0;
         }
       }
-      & .texte{
+      & .texte {
         height: 50px;
       }
       & .footArt {

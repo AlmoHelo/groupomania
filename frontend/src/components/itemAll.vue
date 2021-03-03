@@ -5,24 +5,20 @@
         >Créer un article
       </router-link>
     </div>
-    <div
-      id="articles"
-      class="msg"
-      v-for="(mess, index) in msg"
-      :key="mess.idMessages"
-    >
+    <div id="articles" class="msg" v-for="mess in msg" :key="mess.idMessages">
       <article class="article">
         <div class="headArt">
-          <p id="idItem">{{ index }} || {{ mess.id }}</p>
           <p>{{ mess.pseudoUser }}</p>
           <p>{{ mess.date }}</p>
         </div>
         <p class="texte">{{ mess.description }}</p>
         <div class="footArt">
           <div class="like">
-            <a><i class="far fa-thumbs-up" v-on:click="onLike()"></i></a
+            <a><i class="far fa-thumbs-up" v-on:click="onLike(mess.id)"></i></a
             >{{ mess.likes }}
-            <a v-on:click="onDislike()"><i class="far fa-thumbs-down"></i></a
+            <!--v-bind:style="{ color: activeColor }"-->
+            <a v-on:click="onDislike(mess.id)"
+              ><i class="far fa-thumbs-down"></i></a
             >{{ mess.dislikes }}
           </div>
           <div><i class="fas fa-comment-dots"></i>Commentaires</div>
@@ -33,18 +29,27 @@
 </template>
 
 <script>
+import { DATE_FORMAT } from "../service/utility";
 import axios from "axios";
 export default {
   name: "itemAll",
   methods: {
-    onLike: function () {
+    onLike: function (messId) {
       this.like = 1;
-      let index = this.index;
-      console.log(this.message[index]);
-      let user = JSON.parse(localStorage.getItem("user"));
-      //let idItem = JSON.parse(localStorage.getItem("itemAll"));
+      let idOneItem = messId;
+      //this.activeColor = "red";
 
-      //console.log(idItem.id);
+      /*document
+        .querySelector("i")
+      (document.addEventListener ? "addEventListener" : "attachEvent")(
+          "clic",
+          function () {
+            this.style.backgroundColor =
+              this.style.backgroundColor === "white" ? "red" : "white";
+          }
+        );*/
+
+      let user = JSON.parse(localStorage.getItem("user"));
       axios
         .post(
           "http://localhost:3000/api/items/" + user.reponse.userId + "/like",
@@ -52,6 +57,7 @@ export default {
             userId: user.reponse.userId,
             email: user.mail,
             like: this.like,
+            idItem: idOneItem,
           },
           {
             headers: {
@@ -64,24 +70,19 @@ export default {
         })
         .catch((error) => console.log(error));
     },
-    onDislike: function () {
-      this.dislike = 1;
-
+    onDislike: function (messId) {
+      this.dislike = -1;
+      let idOneItem = messId;
+      //this.activeColor = "red";
       let user = JSON.parse(localStorage.getItem("user"));
-      //let idItem = JSON.parse(localStorage.getItem("itemAll"));
-
-      let test = document.getElementById("idItem");
-
-      console.log(test);
-
-      //console.log(idItem.id);
       axios
         .post(
           "http://localhost:3000/api/items/" + user.reponse.userId + "/like",
           {
             userId: user.reponse.userId,
             email: user.mail,
-            dislike: this.dislike,
+            like: this.dislike,
+            idItem: idOneItem,
           },
           {
             headers: {
@@ -105,19 +106,20 @@ export default {
         },
       })
       .then((response) => {
-        let tableau = JSON.stringify(response.data);
-        localStorage.setItem("itemAll", tableau);
-        this.msg = response.data;
+        this.msg = response.data.map((element) => {
+          element.date = DATE_FORMAT(element.date);
+          return element;
+        });
       })
       .catch((error) => console.log(error));
   },
   data() {
     return {
-      data: JSON.parse(localStorage.getItem("itemAll")),
       message: "",
       msg: "",
       like: "",
-      index: "",
+      dislike: "",
+      //activeColor: "white",
     };
   },
 };
@@ -183,12 +185,10 @@ section {
   }
 }
 
-
-
 @media (min-width: 768px) and (max-width: 991px) {
- section {
-   width: 70%;
-   margin: auto;
- }
+  section {
+    width: 70%;
+    margin: auto;
+  }
 }
 </style>
