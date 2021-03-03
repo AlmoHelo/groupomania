@@ -74,7 +74,6 @@ export default {
           )
           .then((response) => {
             let reponse = response.data;
-            console.log(response)
             let mail = this.email;
             let all = { reponse, mail };
             console.log("Connexion réussi !");

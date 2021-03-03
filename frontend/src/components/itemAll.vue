@@ -22,6 +22,9 @@
             >{{ mess.dislikes }}
           </div>
           <div><i class="fas fa-comment-dots"></i>Commentaires</div>
+          <a class="signaler"
+            ><i class="far fa-flag"></i><span>Signaler ce commentaire</span></a
+          >
         </div>
       </article>
     </div>
@@ -166,6 +169,17 @@ section {
   & i {
     margin-right: 5px;
     margin-left: 5px;
+  }
+}
+.signaler {
+    &:hover span{
+      display: inline;
+      white-space: nowrap;
+      color: white;
+      padding: 3px;
+    }
+  & span {
+    display: none;
   }
 }
 

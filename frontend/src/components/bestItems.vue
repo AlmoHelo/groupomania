@@ -9,9 +9,10 @@
         </div>
         <p class="texte">{{ mess.description }}</p>
         <div class="footArt">
-          <i class="far fa-thumbs-up"></i>
-          <i class="far fa-thumbs-down"></i>
+          <i class="far fa-thumbs-up" v-on:click="onLike(mess.id)"></i>
+          <i class="far fa-thumbs-down" v-on:click="onDislike(mess.id)"></i>
           <i class="fas fa-comment-dots"></i>
+          <a class="signaler"><i class="far fa-flag"></i></a>
         </div>
       </div>
     </div>
@@ -29,6 +30,57 @@ export default {
       msg: "",
     };
   },
+  methods: {
+    onLike: function (messId) {
+      this.like = 1;
+      let idOneItem = messId;
+
+      let user = JSON.parse(localStorage.getItem("user"));
+      axios
+        .post(
+          "http://localhost:3000/api/items/" + user.reponse.userId + "/like",
+          {
+            userId: user.reponse.userId,
+            email: user.mail,
+            like: this.like,
+            idItem: idOneItem,
+          },
+          {
+            headers: {
+              authorization: "Bearer " + user.reponse.token,
+            },
+          }
+        )
+        .then((test) => {
+          console.log("mon test est " + test);
+        })
+        .catch((error) => console.log(error));
+    },
+    onDislike: function (messId) {
+      this.dislike = -1;
+      let idOneItem = messId;
+      let user = JSON.parse(localStorage.getItem("user"));
+      axios
+        .post(
+          "http://localhost:3000/api/items/" + user.reponse.userId + "/like",
+          {
+            userId: user.reponse.userId,
+            email: user.mail,
+            like: this.dislike,
+            idItem: idOneItem,
+          },
+          {
+            headers: {
+              authorization: "Bearer " + user.reponse.token,
+            },
+          }
+        )
+        .then((test) => {
+          console.log("mon test est " + test);
+        })
+        .catch((error) => console.log(error));
+    },
+  },
   mounted() {
     //Appel à l'api pour l'affichage de tous les messages
     let user = JSON.parse(localStorage.getItem("user"));
@@ -43,6 +95,9 @@ export default {
           element.date = DATE_FORMAT(element.date);
           return element;
         });
+        let test = response.data;
+        test.sort(test.likes);
+        console.log(test);
       })
       .catch((error) => console.log(error));
   },

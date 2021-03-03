@@ -65,7 +65,7 @@ exports.update = (req, res, next) => {
     console.log(description)
     console.log(id)
     db.query(
-        `UPDATE item SET description='${description}' WHERE id=${id}`, (error, results, fields) => {
+        `UPDATE item SET description='${description}' date=NOW() WHERE id=${id}`, (error, results, fields) => {
             if (error) {
                 return res.status(400).json(error)
             }

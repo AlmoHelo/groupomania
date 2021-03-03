@@ -64,10 +64,19 @@
         <p class="texte">{{ mess.description }}</p>
 
         <div class="modifSuppItem">
-          <button @click="modifierItem">
+          <button @click="modifierItem(mess.id)" id="buttonModif">
             <i class="far fa-edit"></i>Modifier
           </button>
-          <button @click="supprimerItem">
+          <div id="newDescription">
+            <label> Nouvelle description :</label
+            ><textarea
+              name="description"
+              v-model="description"
+              id="description"
+              required
+            /><button @click="sendUpdateItem()" id="sendUpdate">Envoyer</button>
+          </div>
+          <button @click="supprimerItem(mess.id)">
             <i class="fas fa-trash-alt"></i>Supprimer
           </button>
         </div>
@@ -89,7 +98,6 @@ export default {
       let modify = document.getElementById("modifier");
       myDescription.style.display = "none";
       modify.style.display = "block";
-      window.reload()
     },
     sendUpdate: function () {
       let profil = JSON.parse(localStorage.getItem("userProfil"));
@@ -145,6 +153,39 @@ export default {
         })
         .catch((error) => console.log(error));
     },
+    modifierItem: function (messId) {
+      let myInput = document.getElementById("newDescription")
+      let myButton = document.getElementById("buttonModif")
+      myInput.style.display = "block";
+      myButton.style.display= "none";
+
+
+      let idOneItem = messId;
+
+      if (this.description == "") {
+        alert(
+          "Veuillez remplir tous le champs avant d'envoyer la modification !"
+        );
+      } else {
+        let user = JSON.parse(localStorage.getItem("user"));
+        axios
+          .put(
+            "http://localhost:3000/api/item/" + idOneItem,
+            {
+              description: this.description,
+            },
+            {
+              headers: {
+                authorization: "Bearer " + user.reponse.token,
+              },
+            }
+          )
+          .then((response) => {
+            alert(response);
+          })
+          .catch((error) => console.log(error));
+      }
+    },
   },
   data() {
     return {
@@ -156,6 +197,7 @@ export default {
       data: JSON.parse(localStorage.getItem("articlesProfil")),
       message: "",
       msg: "",
+      description: "",
     };
   },
   mounted() {
@@ -284,7 +326,9 @@ button {
   background: none;
   color: rgb(209, 63, 63);
 }
-
+#newDescription{
+  display: none;
+}
 @media screen and (max-width: 767px) {
   h1 {
     font-size: 25px;

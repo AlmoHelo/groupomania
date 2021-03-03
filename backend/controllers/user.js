@@ -33,7 +33,7 @@ exports.login = (req, res, next) => {
     const password = req.body.password;
     let token = process.env.DB_TOKEN;
 
-    const sqlFindUser = "SELECT userId, password FROM user WHERE email = ?";
+    const sqlFindUser = "SELECT userId, password, pseudo FROM user WHERE email = ?";
 
     db.query(sqlFindUser, [email], function (err, result) {
         if (err) {
@@ -52,7 +52,7 @@ exports.login = (req, res, next) => {
                             { userId: result[0].userId },
                             token,
                             { expiresIn: "24h" }
-                        ), userId: result[0].userId
+                        ), userId: result[0].userId, pseudo: result[0].pseudo
                     });
                 }
             })

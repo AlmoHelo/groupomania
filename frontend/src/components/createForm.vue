@@ -2,14 +2,7 @@
   <div>
     <h1>Créer votre article</h1>
     <form method="POST" @submit.prevent="envoie">
-      <label>Pseudo*:</label
-      ><input
-        type="text"
-        id="pseudo"
-        v-model="pseudoUser"
-        placeholder="Votre Pseudo"
-        required
-      />
+      <p>Pseudo : {{ pseudoUser}} </p>
       <label>Description*:</label
       ><textarea
         name="description"
@@ -31,7 +24,7 @@ export default {
   name: "createForm",
   data() {
     return {
-      pseudoUser: "",
+      pseudoUser: JSON.parse(localStorage.getItem("user")).reponse.pseudo,
       description: "",
     };
   },
@@ -40,7 +33,7 @@ export default {
       let tableau =localStorage.getItem("user");
       let tab = JSON.parse(tableau)
       let token = tab.reponse.token
-      if (this.description == "" || this.pseudoUser == "") {
+      if (this.description == "") {
         alert(
           "Veuillez remplir tous les champs avant d'envoyer le formulaire !"
         );
@@ -49,7 +42,7 @@ export default {
           .post(
             "http://localhost:3000/api/items/create",
             {
-              pseudoUser: this.pseudoUser,
+              pseudoUser: JSON.parse(localStorage.getItem("user")).reponse.pseudo,
               description: this.description,
             },
             {
@@ -70,6 +63,9 @@ export default {
       }
     },
   },
+  mounted(){
+    console.log(JSON.parse(localStorage.getItem("user")).reponse.pseudo)
+  }
 };
 </script>
 
