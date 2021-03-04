@@ -87,7 +87,6 @@ exports.updateUser = (req, res, next) => {
             db.query(
                 `UPDATE user SET email="` + email + `", pseudo="` + pseudo + `", password="` +password + `", biographie="` + biographie + `" WHERE userId=` + id , (error, results, fields) => {
                     if (error) {
-                        console.log(error)
                         return res.status(400).json(error)
                     }
                     return res.status(200).json({ message: 'Vos information ont bien été modifié !' })

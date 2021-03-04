@@ -53,31 +53,35 @@
       <button @click="supprimer">Supprimer</button>
     </div>
   </section>
+
+  <section id="newDescription">
+    <label> Nouvelle description :</label
+    ><textarea
+      name="description"
+      v-model="description"
+      id="description"
+      required
+    /><button @click="sendUpdateItem()" id="sendUpdate">Envoyer</button>
+  </section>
   <section id="articlesPerso">
     <h2>Tous vos articles</h2>
+
     <div v-for="mess in msg" :key="mess.idMessages">
       <article class="article">
         <div class="headArt">
           <p>{{ mess.pseudoUser }}</p>
           <p>{{ mess.date }}</p>
         </div>
-        <p class="texte">{{ mess.description }}</p>
+
+        <p class="texte" id="texte">{{ mess.description }}</p>
 
         <div class="modifSuppItem">
           <button @click="modifierItem(mess.id)" id="buttonModif">
             <i class="far fa-edit"></i>Modifier
           </button>
-          <div id="newDescription">
-            <label> Nouvelle description :</label
-            ><textarea
-              name="description"
-              v-model="description"
-              id="description"
-              required
-            /><button @click="sendUpdateItem()" id="sendUpdate">Envoyer</button>
-          </div>
+
           <button @click="supprimerItem(mess.id)">
-            <i class="fas fa-trash-alt"></i>Supprimer
+            <i class="fas fa-trash-alt"></i> Supprimer
           </button>
         </div>
       </article>
@@ -154,14 +158,16 @@ export default {
         .catch((error) => console.log(error));
     },
     modifierItem: function (messId) {
-      let myInput = document.getElementById("newDescription")
-      let myButton = document.getElementById("buttonModif")
-      myInput.style.display = "block";
-      myButton.style.display= "none";
-
-
-      let idOneItem = messId;
-
+      localStorage.setItem("UpdateOneItem", messId);
+      let myArticles = document.getElementById("articlesPerso");
+      let myForm = document.getElementById("newDescription");
+      myArticles.style.display = "none";
+      myForm.style.display = "block";
+    },
+    sendUpdateItem: function () {
+      // a supp
+      let idOneItem = JSON.parse(localStorage.getItem("UpdateOneItem"));
+      
       if (this.description == "") {
         alert(
           "Veuillez remplir tous le champs avant d'envoyer la modification !"
@@ -170,7 +176,7 @@ export default {
         let user = JSON.parse(localStorage.getItem("user"));
         axios
           .put(
-            "http://localhost:3000/api/item/" + idOneItem,
+            "http://localhost:3000/api/items/" + idOneItem,
             {
               description: this.description,
             },
@@ -181,10 +187,26 @@ export default {
             }
           )
           .then((response) => {
-            alert(response);
+            console.log(response);
+            window.location.href="http://localhost:8080/items/profil/"
           })
           .catch((error) => console.log(error));
       }
+    },
+    supprimerItem: function (messId) {
+      let myIdItem = messId;
+      let user = JSON.parse(localStorage.getItem("user"));
+      axios
+        .delete("http://localhost:3000/api/items/" + myIdItem, {
+          headers: {
+            authorization: "Bearer " + user.reponse.token,
+          },
+        })
+        .then((response) => {
+          console.log(response.data);
+          window.location.href = "http://localhost:8080/items/profil/";
+        })
+        .catch((error) => console.log(error));
     },
   },
   data() {
@@ -204,7 +226,7 @@ export default {
     let profil = JSON.parse(localStorage.getItem("userProfil"));
     this.pseudo = profil.pseudo;
     this.mail = profil.email;
-    this.date = profil.creationDate;
+    this.date = DATE_FORMAT(profil.creationDate);
     if (profil.biographie != null || profil.biographie != "") {
       this.biographie = profil.biographie;
     } else {
@@ -326,7 +348,7 @@ button {
   background: none;
   color: rgb(209, 63, 63);
 }
-#newDescription{
+#newDescription {
   display: none;
 }
 @media screen and (max-width: 767px) {

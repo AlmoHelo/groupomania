@@ -38,19 +38,9 @@ export default {
   name: "itemAll",
   methods: {
     onLike: function (messId) {
+      this.dislike = -2;
       this.like = 1;
       let idOneItem = messId;
-      //this.activeColor = "red";
-
-      /*document
-        .querySelector("i")
-      (document.addEventListener ? "addEventListener" : "attachEvent")(
-          "clic",
-          function () {
-            this.style.backgroundColor =
-              this.style.backgroundColor === "white" ? "red" : "white";
-          }
-        );*/
 
       let user = JSON.parse(localStorage.getItem("user"));
       axios
@@ -60,6 +50,7 @@ export default {
             userId: user.reponse.userId,
             email: user.mail,
             like: this.like,
+            dislike: this.dislike,
             idItem: idOneItem,
           },
           {
@@ -74,9 +65,9 @@ export default {
         .catch((error) => console.log(error));
     },
     onDislike: function (messId) {
-      this.dislike = -1;
+      this.like = -1;
+      this.dislike = 2;
       let idOneItem = messId;
-      //this.activeColor = "red";
       let user = JSON.parse(localStorage.getItem("user"));
       axios
         .post(
@@ -84,7 +75,8 @@ export default {
           {
             userId: user.reponse.userId,
             email: user.mail,
-            like: this.dislike,
+            like: this.like,
+            dislike: this.dislike,
             idItem: idOneItem,
           },
           {
@@ -120,8 +112,6 @@ export default {
     return {
       message: "",
       msg: "",
-      like: "",
-      dislike: "",
       //activeColor: "white",
     };
   },
@@ -182,7 +172,9 @@ section {
     display: none;
   }
 }
-
+.far:active{
+  color: red;
+}
 @media screen and (max-width: 767px) {
   section {
     width: 90%;

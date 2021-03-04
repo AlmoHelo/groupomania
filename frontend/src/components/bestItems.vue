@@ -32,6 +32,7 @@ export default {
   },
   methods: {
     onLike: function (messId) {
+      this.dislike = -2;
       this.like = 1;
       let idOneItem = messId;
 
@@ -43,6 +44,7 @@ export default {
             userId: user.reponse.userId,
             email: user.mail,
             like: this.like,
+            dislike: this.dislike,
             idItem: idOneItem,
           },
           {
@@ -57,7 +59,8 @@ export default {
         .catch((error) => console.log(error));
     },
     onDislike: function (messId) {
-      this.dislike = -1;
+      this.like = -1;
+      this.dislike = 2;
       let idOneItem = messId;
       let user = JSON.parse(localStorage.getItem("user"));
       axios
@@ -66,7 +69,8 @@ export default {
           {
             userId: user.reponse.userId,
             email: user.mail,
-            like: this.dislike,
+            like: this.like,
+            dislike: this.dislike,
             idItem: idOneItem,
           },
           {
