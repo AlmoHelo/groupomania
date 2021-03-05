@@ -1,56 +1,11 @@
 <template>
   <headerAll />
   <h1>Bonjour {{ pseudo }}, vous êtes sur votre profil !</h1>
+
   <section id="modifier">
-    <div class="headModif" id="headModif">
-      <h2>Modifier votre profil</h2>
-    </div>
-    <form method="Put" @submit.prevent="sendUpdate">
-      <label for="email">E-mail<span>*</span> :</label
-      ><input
-        id="email"
-        type="email"
-        v-model="email"
-        placeholder="groupomania@gmail.com"
-        required
-      />
-      <p class="errorMsg">{{ errEmail }}</p>
-      <label for="password" maxlength="8">Mot de passe<span>*</span> :</label
-      ><input
-        type="password"
-        name="pass"
-        id="Mot de passe"
-        v-model="password"
-        placeholder="*******  (max 8 caractères)"
-        required
-      />
-      <label for="password2" maxlength="8"
-        >Confirmation mot de passe<span>*</span> :</label
-      ><input
-        type="password"
-        name="pass"
-        id="Mot de passe2"
-        v-model="password2"
-        placeholder="*******  (max 8 caractères)"
-        required
-      />
-      <p class="errorMsg">{{ errPassword }}</p>
-      <label for="pseudo" maxlength="8">Nom d'utilisateur<span>*</span> :</label
-      ><input
-        type="name"
-        name="name"
-        id="pseudo"
-        v-model="pseudo"
-        placeholder="Groupo  (max 8 caractères)"
-        required
-      />
-      <p class="errorMsg">{{ errPseudo }}</p>
-      <label for="Biographie">Biographie :</label
-      ><textarea name="biographie" v-model="biographie" id="biographie" />
-      <p class="champ">* : Champs obligatoires</p>
-      <button type="submit">Modifier</button>
-    </form>
+    <updateUser/>
   </section>
+
   <section class="profil" id="profil">
     {{ errorMessageGetOne }}
     <p>Adresse mail : {{ mail }}</p>
@@ -64,18 +19,9 @@
   </section>
 
   <section id="newDescription">
-    <div id="descriptionForm">
-      <label> Nouvelle description :</label>
-      <textarea
-        name="description"
-        v-model="description"
-        id="description"
-        required
-      />
-      <p class="errorMessage">{{ errUpdateItem }}</p>
-      <button @click="sendUpdateItem()" id="sendUpdateItem">Envoyer</button>
-    </div>
+    <updateItem/>
   </section>
+
   <section id="articlesPerso">
     <h2>Tous vos articles</h2>
 
@@ -101,64 +47,27 @@
       </article>
     </div>
   </section>
+
   <footerAll/>
+  
 </template>
 
 <script>
 import axios from "axios";
 import headerAll from "../components/headerAll";
 import { DATE_FORMAT } from "../service/utility";
+import updateItem from "../components/updateDescription"
 import footerAll from "../components/footerAll"
+import updateUser from '../components/updateUser.vue';
 export default {
   name: "Profil",
-  components: { headerAll, footerAll },
+  components: { headerAll, updateItem, updateUser, footerAll },
   methods: {
     modifier: function () {
       let myDescription = document.getElementById("profil");
       let modify = document.getElementById("modifier");
       myDescription.style.display = "none";
-      modify.style.display = "block";
-    },
-    sendUpdate: function () {
-      let profil = JSON.parse(localStorage.getItem("userProfil"));
-      let userId = profil.userId;
-      let user = JSON.parse(localStorage.getItem("user"));
-      if (this.password != this.password2) {
-        this.errPassword = "Veuillez mettre des mots de passe identiques";
-      } else {
-        axios
-          .put(
-            "http://localhost:3000/api/auth/" + userId,
-            {
-              id: profil.userId,
-              email: this.email,
-              password: this.password,
-              pseudo: this.pseudo,
-              biographie: this.biographie,
-            },
-            {
-              headers: {
-                authorization: "Bearer " + user.reponse.token,
-              },
-            }
-          )
-          .then((response) => {
-            alert(response.data.message);
-            window.location.href = "http://localhost:8080/items/profil/";
-          })
-          .catch((error) => {
-            console.log(error);
-
-            let msgErr = JSON.stringify(error);
-            if (msgErr.includes("410")) {
-              this.errEmail = "E-mail déjà utilisé !!";
-              this.errPassword = "";
-            } else if (msgErr.includes("420")) {
-              this.errPseudo = "Pseudo déjà utilisé !";
-              this.errEmail = "";
-            }
-          });
-      }
+      modify.style.display = "flex";
     },
     supprimer: function () {
       let profil = JSON.parse(localStorage.getItem("userProfil"));
@@ -188,39 +97,6 @@ export default {
       let myForm = document.getElementById("newDescription");
       myArticles.style.display = "none";
       myForm.style.display = "flex";
-    },
-    sendUpdateItem: function () {
-      // a supp
-      let idOneItem = JSON.parse(localStorage.getItem("UpdateOneItem"));
-
-      if (this.description == "") {
-        alert(
-          "Veuillez remplir tous le champs avant d'envoyer la modification !"
-        );
-      } else {
-        let user = JSON.parse(localStorage.getItem("user"));
-        axios
-          .put(
-            "http://localhost:3000/api/items/" + idOneItem,
-            {
-              description: this.description,
-            },
-            {
-              headers: {
-                authorization: "Bearer " + user.reponse.token,
-              },
-            }
-          )
-          .then((response) => {
-            console.log(response);
-            window.location.href = "http://localhost:8080/items/profil/";
-          })
-          .catch((error) => {
-            this.errUpdateItem =
-              "Une erreur s'est produite ! Veuillez réessayer !";
-            console.log(error);
-          });
-      }
     },
     supprimerItem: function (messId) {
       let myIdItem = messId;
@@ -305,7 +181,7 @@ export default {
         });
 
         //croix sur module pour modifier le profil
-        let myDiv = document.getElementById("headModif");
+        let myDiv = document.getElementById("modifier");
         let myCross = document.createElement("i");
         myCross.className = "fa fa-times";
         myDiv.appendChild(myCross);
@@ -351,65 +227,10 @@ export default {
   margin: auto;
   margin-bottom: 50px;
 }
-#newDescription {
-  padding: 15px;
-  justify-content: center;
-  & #descriptionForm {
-    width: 98%;
-    padding: 20px;
-  }
-  & label {
-    font-size: 20px;
-  }
-  & textarea {
-    width: 70%;
-    height: 60px;
-    margin: 20px 0;
-    background-color: rgb(119, 114, 114);
-  }
-  & button {
-    border: 1px solid #5a85b1;
-    background-color: #5a85b1;
-    color: white;
-    font-size: 22px;
-    margin-top: 20px;
-  }
-}
-#modifier {
+#newDescription, #modifier {
   display: none;
-  padding: 20px;
-  & .headModif {
-    display: flex;
-  }
-  & form {
-    display: flex;
-    flex-direction: column;
-    & label {
-      margin-top: 20px;
-    }
-    & input,
-    textarea {
-      background-color: rgb(119, 114, 114);
-      width: 70%;
-      height: 30px;
-      margin: auto;
-      margin-top: 10px;
-      margin-bottom: 10px;
-      border: none;
-      &::placeholder {
-        font-size: 15px;
-        color: rgb(39, 38, 38);
-      }
-    }
-  }
-  & button {
-    border: 1px solid #5a85b1;
-    background-color: #5a85b1;
-    color: white;
-    font-size: 22px;
-    margin: auto;
-    margin-top: 20px;
-  }
+  padding: 15px;
+  justify-content: space-between;
 }
 #articlesPerso {
   padding: 10px;
@@ -451,9 +272,6 @@ button {
   border: none;
   background: none;
   color: rgb(209, 63, 63);
-}
-#newDescription {
-  display: none;
 }
 @media screen and (max-width: 767px) {
   h1 {

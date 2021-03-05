@@ -12,6 +12,7 @@
 }
 body {
   background: linear-gradient(to bottom right, #244769, #4b80b4);
+  margin: 0;
 }
 
 </style>
