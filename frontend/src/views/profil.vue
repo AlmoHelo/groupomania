@@ -71,7 +71,9 @@
         v-model="description"
         id="description"
         required
-      /><button @click="sendUpdateItem()" id="sendUpdateItem">Envoyer</button>
+      />
+      <p class="errorMessage">{{errUpdateItem}}</p>
+      <button @click="sendUpdateItem()" id="sendUpdateItem">Envoyer</button>
     </div>
   </section>
   <section id="articlesPerso">
@@ -210,7 +212,10 @@ export default {
             console.log(response);
             window.location.href = "http://localhost:8080/items/profil/";
           })
-          .catch((error) => console.log(error));
+          .catch((error) => {
+            this.errUpdateItem = "Une erreur s'est produite ! Veuillez réessayer !"
+            console.log(error)
+            });
       }
     },
     supprimerItem: function (messId) {
@@ -247,6 +252,7 @@ export default {
       errPseudo: "",
       errPassword: "",
       errDeleteUser: "",
+      errUpdateItem: "",
     };
   },
   mounted() {
