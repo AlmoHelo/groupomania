@@ -4,10 +4,13 @@
     <h1 id="titleH1">Bienvenue sur le réseau social de votre entreprise !</h1>
 
     <ul>
-      <router-link to="/login" class="bouton" @click="pagelogin">M'identifier </router-link>
-      <router-link to="/signup" class="bouton" @click="pagesignup">S'inscrire </router-link>
+      <router-link to="/login" class="bouton" @click="pagelogin"
+        >M'identifier
+      </router-link>
+      <router-link to="/signup" class="bouton" @click="pagesignup"
+        >S'inscrire
+      </router-link>
     </ul>
-
   </div>
 
   <footer>Groupomania 2021 - Tout droits réservés</footer>
@@ -15,8 +18,8 @@
 
 <script>
 export default {
-  name: "Home"
-}
+  name: "Home",
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -25,18 +28,11 @@ h1 {
   margin: 80px 0 80px 0;
   font-size: 40px;
 }
-h2 {
-  width: 80%;
-  margin: auto;
-  font-size: 30px;
-  margin-bottom: 30px;
-}
 ul {
   list-style-type: none;
   padding: 0;
   margin-bottom: 150px;
 }
-button,
 .bouton {
   display: inline-block;
   border: 1px solid #5a85b1;
@@ -45,7 +41,7 @@ button,
   line-height: 40px;
   width: 200px;
   height: 40px;
-  margin: 0 10px;
+  margin: 20px 10px;
   color: white;
   text-decoration: none;
   font-size: 22px;
@@ -58,5 +54,41 @@ button,
 button:hover {
   opacity: 0.7;
   border: 2px solid white;
+}
+footer {
+  margin: 4% 0;
+}
+
+@media screen and (max-width: 767px) {
+  img {
+    width: 95%;
+  }
+  h1 {
+    font-size: 22px;
+  }
+  ul {
+    margin-bottom: 120px;
+  }
+  .bouton {
+    margin: 20px 5px;
+  }
+  footer {
+    margin: 20% 0;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  img {
+    width: 95%;
+  }
+  h1 {
+    font-size: 22px;
+  }
+  ul {
+    margin-bottom: 120px;
+  }
+  .bouton {
+    margin: 30px 10px;
+  }
 }
 </style>

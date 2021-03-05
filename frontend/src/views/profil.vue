@@ -14,7 +14,7 @@
     <p class="errorMessage">{{ errDeleteUser }}</p>
     <div class="modifSupp">
       <button @click="modifier">Modifier</button>
-      <button @click="supprimer">Supprimer</button>
+      <button @click="deleteUser">Supprimer</button>
     </div>
   </section>
 
@@ -49,7 +49,7 @@
   </section>
 
   <footerAll/>
-  
+
 </template>
 
 <script>
@@ -69,7 +69,7 @@ export default {
       myDescription.style.display = "none";
       modify.style.display = "flex";
     },
-    supprimer: function () {
+    deleteUser: function () {
       let profil = JSON.parse(localStorage.getItem("userProfil"));
       let userId = profil.userId;
       let user = JSON.parse(localStorage.getItem("user"));
