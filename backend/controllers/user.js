@@ -26,8 +26,8 @@ exports.signup = (req, res, next) => {
                     console.log(indexDuplicatePseudo)
                     if (indexDuplicateEmail > -1) {
                         return res.status(410).json(err.sqlMessage);
-                    } 
-                    if(indexDuplicatePseudo > 1){
+                    }
+                    if (indexDuplicatePseudo > 1) {
                         return res.status(420).json(err.sqlMessage);
                     }
                     return res.status(400).json({ message: err.sqlMessage })
@@ -96,7 +96,18 @@ exports.updateUser = (req, res, next) => {
             db.query(
                 `UPDATE user SET email="` + email + `", pseudo="` + pseudo + `", password="` + password + `", biographie="` + biographie + `" WHERE userId=` + id, (error, results, fields) => {
                     if (error) {
-                        return res.status(400).json(error)
+                        console.log(error)
+                        let myMsgError = JSON.stringify(error.sqlMessage)
+                        let indexDuplicateEmail = myMsgError.indexOf(`${email}`)
+                        let indexDuplicatePseudo = myMsgError.indexOf(`${pseudo}`)
+                        console.log(indexDuplicateEmail)
+                        console.log(indexDuplicatePseudo)
+                        if (indexDuplicateEmail > -1) {
+                            return res.status(410).json(error.sqlMessage);
+                        }
+                        if (indexDuplicatePseudo > 1) {
+                            return res.status(420).json(error.sqlMessage);
+                        }
                     }
                     return res.status(200).json({ message: 'Vos information ont bien été modifié !' })
                 }
@@ -115,7 +126,5 @@ exports.getOneUser = (req, res, next) => {
             return res.status(400).json(error)
         }
         return res.status(200).json(results)
-    }
-    )
-
+    })
 }

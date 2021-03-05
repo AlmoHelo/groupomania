@@ -6,13 +6,15 @@
       <h2>Modifier votre profil</h2>
     </div>
     <form method="Put" @submit.prevent="sendUpdate">
-      <label for="email">E-mail ou nom d'utilisateur<span>*</span> :</label
+      <label for="email">E-mail<span>*</span> :</label
       ><input
         id="email"
         type="email"
         v-model="email"
         placeholder="groupomania@gmail.com"
+        required
       />
+      <p class="errorMsg">{{errEmail}}</p>
       <label for="password" maxlength="8">Mot de passe<span>*</span> :</label
       ><input
         type="password"
@@ -20,6 +22,7 @@
         id="Mot de passe"
         v-model="password"
         placeholder="*******  (max 8 caractères)"
+        required
       />
       <label for="password2" maxlength="8"
         >Confirmation mot de passe<span>*</span> :</label
@@ -29,7 +32,9 @@
         id="Mot de passe2"
         v-model="password2"
         placeholder="*******  (max 8 caractères)"
+        required
       />
+      <p class="errorMsg"> {{errPassword}} </p>
       <label for="pseudo" maxlength="8">Nom d'utilisateur<span>*</span> :</label
       ><input
         type="name"
@@ -37,7 +42,9 @@
         id="pseudo"
         v-model="pseudo"
         placeholder="Groupo  (max 8 caractères)"
+        required
       />
+      <p class="errorMsg">{{errPseudo}}</p>
       <label for="Biographie">Biographie :</label
       ><textarea name="biographie" v-model="biographie" id="biographie" />
       <p class="champ">* : Champs obligatoires</p>
@@ -45,9 +52,11 @@
     </form>
   </section>
   <section class="profil" id="profil">
+    {{ errorMessageGetOne }}
     <p>Adresse mail : {{ mail }}</p>
     <p>Inscrit depuis le : {{ date }}</p>
     <p>Biographie : {{ biographie }}</p>
+    <p class="errorMessage">{{errDeleteUser}}</p>
     <div class="modifSupp">
       <button @click="modifier">Modifier</button>
       <button @click="supprimer">Supprimer</button>
@@ -61,7 +70,7 @@
       v-model="description"
       id="description"
       required
-    /><button @click="sendUpdateItem()" id="sendUpdate">Envoyer</button>
+    /><button @click="sendUpdateItem()" id="sendUpdateItem">Envoyer</button>
   </section>
   <section id="articlesPerso">
     <h2>Tous vos articles</h2>
@@ -108,35 +117,40 @@ export default {
       let userId = profil.userId;
       let user = JSON.parse(localStorage.getItem("user"));
       if (this.password != this.password2) {
-        alert("Veuillez mettre des mots de passe identiques");
+        this.errPassword = "Veuillez mettre des mots de passe identiques"
       } else {
-        if (this.email == "" || this.password == "" || this.pseudo == "") {
-          alert(
-            "Veuillez remplir tous les champs avant d'envoyer le formulaire !"
-          );
-        } else {
-          axios
-            .put(
-              "http://localhost:3000/api/auth/" + userId,
-              {
-                id: profil.userId,
-                email: this.email,
-                password: this.password,
-                pseudo: this.pseudo,
-                biographie: this.biographie,
+        axios
+          .put(
+            "http://localhost:3000/api/auth/" + userId,
+            {
+              id: profil.userId,
+              email: this.email,
+              password: this.password,
+              pseudo: this.pseudo,
+              biographie: this.biographie,
+            },
+            {
+              headers: {
+                authorization: "Bearer " + user.reponse.token,
               },
-              {
-                headers: {
-                  authorization: "Bearer " + user.reponse.token,
-                },
-              }
-            )
-            .then((response) => {
-              alert(response.data.message);
-              window.location.href = "http://localhost:8080/items/profil/";
-            })
-            .catch((error) => console.log(error));
-        }
+            }
+          )
+          .then((response) => {
+            alert(response.data.message);
+            //window.location.href = "http://localhost:8080/items/profil/";
+          })
+          .catch((error) => {
+            console.log(error)
+            
+            let msgErr = JSON.stringify(error)
+            if(msgErr.includes("410")){
+              this.errEmail = "E-mail déjà utilisé !!"
+              this.errPassword = ""
+            }else if(msgErr.includes("420")){
+              this.errPseudo = "Pseudo déjà utilisé !"
+              this.errEmail = ""
+            }
+            });
       }
     },
     supprimer: function () {
@@ -155,7 +169,10 @@ export default {
           window.location.href = "http://localhost:8080/";
           localStorage.clear();
         })
-        .catch((error) => console.log(error));
+        .catch((error) => {
+          this.errDeleteUser = "Erreur lors de la suppression. Veuillez réessayer !"
+          console.log(error)
+          });
     },
     modifierItem: function (messId) {
       localStorage.setItem("UpdateOneItem", messId);
@@ -167,7 +184,7 @@ export default {
     sendUpdateItem: function () {
       // a supp
       let idOneItem = JSON.parse(localStorage.getItem("UpdateOneItem"));
-      
+
       if (this.description == "") {
         alert(
           "Veuillez remplir tous le champs avant d'envoyer la modification !"
@@ -188,7 +205,7 @@ export default {
           )
           .then((response) => {
             console.log(response);
-            window.location.href="http://localhost:8080/items/profil/"
+            window.location.href = "http://localhost:8080/items/profil/";
           })
           .catch((error) => console.log(error));
       }
@@ -220,6 +237,11 @@ export default {
       message: "",
       msg: "",
       description: "",
+      errorMessageGetOne: "",
+      errEmail:"",
+      errPseudo:"",
+      errPassword: "",
+      errDeleteUser: "",
     };
   },
   mounted() {
@@ -258,12 +280,22 @@ export default {
           myDescription.style.display = "block";
         });
       })
-      .catch((error) => console.log(error));
+      .catch((error) => {
+        this.errorMessageGetOne =
+          "Une erreur s'est produite. Veuillez recharger la page";
+        console.log(error);
+      });
   },
 };
 </script>
 
 <style lang="scss" scoped>
+.errorMsg{
+  color: rgb(124, 51, 51);
+  font-weight: bold;
+  font-size: 16px;
+  margin: 0;
+}
 .profil,
 #modifier {
   box-shadow: 1px 1px 0px white;
