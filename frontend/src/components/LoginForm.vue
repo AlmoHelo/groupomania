@@ -84,8 +84,13 @@ export default {
             window.location.href = "http://localhost:8080/item";
           })
           .catch((err) => {
+            let msgErr = JSON.stringify(err)
+            if(msgErr.includes("500")){
+              this.message = "E-mail ou pseudo inconnu !"
+            }else if(msgErr.includes("401")){
+              this.message = "Mot de passe incorrect !"
+            }
             console.log("la connexion a échouée" + err); //En cas d'echec envoie de l'information à l'utilisateur
-            this.message = "E-mail ou mot de passe incorrect !";
           });
       }
     },

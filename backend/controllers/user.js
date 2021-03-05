@@ -15,11 +15,22 @@ exports.signup = (req, res, next) => {
     bcrypt.hash(user.password, 10)
         .then((hash) => {
             user.password = hash
-            const insertUser = `INSERT INTO user (email, pseudo, password, biographie, creationDate) VALUES ("` + user.email + `", "` + user.pseudo +`", "` + user.password +`", "` + user.biographie + `", NOW() )`
+            const insertUser = `INSERT INTO user (email, pseudo, password, biographie, creationDate) VALUES ("` + user.email + `", "` + user.pseudo + `", "` + user.password + `", "` + user.biographie + `", NOW() )`
             db.query(insertUser, (err, result, field) => {
                 if (err) {
                     console.log(err)
-                    return res.status(400).json("erreur")
+                    let myMsgError = JSON.stringify(err.sqlMessage)
+                    let indexDuplicateEmail = myMsgError.indexOf(`${req.body.email}`)
+                    let indexDuplicatePseudo = myMsgError.indexOf(`${req.body.pseudo}`)
+                    console.log(indexDuplicateEmail)
+                    console.log(indexDuplicatePseudo)
+                    if (indexDuplicateEmail > -1) {
+                        return res.status(410).json(err.sqlMessage);
+                    } 
+                    if(indexDuplicatePseudo > 1){
+                        return res.status(420).json(err.sqlMessage);
+                    }
+                    return res.status(400).json({ message: err.sqlMessage })
                 }
                 return res.status(201).json({ message: 'Votre compte a bien été crée !' },)
             });
@@ -36,24 +47,22 @@ exports.login = (req, res, next) => {
     const sqlFindUser = "SELECT userId, password, pseudo FROM user WHERE email = ?";
 
     db.query(sqlFindUser, [email], function (err, result) {
-        if (err) {
-            return res.status(500).json(err.message);
+        console.log(result)
+        if (result.length == 0) {                       //utilisateur pas dans la base de données !! 
+            return res.status(500).json("erreur");
         };
-        if (result.length == 0) {
-            return res.status(401).json({ error: "Utilisateur non trouvé !" });
-        }
         bcrypt.compare(password, result[0].password)
             .then(valid => {
                 if (!valid) {
-                    return res.status(401).json({ error: "Mot de passe incorrect !" });
+                    return res.status(401).json({ error: "Mot de passe incorrect !" });         //mot de passe incorrect
                 } else {
                     res.status(200).json({
                         token: jwt.sign(
                             { userId: result[0].userId },
                             token,
                             { expiresIn: "24h" }
-                        ), userId: result[0].userId, pseudo: result[0].pseudo, 
-                    } );
+                        ), userId: result[0].userId, pseudo: result[0].pseudo,
+                    });
                 }
             })
     });
@@ -85,7 +94,7 @@ exports.updateUser = (req, res, next) => {
         .then((hash) => {
             password = hash
             db.query(
-                `UPDATE user SET email="` + email + `", pseudo="` + pseudo + `", password="` +password + `", biographie="` + biographie + `" WHERE userId=` + id , (error, results, fields) => {
+                `UPDATE user SET email="` + email + `", pseudo="` + pseudo + `", password="` + password + `", biographie="` + biographie + `" WHERE userId=` + id, (error, results, fields) => {
                     if (error) {
                         return res.status(400).json(error)
                     }
@@ -100,13 +109,13 @@ exports.updateUser = (req, res, next) => {
 //Affichage de l'utilisateur selectionné
 exports.getOneUser = (req, res, next) => {
     const userId = JSON.parse(JSON.stringify(req.params.id))
-    const oneU = 'SELECT userId, email, pseudo, biographie, creationDate FROM user WHERE userId=' + userId 
+    const oneU = 'SELECT userId, email, pseudo, biographie, creationDate FROM user WHERE userId=' + userId
     db.query(oneU, (error, results) => {
-            if (error) {
-                return res.status(400).json(error)
-            }
-            return res.status(200).json(results)
+        if (error) {
+            return res.status(400).json(error)
         }
+        return res.status(200).json(results)
+    }
     )
 
 }

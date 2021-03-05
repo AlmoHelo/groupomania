@@ -8,6 +8,7 @@
         type="email"
         v-model="email"
         placeholder="groupomania@gmail.com"
+        required
       />
       <label for="password" maxlength="8">Mot de passe<span>*</span> :</label
       ><input
@@ -16,6 +17,7 @@
         id="Mot de passe"
         v-model="password"
         placeholder="*******  (max 8 caractères)"
+        required
       />
       <label for="password2" maxlength="8"
         >Confirmation mot de passe<span>*</span> :</label
@@ -25,6 +27,7 @@
         id="Mot de passe2"
         v-model="password2"
         placeholder="*******  (max 8 caractères)"
+        required
       />
       <label for="pseudo" maxlength="8">Nom d'utilisateur<span>*</span> :</label
       ><input
@@ -33,10 +36,12 @@
         id="pseudo"
         v-model="pseudo"
         placeholder="Groupo  (max 8 caractères)"
+        required
       />
       <label for="Biographie">Biographie :</label
       ><textarea name="biographie" v-model="biographie" id="biographie" />
       <p class="champ">* : Champs obligatoires</p>
+      <p>{{ message }}</p>
       <button type="submit">S'inscrire</button>
     </form>
   </main>
@@ -57,6 +62,7 @@ export default {
       password: "",
       password2: "",
       biographie: "",
+      message: "",
     };
   },
   methods: {
@@ -64,47 +70,44 @@ export default {
       //envoie des informations de connexion à l'API pour authentification
       let token = "";
       if (this.password != this.password2) {
-        alert("Veuillez mettre des mots de passe identiques");
+        this.message = "Veuillez mettre des mots de passe identiques";
       } else {
-        if (this.email == "" || this.password == "" || this.pseudo == "") {
-          alert(
-            "Veuillez remplir tous les champs avant d'envoyer le formulaire !"
-          );
-        } else {
-          axios
-            .post(
-              "http://localhost:3000/api/auth/signup",
-              {
-                email: this.email,
-                password: this.password,
-                pseudo: this.pseudo,
-                biographie: this.biographie,
+        axios
+          .post(
+            "http://localhost:3000/api/auth/signup",
+            {
+              email: this.email,
+              password: this.password,
+              pseudo: this.pseudo,
+              biographie: this.biographie,
+            },
+            {
+              headers: {
+                "Content-type": "application/json",
+                Authorization: `Bearer` + token, //Renvoi du token par l'api en cas d'authentification
               },
-              {
-                headers: {
-                  "Content-type": "application/json",
-                  Authorization: `Bearer` + token, //Renvoi du token par l'api en cas d'authentification
-                },
-              }
-            )
-            .then((response) => {
-              console.log("Inscription réussi !");
-              let reponse = response.data;
-              console.log(response);
-              let userObject = JSON.stringify(reponse);
-              localStorage.setItem("user", userObject);
+            }
+          )
+          .then((response) => {
+            console.log("Inscription réussi !");
+            let reponse = response.data;
+            console.log(response);
+            let userObject = JSON.stringify(reponse);
+            localStorage.setItem("user", userObject);
 
-              let user = JSON.parse(localStorage.getItem("user"));
-              token = user.token; //Token d'authentification
-              alert(
-                "Félicitation vous êtes désormais inscrit ! Vous pouvez vous connecter !"
-              );
-              window.location.href = "http://localhost:8080/login";
-            })
-            .catch((err) => {
-              console.log("la connexion a échouée" + err); //En cas d'echec envoie de l'information à l'utilisateur
-            });
-        }
+            let user = JSON.parse(localStorage.getItem("user"));
+            token = user.token; //Token d'authentification
+            //window.location.href = "http://localhost:8080/login";
+          })
+          .catch((error) => {
+            let msgErr = JSON.stringify(error);
+            if (msgErr.includes("410")) {
+              this.message = "E-mail déjà utilisé !!";
+            } else if (msgErr.includes("420")) {
+              this.message = "Pseudo déjà utilisé !";
+            }
+            console.log("la connexion a échouée" + error); //En cas d'echec envoie de l'information à l'utilisateur
+          });
       }
     },
   },

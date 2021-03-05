@@ -41,7 +41,6 @@ export default {
       this.dislike = -2;
       this.like = 1;
       let idOneItem = messId;
-
       let user = JSON.parse(localStorage.getItem("user"));
       axios
         .post(
@@ -162,19 +161,19 @@ section {
   }
 }
 .signaler {
-    &:hover span{
-      display: inline;
-      white-space: nowrap;
-      color: white;
-      padding: 3px;
-    }
+  &:hover span {
+    display: inline;
+    white-space: nowrap;
+    color: white;
+    padding: 3px;
+  }
   & span {
     display: none;
   }
 }
-.far:active{
+/*.far:active {
   color: red;
-}
+}*/
 @media screen and (max-width: 767px) {
   section {
     width: 90%;

@@ -93,6 +93,7 @@ exports.delete = (req, res, next) => {
 
 exports.like = (req, res, next) => {
     const like = req.body.like;
+    console.log(like)
     const dislike = req.body.dislike;
     const userId = req.body.userId;
     const userEmail = JSON.stringify(req.body.email);
@@ -116,12 +117,12 @@ exports.like = (req, res, next) => {
         case 1: //if user likes the item
             db.query('SELECT * FROM userLikes WHERE userIdLike=?', userId, (err, res, field) => {  //on vérif si user pas dans le tableau userLikes
                 if (res.findIndex(userIdLikeFunction) == -1) {                     //si pas dans le tableau on le rajoute
-                    db.query(`INSERT INTO userLikes (userIdLike, userEmailLike, idItemLike) VALUES (${userId}, ${userEmail}, ${itemId})`, (err, res, field) => {
+                    db.query(`INSERT INTO userLikes (userIdLike, userEmailLike, idItemLike) VALUES (${userId}, ${userEmail}, ${itemId})`, (err, response, field) => {
                         if (err) {
                             return res.status(400).json(err)
                         } else {
-                            res.status(200).json({ message: 'Utilisateur ajouté au tableau like !' });
-                            db.query(`SELECT COUNT(idItemLike) FROM userLikes WHERE idItemLike=${itemId}`), function(err, res) {
+                            res.status(200).json({ message: 'Utilisateur ajouté au tableau like 1!' });
+                            db.query(`SELECT COUNT(idItemLike) FROM userLikes WHERE idItemLike=${itemId}`), function(err, result) {
                                 if (err) throw err;
                                 console.log(res);
                             }
@@ -130,15 +131,14 @@ exports.like = (req, res, next) => {
                 } else if (res.findIndex(userIdLikeFunction) == 0) {                // si dans le tableau 
                     db.query('SELECT * FROM userLikes WHERE idItemLike=?', itemId, (err, response, field) => {       //on vérifie que l'utilisateur n'a pas liké cet item 
                         if (response.findIndex(itemIdLikeFunction) == -1) {
-                            db.query(`INSERT INTO userLikes (userIdLike, userEmailLike, idItemLike) VALUES (${userId}, ${userEmail}, ${itemId})`, (err, res, field) => {  //si non, on l'ajoute
+                            db.query(`INSERT INTO userLikes (userIdLike, userEmailLike, idItemLike) VALUES (${userId}, ${userEmail}, ${itemId})`, (err, response, field) => {  //si non, on l'ajoute
                                 if (err) {
                                     console.log("Utilisateur a déjà liker cet item")
                                 } else {
                                     console.log({ message: "Utilisateur ajouté au tableau like" })
-
-                                    db.query(`SELECT COUNT(idItemLike) FROM userLikes WHERE idItemLike=${itemId}`), (err, res) => {
-                                        console.log("c'est une erreur")
-                                        console.log("2 " + res)
+                                    db.query(`SELECT COUNT(idItemLike) FROM userLikes WHERE idItemLike=${itemId}`), function(err, result) {
+                                        if (err) throw err;
+                                        console.log(result);
                                     }
                                 }
                             })
@@ -152,7 +152,7 @@ exports.like = (req, res, next) => {
         case -1: //if user dislikes the item 
             db.query('SELECT * FROM userDislikes WHERE userIdDislike=?', userId, (err, res, field) => {  //on vérif si user pas dans le tableau userDislikes
                 if (res.findIndex(userIdDislikeFunction) == -1) {                     //si pas dans le tableau on le rajoute
-                    db.query(`INSERT INTO userDislikes (userIdDislike, userEmailDislike, idItemDislike) VALUES (${userId}, ${userEmail}, ${itemId})`, (err, res, field) => {
+                    db.query(`INSERT INTO userDislikes (userIdDislike, userEmailDislike, idItemDislike) VALUES (${userId}, ${userEmail}, ${itemId})`, (err, response, field) => {
                         if (err) {
                             return res.status(400).json(err)
                         } else {
@@ -166,7 +166,7 @@ exports.like = (req, res, next) => {
                 } else if (res.findIndex(userIdDislikeFunction) == 0) {                // si dans le tableau 
                     db.query('SELECT * FROM userDislikes WHERE idItemDislike=?', itemId, (err, response, field) => {       //on vérifie que l'utilisateur n'a pas disliké cet item 
                         if (response.findIndex(itemIdDislikeFunction) == -1) {
-                            db.query(`INSERT INTO userDislikes (userIdDislike, userEmailDislike, idItemDislike) VALUES (${userId}, ${userEmail}, ${itemId})`, (err, res, field) => {  //si non, on l'ajoute
+                            db.query(`INSERT INTO userDislikes (userIdDislike, userEmailDislike, idItemDislike) VALUES (${userId}, ${userEmail}, ${itemId})`, (err, response, field) => {  //si non, on l'ajoute
                                 if (err) {
                                     console.log("Utilisateur a déjà disliké cette sauce")
                                 } else {
@@ -189,7 +189,7 @@ exports.like = (req, res, next) => {
         case 2:
             db.query('SELECT * FROM userLikes WHERE userIdLike=?', userId, (err, res, field) => {
                 if (res.findIndex(itemIdLikeFunction) > 0) {
-                    db.query('DELETE FROM userLikes WHERE idItemLike=?', itemId, (err, res, field) => {  //si non, on le supprime
+                    db.query('DELETE FROM userLikes WHERE idItemLike=?', itemId, (err, response, field) => {  //si non, on le supprime
                         if (err) {
                             console.log("Utilisateur pas dans le tableau des likes")
                         } else {
@@ -203,7 +203,7 @@ exports.like = (req, res, next) => {
         case -2:
             db.query('SELECT * FROM userDislikes WHERE userIdDislike=?', userId, (err, res, field) => {
                 if (res.findIndex(itemIdDislikeFunction) > 0) {
-                    db.query('DELETE FROM userDislikes WHERE idItemDislike=?', itemId, (err, res, field) => {  //si non, on le supprime
+                    db.query('DELETE FROM userDislikes WHERE idItemDislike=?', itemId, (err, response, field) => {  //si non, on le supprime
                         if (err) {
                             console.log("Utilisateur pas dans le tableau des dislikes")
                         } else {

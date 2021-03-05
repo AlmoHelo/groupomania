@@ -5,3 +5,9 @@ export const DATE_FORMAT = (dateString) => {
     const dateNew = dates[0].split("-").reverse().join("/")
     return `le ${dateNew} à ${hours}`
 }
+
+export const COLOR_HAND = (handColor) => {
+    handColor.style.color = "red"
+    return handColor
+}
+
