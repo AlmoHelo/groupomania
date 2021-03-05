@@ -5,8 +5,8 @@
         >Créer un article
       </router-link>
     </div>
+      {{ errorMessage }}
     <div id="articles" class="msg" v-for="mess in msg" :key="mess.idMessages">
-      {{errorMessage}}
       <article class="article">
         <div class="headArt">
           <p>{{ mess.pseudoUser }}</p>
@@ -107,16 +107,16 @@ export default {
         });
       })
       .catch((error) => {
-        console.log(error)
-        this.errorMessage = "Une erreur s'est produite. Veuillez recharger la page"
-        })
-        
+        this.errorMessage =
+          "Une erreur s'est produite. Veuillez recharger la page";
+        console.log(error);
+      });
   },
   data() {
     return {
       message: "",
       msg: "",
-      errorMessage: ""
+      errorMessage: "",
       //activeColor: "white",
     };
   },

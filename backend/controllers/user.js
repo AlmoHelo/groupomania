@@ -109,6 +109,13 @@ exports.updateUser = (req, res, next) => {
                             return res.status(420).json(error.sqlMessage);
                         }
                     }
+                    db.query(`UPDATE item SET pseudoUser="${pseudo}" WHERE userItemId=${id}`), (err, res) => {
+                        if(err){
+                            console.log(err)
+                        }else{
+                            console.log("Données modif")
+                        }
+                    }
                     return res.status(200).json({ message: 'Vos information ont bien été modifié !' })
                 }
 

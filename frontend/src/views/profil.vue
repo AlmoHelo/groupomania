@@ -96,6 +96,7 @@
           <button @click="supprimerItem(mess.id)">
             <i class="fas fa-trash-alt"></i> Supprimer
           </button>
+          {{errorDeleteItem}}
         </div>
       </article>
     </div>
@@ -141,7 +142,7 @@ export default {
           )
           .then((response) => {
             alert(response.data.message);
-            //window.location.href = "http://localhost:8080/items/profil/";
+            window.location.href = "http://localhost:8080/items/profil/";
           })
           .catch((error) => {
             console.log(error);
@@ -220,6 +221,7 @@ export default {
     },
     supprimerItem: function (messId) {
       let myIdItem = messId;
+      console.log(myIdItem)
       let user = JSON.parse(localStorage.getItem("user"));
       axios
         .delete("http://localhost:3000/api/items/" + myIdItem, {
@@ -231,7 +233,10 @@ export default {
           console.log(response.data);
           window.location.href = "http://localhost:8080/items/profil/";
         })
-        .catch((error) => console.log(error));
+        .catch((error) => {
+          this.errorDeleteItem = "Une erreur s'est produite lors de la suppression. Merci de réessayer plus tard !"
+          console.log(error)
+          });
     },
   },
   data() {
@@ -253,6 +258,7 @@ export default {
       errPassword: "",
       errDeleteUser: "",
       errUpdateItem: "",
+      errorDeleteItem:""
     };
   },
   mounted() {
