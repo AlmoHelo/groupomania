@@ -44,7 +44,6 @@
       <label for="Biographie">Biographie :</label
       ><textarea name="biographie" v-model="biographie" id="biographie" />
       <p class="champ">* : Champs obligatoires</p>
-      <p>{{ message }}</p>
       <button type="submit">S'inscrire</button>
     </form>
   </main>
@@ -65,7 +64,6 @@ export default {
       password: "",
       password2: "",
       biographie: "",
-      message: "",
       errEmail: "",
       errPseudo: "",
       errPassword: ""

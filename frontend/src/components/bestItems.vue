@@ -2,6 +2,7 @@
   <section>
     <h2>Top 3</h2>
     <div class="allBest">
+      {{ errorMessage }}
       <div class="article" v-for="mess in msg" :key="mess.idMessages">
         <div class="headArt">
           <p>{{ mess.pseudoUser }}</p>
@@ -28,6 +29,7 @@ export default {
     return {
       message: "",
       msg: "",
+      errorMessage: "",
     };
   },
   methods: {
@@ -105,17 +107,21 @@ export default {
         });
         test.reverse();
         for (let i = 0; i < test.length && i < 3; i++) {
-          let myFavoriteItem = []
+          let myFavoriteItem = [];
           myFavoriteItem[0] = test[0];
           myFavoriteItem[1] = test[1];
           myFavoriteItem[2] = test[2];
-          localStorage.setItem("bestItem", JSON.stringify(myFavoriteItem))
+          localStorage.setItem("bestItem", JSON.stringify(myFavoriteItem));
         }
         this.msg = JSON.parse(localStorage.getItem("bestItem"));
 
         console.log(test);
       })
-      .catch((error) => console.log(error));
+      .catch((error) => {
+        console.log(error);
+        this.errorMessage =
+          "Une erreur s'est produite. Veuillez recharger la page";
+      });
   },
 };
 </script>

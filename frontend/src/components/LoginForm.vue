@@ -22,8 +22,6 @@
       />
       <p class="errorMsg">{{errPassword}}</p>
 
-      <div class="error-message">{{ message }}</div>
-
       <p class="champ">* : Champs obligatoires</p>
 
       <button type="submit">S'identifier</button>
@@ -48,7 +46,6 @@ export default {
     return {
       email: "",
       password: "",
-      message: "",
       errEmail: "",
       errPassword: ""
     };

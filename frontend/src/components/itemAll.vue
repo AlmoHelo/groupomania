@@ -6,6 +6,7 @@
       </router-link>
     </div>
     <div id="articles" class="msg" v-for="mess in msg" :key="mess.idMessages">
+      {{errorMessage}}
       <article class="article">
         <div class="headArt">
           <p>{{ mess.pseudoUser }}</p>
@@ -105,12 +106,17 @@ export default {
           return element;
         });
       })
-      .catch((error) => console.log(error));
+      .catch((error) => {
+        console.log(error)
+        this.errorMessage = "Une erreur s'est produite. Veuillez recharger la page"
+        })
+        
   },
   data() {
     return {
       message: "",
       msg: "",
+      errorMessage: ""
       //activeColor: "white",
     };
   },
