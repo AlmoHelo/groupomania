@@ -33,7 +33,7 @@
         required
       />
       <p class="errorMsg">{{ errPassword }}</p>
-      <label for="pseudo" maxlength="8">Nom d'utilisateur<span>*</span> :</label
+      <label for="pseudo" maxlength="8">Pseudo<span>*</span> :</label
       ><input
         type="name"
         name="name"
@@ -55,6 +55,14 @@
 import axios from "axios";
 export default {
   name: "updateUser",
+  data() {
+    return {
+      //for errors
+      errEmail: "",
+      errPseudo: "",
+      errPassword: "",
+    };
+  },
   methods: {
     sendUpdate: function () {
       let profil = JSON.parse(localStorage.getItem("userProfil"));
@@ -81,11 +89,26 @@ export default {
           )
           .then((response) => {
             alert(response.data.message);
-            window.location.href = "http://localhost:8080/items/profil/";
+            localStorage.removeItem("userProfil");
+            axios
+              .get("http://localhost:3000/api/auth/" + userId, {
+                headers: {
+                  authorization: "Bearer " + user.reponse.token,
+                },
+              })
+              .then((response) => {
+                console.log(response.data[0]);
+                let profil = JSON.stringify(response.data[0]);
+                localStorage.setItem("userProfil", profil);
+                window.location.href = "http://localhost:8080/items/profil";
+              })
+              .catch((error) => {
+                console.log(error);
+                this.err
+              });
           })
           .catch((error) => {
             console.log(error);
-
             let msgErr = JSON.stringify(error);
             if (msgErr.includes("410")) {
               this.errEmail = "E-mail déjà utilisé !!";
@@ -102,7 +125,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-div{
+div {
   width: 99%;
 }
 .headModif {

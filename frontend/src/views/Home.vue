@@ -33,7 +33,7 @@ ul {
   padding: 0;
   margin-bottom: 150px;
 }
-.bouton {
+.bouton, button {
   display: inline-block;
   border: 1px solid #5a85b1;
   background-color: #5a85b1;

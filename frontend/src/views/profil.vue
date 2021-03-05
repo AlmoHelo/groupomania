@@ -3,7 +3,7 @@
   <h1>Bonjour {{ pseudo }}, vous êtes sur votre profil !</h1>
 
   <section id="modifier">
-    <updateUser/>
+    <updateUser />
   </section>
 
   <section class="profil" id="profil">
@@ -19,7 +19,7 @@
   </section>
 
   <section id="newDescription">
-    <updateItem/>
+    <updateItem />
   </section>
 
   <section id="articlesPerso">
@@ -48,17 +48,16 @@
     </div>
   </section>
 
-  <footerAll/>
-
+  <footerAll />
 </template>
 
 <script>
 import axios from "axios";
 import headerAll from "../components/headerAll";
 import { DATE_FORMAT } from "../service/utility";
-import updateItem from "../components/updateDescription"
-import footerAll from "../components/footerAll"
-import updateUser from '../components/updateUser.vue';
+import updateItem from "../components/updateDescription";
+import footerAll from "../components/footerAll";
+import updateUser from "../components/updateUser.vue";
 export default {
   name: "Profil",
   components: { headerAll, updateItem, updateUser, footerAll },
@@ -133,41 +132,24 @@ export default {
       description: "",
       //for errors
       errorMessageGetOne: "",
-      errEmail: "",
-      errPseudo: "",
-      errPassword: "",
       errDeleteUser: "",
-      errUpdateItem: "",
       errorDeleteItem: "",
     };
   },
   mounted() {
-      let user = JSON.parse(localStorage.getItem("user"));
-      let userId = user.reponse.userId;
-    axios
-      .get("http://localhost:3000/api/auth/" + userId, {
-        headers: {
-          authorization: "Bearer " + user.reponse.token,
-        },
-      })
-      .then((response) => {
-        console.log(response.data[0]);
-        let profil = JSON.stringify(response.data[0]);
-        localStorage.setItem("userProfil", profil);
-        let oneProfil = JSON.parse(localStorage.getItem("userProfil"));
-        this.pseudo = oneProfil.pseudo;
-        this.mail = oneProfil.email;
-        this.date = DATE_FORMAT(oneProfil.creationDate);
-      })
-      .catch((error) => console.log(error));
+    let user = JSON.parse(localStorage.getItem("user"));
+    let userId = user.reponse.userId;
 
-    let profil = JSON.parse(localStorage.getItem("userProfil"));
-    if (profil.biographie != null || profil.biographie != "") {
-      this.biographie = profil.biographie;
+    let oneProfil = JSON.parse(localStorage.getItem("userProfil"));
+    this.pseudo = oneProfil.pseudo;
+    this.mail = oneProfil.email;
+    this.date = DATE_FORMAT(oneProfil.creationDate);
+    if (oneProfil.biographie != null || oneProfil.biographie != "") {
+      this.biographie = oneProfil.biographie;
     } else {
       this.biographie = "Modifier votre profil pour ajouter une biographie";
     }
-    
+
     axios
       .get("http://localhost:3000/api/items/" + userId, {
         headers: {
@@ -227,7 +209,8 @@ export default {
   margin: auto;
   margin-bottom: 50px;
 }
-#newDescription, #modifier {
+#newDescription,
+#modifier {
   display: none;
   padding: 15px;
   justify-content: space-between;

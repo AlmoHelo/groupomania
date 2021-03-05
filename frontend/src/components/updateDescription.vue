@@ -16,6 +16,13 @@
 import axios from "axios";
 export default {
   name: "updateItem",
+  data(){
+    return {
+      errEmail: "",
+      errPseudo: "",
+      errPassword: "",
+    }
+  },
   methods: {
     sendUpdateItem: function () {
       let idOneItem = JSON.parse(localStorage.getItem("UpdateOneItem"));
