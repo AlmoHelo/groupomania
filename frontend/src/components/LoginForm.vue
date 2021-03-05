@@ -10,6 +10,7 @@
         v-model="email"
         required
       />
+      <p class="errorMsg">{{errEmail}}</p>
 
       <label for="password">Mot de passe<span>*</span> :</label>
       <input
@@ -19,6 +20,7 @@
         v-model="password"
         required
       />
+      <p class="errorMsg">{{errPassword}}</p>
 
       <div class="error-message">{{ message }}</div>
 
@@ -47,6 +49,8 @@ export default {
       email: "",
       password: "",
       message: "",
+      errEmail: "",
+      errPassword: ""
     };
   },
   methods: {
@@ -86,9 +90,11 @@ export default {
           .catch((err) => {
             let msgErr = JSON.stringify(err)
             if(msgErr.includes("500")){
-              this.message = "E-mail ou pseudo inconnu !"
+              this.errEmail = "E-mail ou pseudo inconnu !"
+              this.errPassword = ""
             }else if(msgErr.includes("401")){
-              this.message = "Mot de passe incorrect !"
+              this.errPassword = "Mot de passe incorrect !"
+              this.errEmail = ""
             }
             console.log("la connexion a échouée" + err); //En cas d'echec envoie de l'information à l'utilisateur
           });
@@ -101,6 +107,14 @@ export default {
 <style lang="scss" scoped>
 * {
   color: white;
+}
+.errorMsg{
+  color: rgb(124, 51, 51);
+  font-weight: bold;
+  font-size: 16px;
+  margin: 0;
+  margin-left: 20px;
+  text-align: start;
 }
 main {
   width: 50%;

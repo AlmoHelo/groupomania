@@ -10,6 +10,7 @@
         placeholder="groupomania@gmail.com"
         required
       />
+      <p class="errorMsg">{{errEmail}}</p>
       <label for="password" maxlength="8">Mot de passe<span>*</span> :</label
       ><input
         type="password"
@@ -28,7 +29,8 @@
         v-model="password2"
         placeholder="*******  (max 8 caractères)"
         required
-      />
+      />      
+      <p class="errorMsg">{{errPassword}}</p>
       <label for="pseudo" maxlength="8">Nom d'utilisateur<span>*</span> :</label
       ><input
         type="name"
@@ -38,6 +40,7 @@
         placeholder="Groupo  (max 8 caractères)"
         required
       />
+      <p class="errorMsg">{{errPseudo}}</p>
       <label for="Biographie">Biographie :</label
       ><textarea name="biographie" v-model="biographie" id="biographie" />
       <p class="champ">* : Champs obligatoires</p>
@@ -63,6 +66,9 @@ export default {
       password2: "",
       biographie: "",
       message: "",
+      errEmail: "",
+      errPseudo: "",
+      errPassword: ""
     };
   },
   methods: {
@@ -70,7 +76,9 @@ export default {
       //envoie des informations de connexion à l'API pour authentification
       let token = "";
       if (this.password != this.password2) {
-        this.message = "Veuillez mettre des mots de passe identiques";
+        this.errPassword = "Veuillez mettre des mots de passe identiques";
+        this.errEmail = ""
+        this.errPseudo = ""
       } else {
         axios
           .post(
@@ -97,14 +105,18 @@ export default {
 
             let user = JSON.parse(localStorage.getItem("user"));
             token = user.token; //Token d'authentification
-            //window.location.href = "http://localhost:8080/login";
+            window.location.href = "http://localhost:8080/login";
           })
           .catch((error) => {
             let msgErr = JSON.stringify(error);
             if (msgErr.includes("410")) {
-              this.message = "E-mail déjà utilisé !!";
+              this.errEmail = "E-mail déjà utilisé !!";
+              this.errPassword = ""
+              this.errPseudo = ""
             } else if (msgErr.includes("420")) {
-              this.message = "Pseudo déjà utilisé !";
+              this.errPseudo = "Pseudo déjà utilisé !";
+              this.errEmail = ""
+              this.errPassword = ""
             }
             console.log("la connexion a échouée" + error); //En cas d'echec envoie de l'information à l'utilisateur
           });
@@ -116,6 +128,14 @@ export default {
 <style lang="scss" scoped>
 * {
   color: white;
+}
+.errorMsg{
+  color: rgb(124, 51, 51);
+  font-weight: bold;
+  font-size: 16px;
+  margin: 0;
+  margin-left: 20px;
+  text-align: start;
 }
 main {
   width: 50%;
