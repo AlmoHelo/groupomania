@@ -14,7 +14,7 @@
         placeholder="groupomania@gmail.com"
         required
       />
-      <p class="errorMsg">{{errEmail}}</p>
+      <p class="errorMsg">{{ errEmail }}</p>
       <label for="password" maxlength="8">Mot de passe<span>*</span> :</label
       ><input
         type="password"
@@ -34,7 +34,7 @@
         placeholder="*******  (max 8 caractères)"
         required
       />
-      <p class="errorMsg"> {{errPassword}} </p>
+      <p class="errorMsg">{{ errPassword }}</p>
       <label for="pseudo" maxlength="8">Nom d'utilisateur<span>*</span> :</label
       ><input
         type="name"
@@ -44,7 +44,7 @@
         placeholder="Groupo  (max 8 caractères)"
         required
       />
-      <p class="errorMsg">{{errPseudo}}</p>
+      <p class="errorMsg">{{ errPseudo }}</p>
       <label for="Biographie">Biographie :</label
       ><textarea name="biographie" v-model="biographie" id="biographie" />
       <p class="champ">* : Champs obligatoires</p>
@@ -56,7 +56,7 @@
     <p>Adresse mail : {{ mail }}</p>
     <p>Inscrit depuis le : {{ date }}</p>
     <p>Biographie : {{ biographie }}</p>
-    <p class="errorMessage">{{errDeleteUser}}</p>
+    <p class="errorMessage">{{ errDeleteUser }}</p>
     <div class="modifSupp">
       <button @click="modifier">Modifier</button>
       <button @click="supprimer">Supprimer</button>
@@ -64,13 +64,15 @@
   </section>
 
   <section id="newDescription">
-    <label> Nouvelle description :</label
-    ><textarea
-      name="description"
-      v-model="description"
-      id="description"
-      required
-    /><button @click="sendUpdateItem()" id="sendUpdateItem">Envoyer</button>
+    <div id="descriptionForm">
+      <label> Nouvelle description :</label>
+      <textarea
+        name="description"
+        v-model="description"
+        id="description"
+        required
+      /><button @click="sendUpdateItem()" id="sendUpdateItem">Envoyer</button>
+    </div>
   </section>
   <section id="articlesPerso">
     <h2>Tous vos articles</h2>
@@ -117,7 +119,7 @@ export default {
       let userId = profil.userId;
       let user = JSON.parse(localStorage.getItem("user"));
       if (this.password != this.password2) {
-        this.errPassword = "Veuillez mettre des mots de passe identiques"
+        this.errPassword = "Veuillez mettre des mots de passe identiques";
       } else {
         axios
           .put(
@@ -140,17 +142,17 @@ export default {
             //window.location.href = "http://localhost:8080/items/profil/";
           })
           .catch((error) => {
-            console.log(error)
-            
-            let msgErr = JSON.stringify(error)
-            if(msgErr.includes("410")){
-              this.errEmail = "E-mail déjà utilisé !!"
-              this.errPassword = ""
-            }else if(msgErr.includes("420")){
-              this.errPseudo = "Pseudo déjà utilisé !"
-              this.errEmail = ""
+            console.log(error);
+
+            let msgErr = JSON.stringify(error);
+            if (msgErr.includes("410")) {
+              this.errEmail = "E-mail déjà utilisé !!";
+              this.errPassword = "";
+            } else if (msgErr.includes("420")) {
+              this.errPseudo = "Pseudo déjà utilisé !";
+              this.errEmail = "";
             }
-            });
+          });
       }
     },
     supprimer: function () {
@@ -170,16 +172,17 @@ export default {
           localStorage.clear();
         })
         .catch((error) => {
-          this.errDeleteUser = "Erreur lors de la suppression. Veuillez réessayer !"
-          console.log(error)
-          });
+          this.errDeleteUser =
+            "Erreur lors de la suppression. Veuillez réessayer !";
+          console.log(error);
+        });
     },
     modifierItem: function (messId) {
       localStorage.setItem("UpdateOneItem", messId);
       let myArticles = document.getElementById("articlesPerso");
       let myForm = document.getElementById("newDescription");
       myArticles.style.display = "none";
-      myForm.style.display = "block";
+      myForm.style.display = "flex";
     },
     sendUpdateItem: function () {
       // a supp
@@ -228,18 +231,20 @@ export default {
   },
   data() {
     return {
+      //for profil
       pseudo: "",
       password: "",
       mail: "",
       date: "",
       biographie: "",
-      data: JSON.parse(localStorage.getItem("articlesProfil")),
+      //for items
       message: "",
       msg: "",
       description: "",
+      //for errors
       errorMessageGetOne: "",
-      errEmail:"",
-      errPseudo:"",
+      errEmail: "",
+      errPseudo: "",
       errPassword: "",
       errDeleteUser: "",
     };
@@ -279,6 +284,17 @@ export default {
           modify.style.display = "none";
           myDescription.style.display = "block";
         });
+
+        let myDiv2 = document.getElementById("newDescription");
+        let myCross2 = document.createElement("i");
+        myCross2.className = "fa fa-times";
+        myDiv2.appendChild(myCross2);
+        myCross2.addEventListener("click", () => {
+          let myDescription = document.getElementById("articlesPerso");
+          let modify = document.getElementById("newDescription");
+          modify.style.display = "none";
+          myDescription.style.display = "block";
+        });
       })
       .catch((error) => {
         this.errorMessageGetOne =
@@ -290,18 +306,43 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.errorMsg{
+.errorMsg {
   color: rgb(124, 51, 51);
   font-weight: bold;
   font-size: 16px;
   margin: 0;
 }
 .profil,
-#modifier {
+#modifier,
+#newDescription {
   box-shadow: 1px 1px 0px white;
   width: 70%;
   margin: auto;
   margin-bottom: 50px;
+}
+#newDescription {
+  padding: 15px;
+  justify-content: center;
+  & #descriptionForm{
+    width: 98%;
+    padding: 20px;
+  }
+  & label {
+    font-size: 20px;
+  }
+  & textarea {
+    width: 70%;
+    height: 60px;
+    margin: 20px 0;
+    background-color: rgb(119, 114, 114);
+  }
+  & button {
+    border: 1px solid #5a85b1;
+    background-color: #5a85b1;
+    color: white;
+    font-size: 22px;
+    margin-top: 20px;
+  }
 }
 #modifier {
   display: none;
