@@ -4,16 +4,18 @@
     <itemAll />
     <bestItems />
   </div>
+  <footerAll />
 </template>
 
 <script>
 import headerAll from "../components/headerAll";
 import itemAll from "../components/itemAll.vue";
 import bestItems from "../components/bestItems.vue";
+import footerAll from "../components/footerAll"
 
 export default {
   name: "Items",
-  components: { headerAll, itemAll, bestItems },
+  components: { headerAll, itemAll, bestItems, footerAll },
 };
 </script>
 

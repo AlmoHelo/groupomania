@@ -72,7 +72,7 @@
         id="description"
         required
       />
-      <p class="errorMessage">{{errUpdateItem}}</p>
+      <p class="errorMessage">{{ errUpdateItem }}</p>
       <button @click="sendUpdateItem()" id="sendUpdateItem">Envoyer</button>
     </div>
   </section>
@@ -96,20 +96,22 @@
           <button @click="supprimerItem(mess.id)">
             <i class="fas fa-trash-alt"></i> Supprimer
           </button>
-          {{errorDeleteItem}}
+          {{ errorDeleteItem }}
         </div>
       </article>
     </div>
   </section>
+  <footerAll/>
 </template>
 
 <script>
 import axios from "axios";
 import headerAll from "../components/headerAll";
 import { DATE_FORMAT } from "../service/utility";
+import footerAll from "../components/footerAll"
 export default {
   name: "Profil",
-  components: { headerAll },
+  components: { headerAll, footerAll },
   methods: {
     modifier: function () {
       let myDescription = document.getElementById("profil");
@@ -214,14 +216,15 @@ export default {
             window.location.href = "http://localhost:8080/items/profil/";
           })
           .catch((error) => {
-            this.errUpdateItem = "Une erreur s'est produite ! Veuillez réessayer !"
-            console.log(error)
-            });
+            this.errUpdateItem =
+              "Une erreur s'est produite ! Veuillez réessayer !";
+            console.log(error);
+          });
       }
     },
     supprimerItem: function (messId) {
       let myIdItem = messId;
-      console.log(myIdItem)
+      console.log(myIdItem);
       let user = JSON.parse(localStorage.getItem("user"));
       axios
         .delete("http://localhost:3000/api/items/" + myIdItem, {
@@ -234,9 +237,10 @@ export default {
           window.location.href = "http://localhost:8080/items/profil/";
         })
         .catch((error) => {
-          this.errorDeleteItem = "Une erreur s'est produite lors de la suppression. Merci de réessayer plus tard !"
-          console.log(error)
-          });
+          this.errorDeleteItem =
+            "Une erreur s'est produite lors de la suppression. Merci de réessayer plus tard !";
+          console.log(error);
+        });
     },
   },
   data() {
@@ -258,21 +262,36 @@ export default {
       errPassword: "",
       errDeleteUser: "",
       errUpdateItem: "",
-      errorDeleteItem:""
+      errorDeleteItem: "",
     };
   },
   mounted() {
+      let user = JSON.parse(localStorage.getItem("user"));
+      let userId = user.reponse.userId;
+    axios
+      .get("http://localhost:3000/api/auth/" + userId, {
+        headers: {
+          authorization: "Bearer " + user.reponse.token,
+        },
+      })
+      .then((response) => {
+        console.log(response.data[0]);
+        let profil = JSON.stringify(response.data[0]);
+        localStorage.setItem("userProfil", profil);
+        let oneProfil = JSON.parse(localStorage.getItem("userProfil"));
+        this.pseudo = oneProfil.pseudo;
+        this.mail = oneProfil.email;
+        this.date = DATE_FORMAT(oneProfil.creationDate);
+      })
+      .catch((error) => console.log(error));
+
     let profil = JSON.parse(localStorage.getItem("userProfil"));
-    this.pseudo = profil.pseudo;
-    this.mail = profil.email;
-    this.date = DATE_FORMAT(profil.creationDate);
     if (profil.biographie != null || profil.biographie != "") {
       this.biographie = profil.biographie;
     } else {
       this.biographie = "Modifier votre profil pour ajouter une biographie";
     }
-    let userId = profil.userId;
-    let user = JSON.parse(localStorage.getItem("user"));
+    
     axios
       .get("http://localhost:3000/api/items/" + userId, {
         headers: {
@@ -335,7 +354,7 @@ export default {
 #newDescription {
   padding: 15px;
   justify-content: center;
-  & #descriptionForm{
+  & #descriptionForm {
     width: 98%;
     padding: 20px;
   }
