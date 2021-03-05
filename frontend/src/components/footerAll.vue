@@ -25,7 +25,7 @@ export default {
 <style lang="scss" scoped>
 footer {
   width: 100%;
-  margin-top: 60px;
+  margin: 100px 0 60px 0;
   & ul {
     display: flex;
     justify-content: center;
@@ -41,8 +41,23 @@ footer {
 }
 @media screen and (max-width: 767px) {
     footer{
+      margin: 60px 0 40px 0;
         & ul {
             flex-direction: column;
+            & li{
+              font-size: 30px;
+            }
+        }
+    }
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+    footer{
+      margin: 80px 0 50px 0;
+        & ul {
+            & li{
+              font-size: 40px;
+            }
         }
     }
 }
