@@ -10,7 +10,7 @@
         placeholder="groupomania@gmail.com"
         required
       />
-      <p class="errorMsg">{{errEmail}}</p>
+      <p class="errorMsg">{{ errEmail }}</p>
       <label for="password" maxlength="8">Mot de passe<span>*</span> :</label
       ><input
         type="password"
@@ -29,8 +29,8 @@
         v-model="password2"
         placeholder="*******  (max 8 caractères)"
         required
-      />      
-      <p class="errorMsg">{{errPassword}}</p>
+      />
+      <p class="errorMsg">{{ errPassword }}</p>
       <label for="pseudo" maxlength="8">Nom d'utilisateur<span>*</span> :</label
       ><input
         type="name"
@@ -40,7 +40,7 @@
         placeholder="Groupo  (max 8 caractères)"
         required
       />
-      <p class="errorMsg">{{errPseudo}}</p>
+      <p class="errorMsg">{{ errPseudo }}</p>
       <label for="Biographie">Biographie :</label
       ><textarea name="biographie" v-model="biographie" id="biographie" />
       <p class="champ">* : Champs obligatoires</p>
@@ -66,7 +66,7 @@ export default {
       biographie: "",
       errEmail: "",
       errPseudo: "",
-      errPassword: ""
+      errPassword: "",
     };
   },
   methods: {
@@ -75,8 +75,17 @@ export default {
       let token = "";
       if (this.password != this.password2) {
         this.errPassword = "Veuillez mettre des mots de passe identiques";
-        this.errEmail = ""
-        this.errPseudo = ""
+        this.errEmail = "";
+        this.errPseudo = "";
+        let myPassword = document.getElementById("Mot de passe2");
+        myPassword.style.border = "1px solid red";
+        myPassword.animate(
+          [
+            { transform: "translateX(10px)" },
+            { transform: "translateX(-10px)" },
+          ],
+          { duration: 60, iterations: 4, easing: "ease-in-out" }
+        );
       } else {
         axios
           .post(
@@ -109,12 +118,30 @@ export default {
             let msgErr = JSON.stringify(error);
             if (msgErr.includes("410")) {
               this.errEmail = "E-mail déjà utilisé !!";
-              this.errPassword = ""
-              this.errPseudo = ""
+              this.errPassword = "";
+              this.errPseudo = "";
+              let myEmail = document.getElementById("email");
+              myEmail.style.border = "1px solid red";
+              myEmail.animate(
+                [
+                  { transform: "translateX(10px)" },
+                  { transform: "translateX(-10px)" },
+                ],
+                { duration: 60, iterations: 4, easing: "ease-in-out" }
+              );
             } else if (msgErr.includes("420")) {
               this.errPseudo = "Pseudo déjà utilisé !";
-              this.errEmail = ""
-              this.errPassword = ""
+              this.errEmail = "";
+              this.errPassword = "";
+              let myPseudo = document.getElementById("pseudo");
+              myPseudo.style.border = "1px solid red";
+              myPseudo.animate(
+                [
+                  { transform: "translateX(10px)" },
+                  { transform: "translateX(-10px)" },
+                ],
+                { duration: 60, iterations: 4, easing: "ease-in-out" }
+              );
             }
             console.log("la connexion a échouée" + error); //En cas d'echec envoie de l'information à l'utilisateur
           });
@@ -127,7 +154,7 @@ export default {
 * {
   color: white;
 }
-.errorMsg{
+.errorMsg {
   color: rgb(124, 51, 51);
   font-weight: bold;
   font-size: 16px;

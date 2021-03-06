@@ -10,7 +10,7 @@
         v-model="email"
         required
       />
-      <p class="errorMsg">{{errEmail}}</p>
+      <p class="errorMsg">{{ errEmail }}</p>
 
       <label for="password">Mot de passe<span>*</span> :</label>
       <input
@@ -20,7 +20,7 @@
         v-model="password"
         required
       />
-      <p class="errorMsg">{{errPassword}}</p>
+      <p class="errorMsg">{{ errPassword }}</p>
 
       <p class="champ">* : Champs obligatoires</p>
 
@@ -47,7 +47,7 @@ export default {
       email: "",
       password: "",
       errEmail: "",
-      errPassword: ""
+      errPassword: "",
     };
   },
   methods: {
@@ -85,13 +85,31 @@ export default {
             window.location.href = "http://localhost:8080/item";
           })
           .catch((err) => {
-            let msgErr = JSON.stringify(err)
-            if(msgErr.includes("500")){
-              this.errEmail = "E-mail ou pseudo inconnu !"
-              this.errPassword = ""
-            }else if(msgErr.includes("401")){
-              this.errPassword = "Mot de passe incorrect !"
-              this.errEmail = ""
+            let msgErr = JSON.stringify(err);
+            if (msgErr.includes("500")) {
+              this.errEmail = "E-mail ou pseudo inconnu !";
+              this.errPassword = "";
+              let myEmail = document.getElementById("email");
+              myEmail.style.border= "1px solid red"
+              myEmail.animate(
+                [
+                  { transform: "translateX(10px)"},
+                  { transform: "translateX(-10px)" },
+                ],
+                { duration: 60, iterations: 4, easing: "ease-in-out" }
+              );
+            } else if (msgErr.includes("401")) {
+              this.errPassword = "Mot de passe incorrect !";
+              this.errEmail = "";
+              let myPassword = document.getElementById("password");
+              myPassword.style.border= "1px solid red"
+              myPassword.animate(
+                [
+                  { transform: "translateX(10px)"},
+                  { transform: "translateX(-10px)" },
+                ],
+                { duration: 60, iterations: 4, easing: "ease-in-out" }
+              );
             }
             console.log("la connexion a échouée" + err); //En cas d'echec envoie de l'information à l'utilisateur
           });
@@ -105,7 +123,7 @@ export default {
 * {
   color: white;
 }
-.errorMsg{
+.errorMsg {
   color: rgb(124, 51, 51);
   font-weight: bold;
   font-size: 16px;

@@ -72,7 +72,7 @@ export default {
       modify.style.display = "flex";
     },
     deleteUser: function () {
-      if (confirm("Confirmer la suppression de votre profil")) {
+      if (confirm("Confirmez la suppression de votre profil")) {
         let profil = JSON.parse(localStorage.getItem("userProfil"));
         let userId = profil.userId;
         let user = JSON.parse(localStorage.getItem("user"));
@@ -103,7 +103,7 @@ export default {
       myForm.style.display = "flex";
     },
     supprimerItem: function (messId) {
-      if (confirm("Confirmer la suppression de votre article")) {
+      if (confirm("Confirmez la suppression de votre article")) {
         let myIdItem = messId;
         console.log(myIdItem);
         let user = JSON.parse(localStorage.getItem("user"));

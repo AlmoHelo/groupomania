@@ -18,9 +18,7 @@
             ><i class="far fa-thumbs-down"></i></a
           >{{ mess.dislikes }}
         </div>
-        <a 
-          ><i class="fas fa-comment-dots"></i>Commentaires</a
-        >
+        <a><i class="fas fa-comment-dots"></i>Commentaires</a>
         <a class="signaler"
           ><i class="far fa-flag"></i><span>Signaler ce commentaire</span></a
         >
@@ -194,25 +192,30 @@ export default {
       let itemId = JSON.parse(localStorage.getItem("commentOneItem"));
       let token = JSON.parse(localStorage.getItem("user")).reponse.token;
       if (pseudo == myPseudo) {
-        axios
-          .delete(`http://localhost:3000/api/comments/${messId}`, {
-            itemId: itemId
-            },
-            {
-            headers: {
-              "Content-type": "application/json",
-              Authorization: `Bearer ` + token, //Renvoie du token par l'api en cas d'authentification
-            },
-          })
-          .then((response) => {
-            console.log(response);
-            window.location.href = "http://localhost:8080/comment/"
-          })
-          .catch((err) => {
-            console.log(err);
-            this.errDeleteComm =
-              "Une erreur s'est produite lors de la suppression. Veuillez réessayer !";
-          });
+        if (confirm("Confirmez la suppression de votre commentaire")) {
+          axios
+            .delete(
+              `http://localhost:3000/api/comments/${messId}`,
+              {
+                itemId: itemId,
+              },
+              {
+                headers: {
+                  "Content-type": "application/json",
+                  Authorization: `Bearer ` + token, //Renvoie du token par l'api en cas d'authentification
+                },
+              }
+            )
+            .then((response) => {
+              console.log(response);
+              window.location.href = "http://localhost:8080/comment/";
+            })
+            .catch((err) => {
+              console.log(err);
+              this.errDeleteComm =
+                "Une erreur s'est produite lors de la suppression. Veuillez réessayer !";
+            });
+        }
       } else {
         this.errDeleteComm =
           "Vous n'êtes pas autoriser à supprimer ce commentaire";
@@ -330,7 +333,7 @@ export default {
   }
 }
 button {
-  &:hover i{
+  &:hover i {
     animation: turnAdd infinite linear 1s;
   }
   width: auto;
