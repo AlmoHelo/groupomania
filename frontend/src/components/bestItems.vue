@@ -137,10 +137,11 @@ export default {
 section {
   border: 1px solid white;
   border-radius: 20px;
-  width: 30%;
+  width: 40%;
   max-height: 710px;
-  margin-top: 80px;
   overflow: hidden;
+  margin: auto;
+  margin-top: 10px;
   & h2 {
     border-bottom: 1px solid white;
     width: 100%;

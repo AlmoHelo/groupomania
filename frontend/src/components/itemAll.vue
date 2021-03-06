@@ -138,9 +138,10 @@ export default {
 <style lang="scss">
 section {
   width: 40%;
-  margin-top: 80px;
   border: 1px solid white;
   border-radius: 20px;
+  margin: auto;
+  margin-top: 10px;
   box-shadow: 1px 2px 2px;
   & .create {
     border-bottom: 1px solid white;
