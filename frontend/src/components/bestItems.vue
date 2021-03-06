@@ -12,7 +12,7 @@
         <div class="footArt">
           <i class="far fa-thumbs-up" v-on:click="onLike(mess.id)"></i>
           <i class="far fa-thumbs-down" v-on:click="onDislike(mess.id)"></i>
-          <i class="fas fa-comment-dots"></i>
+          <i class="fas fa-comment-dots" @click="viewComments(mess.id)"></i>
           <a class="signaler"><i class="far fa-flag"></i></a>
         </div>
       </div>
@@ -37,7 +37,6 @@ export default {
       this.dislike = -2;
       this.like = 1;
       let idOneItem = messId;
-
       let user = JSON.parse(localStorage.getItem("user"));
       axios
         .post(
@@ -55,8 +54,8 @@ export default {
             },
           }
         )
-        .then((test) => {
-          console.log("mon test est " + test);
+        .then((response) => {
+          console.log(response);
         })
         .catch((error) => console.log(error));
     },
@@ -81,10 +80,18 @@ export default {
             },
           }
         )
-        .then((test) => {
-          console.log("mon test est " + test);
+        .then((response) => {
+          console.log(response);
+          /* let msg = JSON.stringify(response)
+            if(msg.includes("200")){
+              window.location.href="http://localhost:8080/item"
+            }*/
         })
         .catch((error) => console.log(error));
+    },
+    viewComments: function (messId) {
+      localStorage.setItem("commentOneItem", messId);
+      window.location.href = "http://localhost:8080/comment";
     },
   },
   mounted() {

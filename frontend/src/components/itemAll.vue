@@ -23,8 +23,8 @@
             >{{ mess.dislikes }}
           </div>
           <a class="commAccueil" @click="viewComments(mess.id)"
-            ><i class="fas fa-comment-dots"></i>Commentaires
-            <p class="nbcomm">{{ mess.nbComm }}</p></a
+            ><i class="fas fa-comment-dots"></i>
+            <p class="nbcomm">{{ mess.nbComm }} Commentaires</p></a
           >
           <a class="signaler"
             ><i class="far fa-flag"></i><span>Signaler ce commentaire</span></a
@@ -160,15 +160,20 @@ section {
   & .headArt {
     border-bottom: 1px solid white;
   }
+  & .commAccueil {
+    display: flex;
+    align-items: center;
+    & .nbcomm {
+      margin: 0;
+      margin-left: 2px;
+    }
+  }
   & .texte {
     padding: 20px;
   }
   & .footArt {
     border-top: 1px solid white;
-    padding: 10px;
-    & .like, .commAccueil, .signaler{
-      margin-top: 10px;
-    }
+    padding: 15px;
   }
   & .headArt,
   .footArt {
@@ -189,22 +194,6 @@ section {
   }
   & span {
     display: none;
-  }
-}
-.commAccueil {
-  display: flex;
-  text-align: center;
-  & .nbcomm {
-    border: 1px solid rgb(141, 9, 9);
-    background-color: rgb(141, 9, 9);
-    border-radius: 100%;
-    width: 25px;
-    height: 25px;
-    line-height: 25px;
-    margin: 0;
-    position: relative;
-    bottom: 15px;
-    right: 5px;
   }
 }
 /*.far:active {
