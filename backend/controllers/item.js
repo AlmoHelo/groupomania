@@ -5,8 +5,10 @@ require('dotenv').config()
 //Affichage un item
 exports.getOne = (req, res, next) => {
     const itemId = req.params.id
-    db.query('SELECT * FROM item WHERE id= ?', itemId, (error, result, field) => {
+    console.log(itemId)
+    db.query('SELECT * FROM item WHERE userItemId= ?', itemId, (error, result, field) => {
         if (error) {
+            console.log(error)
             return res.status(400).json({ error })
         }
         return res.status(200).json(result)
@@ -84,9 +86,6 @@ exports.like = (req, res, next) => {
     const userEmail = JSON.stringify(req.body.email);
     const itemId = req.body.idItem;
 
-    console.log(`like : ${like}`)
-    console.log(`dislike : ${dislike}`)
-
     const userIdLikeFunction = (element) => {
         return element.userIdLike == parseInt(userId)
     };
@@ -111,7 +110,6 @@ exports.like = (req, res, next) => {
                             res.status(200).json({ message: 'Utilisateur ajouté au tableau like !' });
                             db.query("SELECT COUNT(idItemLike) FROM userLikes WHERE idItemLike=" + itemId, (err, result, fields) => {
                                 let res = JSON.parse(JSON.stringify(result).split(':')[1].split("}")[0])
-                                console.log("Resultat like = 1 : " + res)
                                 db.query(`UPDATE item SET likes=${parseInt(res)} WHERE id=${itemId}`, (err, res, fields) => {
                                     if (err) {
                                         console.log(err)
@@ -133,7 +131,6 @@ exports.like = (req, res, next) => {
                                     console.log({ message: "Utilisateur ajouté au tableau like" })
                                     db.query("SELECT COUNT(idItemLike) FROM userLikes WHERE idItemLike=" + itemId, (err, result, fields) => {
                                         let res = JSON.parse(JSON.stringify(result).split(':')[1].split("}")[0])
-                                        console.log("Resultat like = 1 : " + res)
                                         db.query(`UPDATE item SET likes=${parseInt(res)} WHERE id=${itemId}`, (err, res, fields) => {
                                             if (err) {
                                                 console.log(err)
@@ -149,7 +146,6 @@ exports.like = (req, res, next) => {
                             console.log({ message: "Article déjà liker !" })
                             db.query("SELECT COUNT(idItemLike) FROM userLikes WHERE idItemLike=" + itemId, (err, result, fields) => {
                                 let res = JSON.parse(JSON.stringify(result).split(':')[1].split("}")[0])
-                                console.log("Resultat like = 1 : " + res)
                                 db.query(`UPDATE item SET likes=${parseInt(res)} WHERE id=${itemId}`, (err, res, fields) => {
                                     if (err) {
                                         console.log(err)
@@ -176,7 +172,6 @@ exports.like = (req, res, next) => {
                                 { message: 'Utilisateur ajouté au tableau dislike !' },
                                 db.query("SELECT COUNT(idItemDislike) FROM userDislikes WHERE idItemDislike=" + itemId, (err, result, fields) => {
                                     let res = JSON.parse(JSON.stringify(result).split(':')[1].split("}")[0])
-                                    console.log("Resultat dislike = -1 : " + res)
                                     db.query(`UPDATE item SET dislikes=${parseInt(res)} WHERE id=${itemId}`, (err, res, fields) => {
                                         if (err) {
                                             console.log(err)
@@ -199,7 +194,6 @@ exports.like = (req, res, next) => {
                                     console.log({ message: "Utilisateur ajouté au tableau dislike" })
                                     db.query("SELECT COUNT(idItemDislike) FROM userDislikes WHERE idItemDislike=" + itemId, (err, result, fields) => {
                                         let res = JSON.parse(JSON.stringify(result).split(':')[1].split("}")[0])
-                                        console.log("Resultat dislike = -1 : " + res)
                                         db.query(`UPDATE item SET dislikes=${parseInt(res)} WHERE id=${itemId}`, (err, res, fields) => {
                                             if (err) {
                                                 console.log(err)
@@ -215,7 +209,6 @@ exports.like = (req, res, next) => {
                             console.log({ message: "Article déjà disliké !" })
                             db.query("SELECT COUNT(idItemDislike) FROM userDislikes WHERE idItemDislike=" + itemId, (err, result, fields) => {
                                 let res = JSON.parse(JSON.stringify(result).split(':')[1].split("}")[0])
-                                console.log("Resultat dislike = -1 : " + res)
                                 db.query(`UPDATE item SET dislikes=${parseInt(res)} WHERE id=${itemId}`, (err, res, fields) => {
                                     if (err) {
                                         console.log(err)
@@ -242,7 +235,6 @@ exports.like = (req, res, next) => {
                             console.log({ message: "Utilisateur supprimé au tableau like !" });
                             db.query("SELECT COUNT(idItemLike) FROM userLikes WHERE idItemLike=" + itemId, (err, result, fields) => {
                                 let res = JSON.parse(JSON.stringify(result).split(':')[1].split("}")[0])
-                                console.log("Resultat like = 1 : " + res)
                                 db.query(`UPDATE item SET likes=${parseInt(res)} WHERE id=${itemId}`, (err, res, fields) => {
                                     if (err) {
                                         console.log(err)
@@ -268,7 +260,6 @@ exports.like = (req, res, next) => {
                             console.log({ message: "Utilisateur supprimé au tableau dislike !" });
                             db.query("SELECT COUNT(idItemDislike) FROM userDislikes WHERE idItemDislike=" + itemId, (err, result, fields) => {
                                 let res = JSON.parse(JSON.stringify(result).split(':')[1].split("}")[0])
-                                console.log("Resultat dislike = -2 : " + res)
                                 db.query(`UPDATE item SET dislikes=${parseInt(res)} WHERE id=${itemId}`, (err, res, fields) => {
                                     if (err) {
                                         console.log(err)
@@ -282,7 +273,6 @@ exports.like = (req, res, next) => {
                     })
                 }
             })
-
             break;
     }
 }

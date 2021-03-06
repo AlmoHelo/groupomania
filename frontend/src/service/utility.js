@@ -6,8 +6,4 @@ export const DATE_FORMAT = (dateString) => {
     return `le ${dateNew} à ${hours}`
 }
 
-export const COLOR_HAND = (handColor) => {
-    handColor.style.color = "red"
-    return handColor
-}
 

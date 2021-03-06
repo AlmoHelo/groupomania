@@ -46,6 +46,7 @@ export default {
       this.dislike = -2;
       let idOneItem = messId;
       let user = JSON.parse(localStorage.getItem("user"));
+      
       axios
         .post(
           "http://localhost:3000/api/items/" + user.reponse.userId + "/like",

@@ -6,6 +6,7 @@
     <updateUser />
   </section>
 
+<!--affiche les coordonnées du profil-->
   <section class="profil" id="profil">
     {{ errorMessageGetOne }}
     <p>Adresse mail : {{ mail }}</p>
@@ -18,10 +19,12 @@
     </div>
   </section>
 
+<!--modifier un article -->
   <section id="newDescription">
     <updateItem />
   </section>
 
+<!-- affiche tous les article-->
   <section id="articlesPerso">
     <h2>Tous vos articles</h2>
 
@@ -69,26 +72,28 @@ export default {
       modify.style.display = "flex";
     },
     deleteUser: function () {
-      let profil = JSON.parse(localStorage.getItem("userProfil"));
-      let userId = profil.userId;
-      let user = JSON.parse(localStorage.getItem("user"));
-      axios
-        .delete("http://localhost:3000/api/auth/" + userId, {
-          headers: {
-            authorization: "Bearer " + user.reponse.token,
-          },
-        })
-        .then((response) => {
-          let message = JSON.parse(JSON.stringify(response));
-          alert(message.data.message);
-          window.location.href = "http://localhost:8080/";
-          localStorage.clear();
-        })
-        .catch((error) => {
-          this.errDeleteUser =
-            "Erreur lors de la suppression. Veuillez réessayer !";
-          console.log(error);
-        });
+      if (confirm("Confirmer la suppression de votre profil")) {
+        let profil = JSON.parse(localStorage.getItem("userProfil"));
+        let userId = profil.userId;
+        let user = JSON.parse(localStorage.getItem("user"));
+        axios
+          .delete("http://localhost:3000/api/auth/" + userId, {
+            headers: {
+              authorization: "Bearer " + user.reponse.token,
+            },
+          })
+          .then((response) => {
+            let message = JSON.parse(JSON.stringify(response));
+            alert(message.data.message);
+            window.location.href = "http://localhost:8080/";
+            localStorage.clear();
+          })
+          .catch((error) => {
+            this.errDeleteUser =
+              "Erreur lors de la suppression. Veuillez réessayer !";
+            console.log(error);
+          });
+      }
     },
     modifierItem: function (messId) {
       localStorage.setItem("UpdateOneItem", messId);
@@ -98,24 +103,26 @@ export default {
       myForm.style.display = "flex";
     },
     supprimerItem: function (messId) {
-      let myIdItem = messId;
-      console.log(myIdItem);
-      let user = JSON.parse(localStorage.getItem("user"));
-      axios
-        .delete("http://localhost:3000/api/items/" + myIdItem, {
-          headers: {
-            authorization: "Bearer " + user.reponse.token,
-          },
-        })
-        .then((response) => {
-          console.log(response.data);
-          window.location.href = "http://localhost:8080/items/profil/";
-        })
-        .catch((error) => {
-          this.errorDeleteItem =
-            "Une erreur s'est produite lors de la suppression. Merci de réessayer plus tard !";
-          console.log(error);
-        });
+      if (confirm("Confirmer la suppression de votre article")) {
+        let myIdItem = messId;
+        console.log(myIdItem);
+        let user = JSON.parse(localStorage.getItem("user"));
+        axios
+          .delete("http://localhost:3000/api/items/" + myIdItem, {
+            headers: {
+              authorization: "Bearer " + user.reponse.token,
+            },
+          })
+          .then((response) => {
+            console.log(response.data);
+            window.location.href = "http://localhost:8080/items/profil/";
+          })
+          .catch((error) => {
+            this.errorDeleteItem =
+              "Une erreur s'est produite lors de la suppression. Merci de réessayer plus tard !";
+            console.log(error);
+          });
+      }
     },
   },
   data() {
@@ -149,7 +156,6 @@ export default {
     } else {
       this.biographie = "Modifier votre profil pour ajouter une biographie";
     }
-
     axios
       .get("http://localhost:3000/api/items/" + userId, {
         headers: {
@@ -157,6 +163,7 @@ export default {
         },
       })
       .then((response) => {
+        console.log(response)
         this.msg = response.data.map((element) => {
           element.date = DATE_FORMAT(element.date);
           return element;
