@@ -1,67 +1,63 @@
 const db = require('../database')
 
-//Affichage d'un commentaire
-exports.getOne = (req, res, next) => {
-    db.query('SELECT * FROM comment WHERE itemId= ?', req.params.idComment, (error, result, field) => {
+require('dotenv').config()
+
+
+
+//Affichage de tous les commentaires dans ordre descendant
+exports.getAll = (req, res, next) => {
+    let itemId = req.params.id
+    db.query(`SELECT * FROM comment WHERE itemId=${itemId} ORDER BY dateComm DESC`, (error, result, field) => {
         if (error) {
+            console.log(error)
             return res.status(400).json({ error })
         }
         return res.status(200).json(result)
     })
 }
 
-//Affichage de toutes les commentaires 
-exports.getAll = (req, res, next) => {
-    db.query('SELECT * FROM comment', (error, result, field) => {
-        if (error) {
-            return res.status(400).json(error)
-        }
-        return res.status(200).json(result)
-    })
-}
-
-//creation du commentaire 
+//Créer un commentaire
 exports.create = (req, res, next) => {
-    const date = new Date();
-    const currentDate = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + ' ' + date.getHours() + ":" + date.getMinutes + ":" + date.getSeconds;
-    const reponseComm = {
-        itemId: req.body.itemId,
-        userCommId: req.body.userCommId,
-        descriptionComm: req.body.descriptionComm,
-        dateComm: currentDate
-    }
-    db.query(`INSERT INTO comment SET ?`, reponseComm, (error, result, field) => {
-        if (error) {
-            return res.status(400).json(error)
+    const itemId = req.body.itemId
+    const userCommId = req.body.userCommId
+    const description = req.body.description;
+    const pseudoUserComm = req.body.pseudoUserComm
+    //const imageURL
+    db.query(`INSERT INTO comment (itemId, userCommId, descriptionComm, dateComm, pseudoUserComm) VALUES(${itemId}, ${userCommId}, "${description}", NOW(), "${pseudoUserComm}")`, (err, response, fields) => {
+        if (err) {
+            console.log(err)
+            return res.status(400).json("erreur")
         }
-        return res.status(201).json({ message: 'Votre commentaire a été posté !' })
+        return res.status(201).json('Votre commentaire a été posté !')
     })
 }
 
 //Modifier un commentaire 
-exports.update = (req, res, next) => {
-    const date = new Date();
-    const currentDate = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + ' ' + date.getHours() + ":" + date.getMinutes + ":" + date.getSeconds;
-    const descriptionComm = req.body.descriptionComm
-    const idComment = req.body.idComment
+exports.update = (req, result, next) => {
+    const description = req.body.description
+    const id = parseInt(req.params.id)
     db.query(
-        `UPDATE comment SET descriptionComm='${descriptionComm}', dateComm='${currentDate} WHERE idComment=${idComment}`, (error, results, fields) => {
+        `UPDATE comment SET descriptionComm="${description}", dateComm=NOW() WHERE idComment=${id}`, (error, res) => {
             if (error) {
-                return res.status(400).json(error)
+                console.log(error)
+                return result.status(400).json(error)
+            } else {
+                result.status(200).json({ message: "Item modifié" })
             }
-            return res.status(200).json({ message: 'Votre commentaire a bien été modifié !' })
         }
     )
 }
 
-//Effacer un commentaire
+//Delete one commentaire
 exports.delete = (req, res, next) => {
     db.query(
-        'DELETE FROM comment WHERE idComment= ?', req.body.idComment, (error, results, fields) => {
+        'DELETE FROM comment WHERE idComment= ?', req.params.id, (error, result, fields) => {
             if (error) {
                 return res.status(400).json(error)
             }
-            return res.status(200).json({ message: 'Votre commentaire a bien été supprimé !' })
+            res.status(200).json({ message: 'Votre message a bien été supprimé !' })
         }
     )
 }
+
+

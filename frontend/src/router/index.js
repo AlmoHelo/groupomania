@@ -5,6 +5,7 @@ import Signup from '../views/Signup.vue'
 import Profil from "../views/profil.vue"
 import Items from '../views/Items.vue'
 import createItem from "../views/createItem.vue"
+import comment from "../views/comments.vue"
 
 const routes = [
   {
@@ -36,6 +37,11 @@ const routes = [
     path: "/items/create",
     name: 'createItem',
     component: createItem
+  },
+  {
+    path: "/comment",
+    name: 'comment',
+    component: comment
   }
 ]
 

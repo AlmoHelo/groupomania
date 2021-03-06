@@ -8,7 +8,6 @@ const multer = require('../middleware/multer');
 
 router.get('/:id', auth, itemCtrl.getOne);
 router.get('/', auth, itemCtrl.getAll);
-//router.get('/top', auth, itemCtrl.getItemTop);
 router.post('/create', auth, multer, itemCtrl.create);
 router.put('/:id', auth, multer, itemCtrl.update);
 router.delete('/:id', auth, itemCtrl.delete);

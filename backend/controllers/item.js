@@ -4,18 +4,14 @@ require('dotenv').config()
 
 //Affichage un item
 exports.getOne = (req, res, next) => {
-    const userId = JSON.parse(JSON.stringify(req.params.id))
-    db.query('SELECT * FROM item WHERE userItemId= ?', userId, (error, result, field) => {
+    const itemId = req.params.id
+    db.query('SELECT * FROM item WHERE id= ?', itemId, (error, result, field) => {
         if (error) {
             return res.status(400).json({ error })
         }
         return res.status(200).json(result)
     })
 }
-
-
-
-
 
 //Affichage de tous les items dans ordre descendant
 exports.getAll = (req, res, next) => {
@@ -26,16 +22,6 @@ exports.getAll = (req, res, next) => {
         return res.status(200).json(result)
     })
 }
-
-//Affichage de tous les items dans ordre descendant
-/*exports.getItemTop = (req, res, next) => {
-    db.query('SELECT * FROM item ORDER BY likes DESC', (error, result, field) => {
-        if (error) {
-            return res.status(400).json({ error })
-        }
-        return res.status(200).json(result)
-    })
-}*/
 
 //Créer un item
 exports.create = (req, res, next) => {
@@ -93,9 +79,7 @@ exports.delete = (req, res, next) => {
 
 exports.like = (req, res, next) => {
     const like = req.body.like;
-    console.log(like)
     const dislike = req.body.dislike;
-    console.log(dislike)
     const userId = req.body.userId;
     const userEmail = JSON.stringify(req.body.email);
     const itemId = req.body.idItem;
@@ -190,7 +174,6 @@ exports.like = (req, res, next) => {
                     console.log(err)
                 }else{
                     let res = JSON.parse(JSON.stringify(result).split(':')[1].split("}")[0])
-                    console.log(res)
                     db.query(`UPDATE item SET dislikes=${res} WHERE id=${itemId}`, (err, res, fields) => {
                         if(err){
                             console.log(err)
@@ -259,5 +242,4 @@ exports.like = (req, res, next) => {
             })
             break;
     }
-
 }

@@ -5,7 +5,7 @@
         >Créer un article
       </router-link>
     </div>
-      {{ errorMessage }}
+    {{ errorMessage }}
     <div id="articles" class="msg" v-for="mess in msg" :key="mess.idMessages">
       <article class="article">
         <div class="headArt">
@@ -22,7 +22,9 @@
               ><i class="far fa-thumbs-down"></i></a
             >{{ mess.dislikes }}
           </div>
-          <div><i class="fas fa-comment-dots"></i>Commentaires</div>
+          <a v-on:click="viewComments(mess.id)"
+            ><i class="fas fa-comment-dots"></i>Commentaires</a
+          >
           <a class="signaler"
             ><i class="far fa-flag"></i><span>Signaler ce commentaire</span></a
           >
@@ -33,8 +35,8 @@
 </template>
 
 <script>
-import { DATE_FORMAT } from "../service/utility";
 import axios from "axios";
+import { DATE_FORMAT } from "../service/utility";
 export default {
   name: "itemAll",
   methods: {
@@ -59,8 +61,12 @@ export default {
             },
           }
         )
-        .then((test) => {
-          console.log("mon test est " + test);
+        .then((response) => {
+          console.log(response);
+          /*let msg = JSON.stringify(response);
+          if (msg.includes("200")) {
+            window.location.href = "http://localhost:8080/item";
+          }*/
         })
         .catch((error) => console.log(error));
     },
@@ -85,10 +91,18 @@ export default {
             },
           }
         )
-        .then((test) => {
-          console.log("mon test est " + test);
+        .then((response) => {
+          console.log(response)
+           /* let msg = JSON.stringify(response)
+            if(msg.includes("200")){
+              window.location.href="http://localhost:8080/item"
+            }*/
         })
         .catch((error) => console.log(error));
+    },
+    viewComments: function (messId) {
+      localStorage.setItem("commentOneItem", messId)
+      window.location.href = "http://localhost:8080/comment";
     },
   },
   mounted() {
