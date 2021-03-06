@@ -18,7 +18,7 @@
             ><i class="far fa-thumbs-down"></i></a
           >{{ mess.dislikes }}
         </div>
-        <a v-on:click="viewComments(mess.id)"
+        <a 
           ><i class="fas fa-comment-dots"></i>Commentaires</a
         >
         <a class="signaler"
@@ -191,10 +191,14 @@ export default {
     },
     deleteComm: function (messId, pseudo) {
       let myPseudo = JSON.parse(localStorage.getItem("user")).reponse.pseudo;
+      let itemId = JSON.parse(localStorage.getItem("commentOneItem"));
       let token = JSON.parse(localStorage.getItem("user")).reponse.token;
       if (pseudo == myPseudo) {
         axios
           .delete(`http://localhost:3000/api/comments/${messId}`, {
+            itemId: itemId
+            },
+            {
             headers: {
               "Content-type": "application/json",
               Authorization: `Bearer ` + token, //Renvoie du token par l'api en cas d'authentification
@@ -202,6 +206,7 @@ export default {
           })
           .then((response) => {
             console.log(response);
+            window.location.href = "http://localhost:8080/comment/"
           })
           .catch((err) => {
             console.log(err);

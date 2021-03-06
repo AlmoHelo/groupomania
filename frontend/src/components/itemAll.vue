@@ -22,8 +22,9 @@
               ><i class="far fa-thumbs-down"></i></a
             >{{ mess.dislikes }}
           </div>
-          <a v-on:click="viewComments(mess.id)"
-            ><i class="fas fa-comment-dots"></i>Commentaires</a
+          <a class="commAccueil" @click="viewComments(mess.id)"
+            ><i class="fas fa-comment-dots"></i>Commentaires
+            <p class="nbcomm">{{ mess.nbComm }}</p></a
           >
           <a class="signaler"
             ><i class="far fa-flag"></i><span>Signaler ce commentaire</span></a
@@ -63,10 +64,6 @@ export default {
         )
         .then((response) => {
           console.log(response);
-          /*let msg = JSON.stringify(response);
-          if (msg.includes("200")) {
-            window.location.href = "http://localhost:8080/item";
-          }*/
         })
         .catch((error) => console.log(error));
     },
@@ -92,8 +89,8 @@ export default {
           }
         )
         .then((response) => {
-          console.log(response)
-           /* let msg = JSON.stringify(response)
+          console.log(response);
+          /* let msg = JSON.stringify(response)
             if(msg.includes("200")){
               window.location.href="http://localhost:8080/item"
             }*/
@@ -101,7 +98,7 @@ export default {
         .catch((error) => console.log(error));
     },
     viewComments: function (messId) {
-      localStorage.setItem("commentOneItem", messId)
+      localStorage.setItem("commentOneItem", messId);
       window.location.href = "http://localhost:8080/comment";
     },
   },
@@ -169,6 +166,9 @@ section {
   & .footArt {
     border-top: 1px solid white;
     padding: 10px;
+    & .like, .commAccueil, .signaler{
+      margin-top: 10px;
+    }
   }
   & .headArt,
   .footArt {
@@ -189,6 +189,22 @@ section {
   }
   & span {
     display: none;
+  }
+}
+.commAccueil {
+  display: flex;
+  text-align: center;
+  & .nbcomm {
+    border: 1px solid rgb(141, 9, 9);
+    background-color: rgb(141, 9, 9);
+    border-radius: 100%;
+    width: 25px;
+    height: 25px;
+    line-height: 25px;
+    margin: 0;
+    position: relative;
+    bottom: 15px;
+    right: 5px;
   }
 }
 /*.far:active {
