@@ -84,6 +84,8 @@ exports.like = (req, res, next) => {
     const userEmail = JSON.stringify(req.body.email);
     const itemId = req.body.idItem;
 
+    console.log(`like : ${like}`)
+    console.log(`dislike : ${dislike}`)
 
     const userIdLikeFunction = (element) => {
         return element.userIdLike == parseInt(userId)
@@ -107,6 +109,18 @@ exports.like = (req, res, next) => {
                             return res.status(400).json(err)
                         } else {
                             res.status(200).json({ message: 'Utilisateur ajouté au tableau like !' });
+                            db.query("SELECT COUNT(idItemLike) FROM userLikes WHERE idItemLike=" + itemId, (err, result, fields) => {
+                                let res = JSON.parse(JSON.stringify(result).split(':')[1].split("}")[0])
+                                console.log("Resultat like = 1 : " + res)
+                                db.query(`UPDATE item SET likes=${parseInt(res)} WHERE id=${itemId}`, (err, res, fields) => {
+                                    if (err) {
+                                        console.log(err)
+                                    } else {
+                                        console.log("modification enregistrée !")
+                                    }
+                                })
+
+                            })
                         }
                     })
                 } else if (res.findIndex(userIdLikeFunction) != -1) {                // si dans le tableau 
@@ -117,24 +131,34 @@ exports.like = (req, res, next) => {
                                     console.log("Utilisateur a déjà liker cet item")
                                 } else {
                                     console.log({ message: "Utilisateur ajouté au tableau like" })
+                                    db.query("SELECT COUNT(idItemLike) FROM userLikes WHERE idItemLike=" + itemId, (err, result, fields) => {
+                                        let res = JSON.parse(JSON.stringify(result).split(':')[1].split("}")[0])
+                                        console.log("Resultat like = 1 : " + res)
+                                        db.query(`UPDATE item SET likes=${parseInt(res)} WHERE id=${itemId}`, (err, res, fields) => {
+                                            if (err) {
+                                                console.log(err)
+                                            } else {
+                                                console.log("modification enregistrée !")
+                                            }
+                                        })
+
+                                    })
                                 }
                             })
                         } else {
                             console.log({ message: "Article déjà liker !" })
-                        }
-                    })
-                }
-            })
-            db.query("SELECT COUNT(idItemLike) FROM userLikes WHERE idItemLike=" + itemId , (err, result, fields) => {
-                if(err){
-                    console.log(err)
-                }else{
-                    let res = JSON.parse(JSON.stringify(result).split(':')[1].split("}")[0])
-                    db.query(`UPDATE item SET likes=${res} WHERE id=${itemId}`, (err, res, fields) => {
-                        if(err){
-                            console.log(err)
-                        }else{
-                            console.log("modification enregistrée !")
+                            db.query("SELECT COUNT(idItemLike) FROM userLikes WHERE idItemLike=" + itemId, (err, result, fields) => {
+                                let res = JSON.parse(JSON.stringify(result).split(':')[1].split("}")[0])
+                                console.log("Resultat like = 1 : " + res)
+                                db.query(`UPDATE item SET likes=${parseInt(res)} WHERE id=${itemId}`, (err, res, fields) => {
+                                    if (err) {
+                                        console.log(err)
+                                    } else {
+                                        console.log("modification enregistrée !")
+                                    }
+                                })
+
+                            })
                         }
                     })
                 }
@@ -150,6 +174,18 @@ exports.like = (req, res, next) => {
                         } else {
                             res.status(200).json(
                                 { message: 'Utilisateur ajouté au tableau dislike !' },
+                                db.query("SELECT COUNT(idItemDislike) FROM userDislikes WHERE idItemDislike=" + itemId, (err, result, fields) => {
+                                    let res = JSON.parse(JSON.stringify(result).split(':')[1].split("}")[0])
+                                    console.log("Resultat dislike = -1 : " + res)
+                                    db.query(`UPDATE item SET dislikes=${parseInt(res)} WHERE id=${itemId}`, (err, res, fields) => {
+                                        if (err) {
+                                            console.log(err)
+                                        } else {
+                                            console.log("modification enregistrée !")
+                                        }
+                                    })
+
+                                })
                             )
                         }
                     })
@@ -161,24 +197,34 @@ exports.like = (req, res, next) => {
                                     console.log("Utilisateur a déjà disliké cette sauce")
                                 } else {
                                     console.log({ message: "Utilisateur ajouté au tableau dislike" })
+                                    db.query("SELECT COUNT(idItemDislike) FROM userDislikes WHERE idItemDislike=" + itemId, (err, result, fields) => {
+                                        let res = JSON.parse(JSON.stringify(result).split(':')[1].split("}")[0])
+                                        console.log("Resultat dislike = -1 : " + res)
+                                        db.query(`UPDATE item SET dislikes=${parseInt(res)} WHERE id=${itemId}`, (err, res, fields) => {
+                                            if (err) {
+                                                console.log(err)
+                                            } else {
+                                                console.log("modification enregistrée !")
+                                            }
+                                        })
+
+                                    })
                                 }
                             })
                         } else {
                             console.log({ message: "Article déjà disliké !" })
-                        }
-                    })
-                }
-            })
-            db.query("SELECT COUNT(idItemDislike) FROM userDislikes WHERE idItemDislike=" + itemId , (err, result, fields) => {
-                if(err){
-                    console.log(err)
-                }else{
-                    let res = JSON.parse(JSON.stringify(result).split(':')[1].split("}")[0])
-                    db.query(`UPDATE item SET dislikes=${res} WHERE id=${itemId}`, (err, res, fields) => {
-                        if(err){
-                            console.log(err)
-                        }else{
-                            console.log("modification enregistrée !")
+                            db.query("SELECT COUNT(idItemDislike) FROM userDislikes WHERE idItemDislike=" + itemId, (err, result, fields) => {
+                                let res = JSON.parse(JSON.stringify(result).split(':')[1].split("}")[0])
+                                console.log("Resultat dislike = -1 : " + res)
+                                db.query(`UPDATE item SET dislikes=${parseInt(res)} WHERE id=${itemId}`, (err, res, fields) => {
+                                    if (err) {
+                                        console.log(err)
+                                    } else {
+                                        console.log("modification enregistrée !")
+                                    }
+                                })
+
+                            })
                         }
                     })
                 }
@@ -194,20 +240,18 @@ exports.like = (req, res, next) => {
                             console.log("Utilisateur pas dans le tableau des likes")
                         } else {
                             console.log({ message: "Utilisateur supprimé au tableau like !" });
-                        }
-                    })
-                }
-            })
-            db.query("SELECT COUNT(idItemLike) FROM userLikes WHERE idItemLike=" + itemId , (err, result, fields) => {
-                if(err){
-                    console.log(err)
-                }else{
-                    let res = JSON.parse(JSON.stringify(result).split(':')[1].split("}")[0])
-                    db.query(`UPDATE item SET likes=${res} WHERE id=${itemId}`, (err, res, fields) => {
-                        if(err){
-                            console.log(err)
-                        }else{
-                            console.log("modification enregistrée !")
+                            db.query("SELECT COUNT(idItemLike) FROM userLikes WHERE idItemLike=" + itemId, (err, result, fields) => {
+                                let res = JSON.parse(JSON.stringify(result).split(':')[1].split("}")[0])
+                                console.log("Resultat like = 1 : " + res)
+                                db.query(`UPDATE item SET likes=${parseInt(res)} WHERE id=${itemId}`, (err, res, fields) => {
+                                    if (err) {
+                                        console.log(err)
+                                    } else {
+                                        console.log("modification enregistrée !")
+                                    }
+                                })
+
+                            })
                         }
                     })
                 }
@@ -222,24 +266,23 @@ exports.like = (req, res, next) => {
                             console.log("Utilisateur pas dans le tableau des dislikes")
                         } else {
                             console.log({ message: "Utilisateur supprimé au tableau dislike !" });
+                            db.query("SELECT COUNT(idItemDislike) FROM userDislikes WHERE idItemDislike=" + itemId, (err, result, fields) => {
+                                let res = JSON.parse(JSON.stringify(result).split(':')[1].split("}")[0])
+                                console.log("Resultat dislike = -2 : " + res)
+                                db.query(`UPDATE item SET dislikes=${parseInt(res)} WHERE id=${itemId}`, (err, res, fields) => {
+                                    if (err) {
+                                        console.log(err)
+                                    } else {
+                                        console.log("modification enregistrée !")
+                                    }
+                                })
+
+                            })
                         }
                     })
                 }
             })
-            db.query("SELECT COUNT(idItemDislike) FROM userDislikes WHERE idItemDislike=" + itemId , (err, result, fields) => {
-                if(err){
-                    console.log(err)
-                }else{
-                    let res = JSON.parse(JSON.stringify(result).split(':')[1].split("}")[0])
-                    db.query(`UPDATE item SET dislikes=${res} WHERE id=${itemId}`, (err, res, fields) => {
-                        if(err){
-                            console.log(err)
-                        }else{
-                            console.log("modification enregistrée !")
-                        }
-                    })
-                }
-            })
+
             break;
     }
 }

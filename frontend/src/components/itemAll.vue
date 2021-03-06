@@ -42,8 +42,8 @@ export default {
   name: "itemAll",
   methods: {
     onLike: function (messId) {
-      this.dislike = -2;
       this.like = 1;
+      this.dislike = -2;
       let idOneItem = messId;
       let user = JSON.parse(localStorage.getItem("user"));
       axios
