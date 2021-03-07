@@ -137,7 +137,7 @@ export default {
 
 <style lang="scss">
 section {
-  width: 40%;
+  width: 90%;
   border: 1px solid white;
   border-radius: 20px;
   margin: auto;

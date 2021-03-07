@@ -137,8 +137,8 @@ export default {
 section {
   border: 1px solid white;
   border-radius: 20px;
-  width: 40%;
-  max-height: 710px;
+  width: 90%;
+  max-height: 100%;
   overflow: hidden;
   margin: auto;
   margin-top: 10px;
@@ -153,7 +153,6 @@ section {
 .article {
   border: 1px solid white;
   margin: 20px;
-  margin-bottom: 0;
   & .footArt {
     justify-content: flex-end;
     & i {
@@ -180,17 +179,13 @@ section {
     width: 98%;
     margin-bottom: 50px;
     & .allBest {
-      display: flex;
       margin: 10px;
     }
     & .article {
-      width: 33%;
       margin: 5px;
       margin-top: 0;
       font-size: 14px;
       & .headArt {
-        flex-direction: column;
-        justify-content: flex-start;
         max-height: 50px;
         & p {
           margin: 5px 0;

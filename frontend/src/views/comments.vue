@@ -283,7 +283,7 @@ export default {
           this.nothingComm = "Aucuns commentaires pour cet article !";
         } else {
           this.comm = res.data.map((element) => {
-            element.date = DATE_FORMAT(element.dateComm);
+            element.dateComm = DATE_FORMAT(element.dateComm);
             return element;
           });
         }

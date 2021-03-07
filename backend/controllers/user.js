@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const crypt = require('crypto-js');
 require('dotenv').config()
+
 /*
 let pass = "123456"
 bcrypt.hash(pass, 10)
@@ -133,5 +134,16 @@ exports.getOneUser = (req, res, next) => {
             return res.status(400).json(error)
         }
         return res.status(200).json(results)
+    })
+}
+
+//Compter le nombre d'utilisateur 
+exports.getCountUsers = (req,res, next) => {
+    db.query(`SELECT COUNT(userId) FROM user`, (err, result) => {
+        if(err){
+            return res.status(400).json(error)
+        }
+        let re = JSON.parse(JSON.stringify(result).split(':')[1].split("}")[0])
+        return res.status(200).json(re)
     })
 }
