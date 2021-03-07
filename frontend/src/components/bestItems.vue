@@ -135,23 +135,19 @@ export default {
 
 <style lang="scss" scoped>
 section {
-  border: 1px solid white;
-  border-radius: 20px;
+  border: 1px solid #d2d2d2c7;
+  border-radius: 5px;
   width: 90%;
   max-height: 100%;
-  overflow: hidden;
   margin: auto;
   margin-top: 10px;
-  & h2 {
-    border-bottom: 1px solid white;
-    width: 100%;
-    text-align: start;
-    font-weight: normal;
-    padding: 10px 10px;
-  }
+  box-shadow: inherit;
+  background-color: white;
 }
 .article {
-  border: 1px solid white;
+  border: 1px solid #d2d2d2c7;
+  border-radius: 5px;
+  background-color: #DAE0E6;
   margin: 20px;
   & .footArt {
     justify-content: flex-end;

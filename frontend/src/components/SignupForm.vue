@@ -151,9 +151,6 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-* {
-  color: white;
-}
 .errorMsg {
   color: rgb(124, 51, 51);
   font-weight: bold;
@@ -187,7 +184,7 @@ form {
   & input {
     border: none;
     border-radius: 8px;
-    background-color: rgb(119, 114, 114);
+    background-color: #c3c3c3;
     width: 500px;
     height: 30px;
     margin-left: 20px;
@@ -223,7 +220,7 @@ textarea {
   height: 70px;
   margin-left: 20px;
   margin-bottom: 20px;
-  background-color: rgb(119, 114, 114);
+  background-color: #c3c3c3;
   border-radius: 8px;
   border: none;
 }

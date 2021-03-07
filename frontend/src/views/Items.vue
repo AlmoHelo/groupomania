@@ -14,6 +14,10 @@
               ><i class="fas fa-globe"></i> Tous</a
             >
           </li>
+          <li class="searchUser">
+            <input type="search" placeholder="Rechercher un utilisateur"/>
+            <button><i class="fas fa-check"></i></button>
+          </li>
         </ul>
       </div>
       <div id="itemAllPage"><itemAll /></div>
@@ -24,7 +28,7 @@
       <h2>A propos de l'entreprise</h2>
       <section class="employee">
         <p>Nombre d'employés : 620</p>
-        <p>Nombre d'inscrits sur le site : {{ nbUser }} {{errorMessage}}</p>
+        <p>Nombre d'inscrits sur le site : {{ nbUser }} {{ errorMessage }}</p>
       </section>
       <h2>Un mot de la direction</h2>
       <p class="text">
@@ -47,11 +51,11 @@ import axios from "axios";
 export default {
   name: "Items",
   components: { headerAll, itemAll, bestItems, footerAll },
-  data(){
+  data() {
     return {
       nbUser: "",
-      errMessage: ""
-    }
+      errMessage: "",
+    };
   },
   methods: {
     viewAll: function () {
@@ -96,13 +100,12 @@ export default {
         },
       })
       .then((response) => {
-        this.nbUser = response.data
+        this.nbUser = response.data;
       })
 
       .catch((error) => {
         console.log(error);
-        this.errorMessage =
-          "Error";
+        this.errorMessage = "Error";
       });
   },
 };
@@ -115,29 +118,50 @@ export default {
   & div ul {
     display: flex;
     justify-content: space-around;
-    border: 1px solid #5a85b1;
-    width: 90%;
+    align-items: center;
+    border: 1px solid #d2d2d2c7;
+    background-color: white;
+    border-radius: 5px;
+    width: 88%;
     margin: auto;
     margin-top: 40px;
     padding: 10px;
     & a {
       &:hover {
-        border: 1px solid #9da5ad;
-        background-color: #9da5ad;
+        border: 1px solid #d2d2d2c7;
+        background-color: #d2d2d2c7;
         padding: 6px;
         border-radius: 35px;
+      }
+    }
+    & .searchUser {
+      width: 60%;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      & input {
+        width: 90%;
+        height: 30px;
+        background-color: #d2d2d2c7;
+      }
+      & button {
+        width: 10%;
+        border: none;
+        background-color: transparent;
+        color: black;
+        margin: 0;
       }
     }
   }
 }
 #linkBest {
-  border: 1px solid #9da5ad;
-  background-color: #9da5ad;
+  border: 1px solid #d2d2d2c7;
+  background-color: #d2d2d2c7;
   padding: 6px;
   border-radius: 35px;
   &:hover {
-    border: 1px solid #9da5ad;
-    background-color: #9da5ad;
+    border: 1px solid #d2d2d2c7;
+    background-color: #d2d2d2c7;
     padding: 6px;
     border-radius: 35px;
   }
@@ -155,14 +179,14 @@ img {
   height: 100%;
   margin-left: 20px;
   margin-top: 90px;
-  border: 1px solid #9da5ad;
+  border: 1px solid #d2d2d2c7;
   border-radius: 5px;
-  box-shadow: 1px 1px 1px #9da5ad;
+  box-shadow: 1px 1px 1px #d2d2d2c7;
   position: fixed;
   right: 3%;
   top: 10%;
+  background-color: white;
   & h2 {
-    font-weight: normal;
     margin-bottom: 50px;
     text-align: start;
     margin-left: 10px;

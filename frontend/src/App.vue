@@ -8,10 +8,9 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: white;
 }
 body {
-  background: linear-gradient(to bottom right, #244769, #4b80b4);
+  background: linear-gradient(to bottom right, rgb(209, 208, 208), #DAE0E6);
   margin: 0;
 }
 
