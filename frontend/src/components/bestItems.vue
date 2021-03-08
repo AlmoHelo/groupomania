@@ -172,7 +172,6 @@ section {
 
 @media (min-width: 768px) and (max-width: 991px) {
   section {
-    width: 98%;
     & .allBest {
       margin: 10px;
     }
