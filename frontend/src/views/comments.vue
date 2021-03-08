@@ -25,11 +25,11 @@
       </div>
     </article>
   </div>
-  {{ nothingComm }}
-  {{ errMessage }}
   <button @click="addComm()" id="buttonModif">
     <i class="fas fa-plus" id="add"></i>Ajouter un commentaire
   </button>
+  <p>{{ nothingComm }}</p>
+  {{ errMessage }}
 
   <!--ajouter un commentaire-->
   <div id="formComm" class="formComm">
@@ -250,6 +250,7 @@ export default {
         },
       })
       .then((response) => {
+        console.log(response)
         this.msg = response.data.map((element) => {
           element.date = DATE_FORMAT(element.date);
           return element;

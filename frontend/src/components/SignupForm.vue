@@ -67,84 +67,102 @@ export default {
       errEmail: "",
       errPseudo: "",
       errPassword: "",
+      rules: [
+        { message: "Une lettre minuscule est requise.", regex: /[a-z]+/ },
+        { message: "Une lettre majuscule est requise.", regex: /[A-Z]+/ },
+        { message: "8 caractères minimum.", regex: /.{8,}/ },
+        { message: "Un nombre est requis.", regex: /[0-9]+/ },
+      ],
     };
   },
   methods: {
     envoie: function () {
       //envoie des informations de connexion à l'API pour authentification
       let token = "";
-      if (this.password != this.password2) {
-        this.errPassword = "Veuillez mettre des mots de passe identiques";
-        this.errEmail = "";
-        this.errPseudo = "";
-        let myPassword = document.getElementById("Mot de passe2");
-        myPassword.style.border = "1px solid red";
-        myPassword.animate(
-          [
-            { transform: "translateX(10px)" },
-            { transform: "translateX(-10px)" },
-          ],
-          { duration: 60, iterations: 4, easing: "ease-in-out" }
-        );
-      } else {
-        axios
-          .post(
-            "http://localhost:3000/api/auth/signup",
-            {
-              email: this.email,
-              password: this.password,
-              pseudo: this.pseudo,
-              biographie: this.biographie,
-            },
-            {
-              headers: {
-                "Content-type": "application/json",
-                Authorization: `Bearer` + token, //Renvoi du token par l'api en cas d'authentification
+      for (let condition of this.rules) {
+        let errors = [];
+        if (!condition.regex.test(this.password)) {
+          errors.push(condition.message);
+        }
+        if (errors.length === 0) {
+          return { valid: true, errors };
+        } else {
+          this.errPassword = errors;
+        }
+        
+        if (this.password != this.password2) {
+          this.errPassword = "Veuillez mettre des mots de passe identiques";
+          this.errEmail = "";
+          this.errPseudo = "";
+          let myPassword = document.getElementById("Mot de passe2");
+          myPassword.style.border = "1px solid red";
+          myPassword.animate(
+            [
+              { transform: "translateX(10px)" },
+              { transform: "translateX(-10px)" },
+            ],
+            { duration: 60, iterations: 4, easing: "ease-in-out" }
+          );
+        } else {
+          axios
+            .post(
+              "http://localhost:3000/api/auth/signup",
+              {
+                email: this.email,
+                password: this.password,
+                pseudo: this.pseudo,
+                biographie: this.biographie,
               },
-            }
-          )
-          .then((response) => {
-            console.log("Inscription réussi !");
-            let reponse = response.data;
-            console.log(response);
-            let userObject = JSON.stringify(reponse);
-            localStorage.setItem("user", userObject);
+              {
+                headers: {
+                  "Content-type": "application/json",
+                  Authorization: `Bearer` + token, //Renvoi du token par l'api en cas d'authentification
+                },
+              }
+            )
+            .then((response) => {
+              console.log("Inscription réussi !");
+              let reponse = response.data;
+              console.log(response);
+              let userObject = JSON.stringify(reponse);
+              localStorage.setItem("user", userObject);
 
-            let user = JSON.parse(localStorage.getItem("user"));
-            token = user.token; //Token d'authentification
-            window.location.href = "http://localhost:8080/login";
-          })
-          .catch((error) => {
-            let msgErr = JSON.stringify(error);
-            if (msgErr.includes("410")) {
-              this.errEmail = "E-mail déjà utilisé !!";
-              this.errPassword = "";
-              this.errPseudo = "";
-              let myEmail = document.getElementById("email");
-              myEmail.style.border = "1px solid red";
-              myEmail.animate(
-                [
-                  { transform: "translateX(10px)" },
-                  { transform: "translateX(-10px)" },
-                ],
-                { duration: 60, iterations: 4, easing: "ease-in-out" }
-              );
-            } else if (msgErr.includes("420")) {
-              this.errPseudo = "Pseudo déjà utilisé !";
-              this.errEmail = "";
-              this.errPassword = "";
-              let myPseudo = document.getElementById("pseudo");
-              myPseudo.style.border = "1px solid red";
-              myPseudo.animate(
-                [
-                  { transform: "translateX(10px)" },
-                  { transform: "translateX(-10px)" },
-                ],
-                { duration: 60, iterations: 4, easing: "ease-in-out" }
-              );
-            }
-            console.log("la connexion a échouée" + error); //En cas d'echec envoie de l'information à l'utilisateur
-          });
+              let user = JSON.parse(localStorage.getItem("user"));
+              token = user.token; //Token d'authentification
+              window.location.href = "http://localhost:8080/login";
+            })
+            .catch((error) => {
+              let msgErr = JSON.stringify(error);
+              if (msgErr.includes("410")) {
+                this.errEmail = "E-mail déjà utilisé !!";
+                this.errPassword = "";
+                this.errPseudo = "";
+                let myEmail = document.getElementById("email");
+                myEmail.style.border = "1px solid red";
+                myEmail.animate(
+                  [
+                    { transform: "translateX(10px)" },
+                    { transform: "translateX(-10px)" },
+                  ],
+                  { duration: 60, iterations: 4, easing: "ease-in-out" }
+                );
+              } else if (msgErr.includes("420")) {
+                this.errPseudo = "Pseudo déjà utilisé !";
+                this.errEmail = "";
+                this.errPassword = "";
+                let myPseudo = document.getElementById("pseudo");
+                myPseudo.style.border = "1px solid red";
+                myPseudo.animate(
+                  [
+                    { transform: "translateX(10px)" },
+                    { transform: "translateX(-10px)" },
+                  ],
+                  { duration: 60, iterations: 4, easing: "ease-in-out" }
+                );
+              }
+              console.log("la connexion a échouée" + error); //En cas d'echec envoie de l'information à l'utilisateur
+            });
+        }
       }
     },
   },

@@ -6,7 +6,7 @@ require('dotenv').config()
 exports.getOne = (req, res, next) => {
     const itemId = req.params.id
     console.log(itemId)
-    db.query('SELECT * FROM item WHERE userItemId= ?', itemId, (error, result, field) => {
+    db.query('SELECT * FROM item WHERE id= ?', itemId, (error, result, field) => {
         if (error) {
             console.log(error)
             return res.status(400).json({ error })
@@ -23,6 +23,7 @@ exports.getAllOtherUser = (req, res, next) => {
             console.log(error)
             return res.status(400).json({ error })
         }
+        console.log(result)
         return res.status(200).json(result)
     })
 }
