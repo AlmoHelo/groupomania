@@ -15,24 +15,24 @@ export default {
   name: "headerAll",
   el: "menu",
   methods: {
-    profil: function(){
-    let user = JSON.parse(localStorage.getItem("user"));
-    let userId = user.reponse.userId;
-    axios
-      .get("http://localhost:3000/api/auth/" + userId, {
-        headers: {
-          authorization: "Bearer " + user.reponse.token,
-        },
-      })
-      .then((response) => {
-        console.log(response.data[0]);
-        let profil = JSON.stringify(response.data[0]);
-        localStorage.setItem("userProfil", profil);
-        window.location.href = "http://localhost:8080/items/profil"
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    profil: function () {
+      let user = JSON.parse(localStorage.getItem("user"));
+      let userId = user.reponse.userId;
+      axios
+        .get("http://localhost:3000/api/auth/" + userId, {
+          headers: {
+            authorization: "Bearer " + user.reponse.token,
+          },
+        })
+        .then((response) => {
+          console.log(response.data[0]);
+          let profil = JSON.stringify(response.data[0]);
+          localStorage.setItem("userProfil", profil);
+          window.location.href = "http://localhost:8080/items/profil";
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
     deconnexion: function () {
       localStorage.clear();
@@ -75,6 +75,7 @@ header {
       color: black;
       font-weight: bold;
       text-decoration: none;
+      font-family: RocknRollOne, Helvetica, Arial, sans-serif;
     }
   }
 }

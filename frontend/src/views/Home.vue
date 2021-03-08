@@ -46,6 +46,7 @@ ul {
   font-size: 22px;
   color: black;
   font-weight: bold;
+  font-family: RocknRollOne, Helvetica, Arial, sans-serif;
   &:hover {
     opacity: 0.7;
     border: 2px solid white;
@@ -58,7 +59,6 @@ button:hover {
 footer {
   margin: 4% 0;
 }
-
 @media screen and (max-width: 767px) {
   img {
     width: 95%;
@@ -90,5 +90,9 @@ footer {
   .bouton {
     margin: 30px 10px;
   }
+}
+
+h1, h2, .creation, .title {
+  font-family: RocknRollOne, Helvetica, Arial, sans-serif;
 }
 </style>

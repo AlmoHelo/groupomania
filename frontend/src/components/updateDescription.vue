@@ -1,6 +1,6 @@
 <template>
   <div id="descriptionForm" class="descriptionForm">
-    <label> Nouvelle description :</label>
+    <label class="title"> Nouvelle description :</label>
     <textarea
       name="description"
       v-model="description"
