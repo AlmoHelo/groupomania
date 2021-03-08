@@ -3,7 +3,7 @@ export const DATE_FORMAT = (dateString) => {
     const dates = dateHour.split("T")
     const hours = dates[1]
     const dateNew = dates[0].split("-").reverse().join("/")
-    return `le ${dateNew} à ${hours}`
+    return ` ${dateNew} à ${hours}`
 }
 
 

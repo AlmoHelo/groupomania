@@ -46,7 +46,7 @@ export default {
       this.dislike = -2;
       let idOneItem = messId;
       let user = JSON.parse(localStorage.getItem("user"));
-      
+
       axios
         .post(
           "http://localhost:3000/api/items/" + user.reponse.userId + "/like",
@@ -138,29 +138,28 @@ export default {
 <style lang="scss">
 section {
   width: 90%;
-  border: 1px solid white;
-  border-radius: 20px;
+  border: 1px solid #d2d2d2c7;
+  border-radius: 5px;
   margin: auto;
   margin-top: 10px;
-  box-shadow: 1px 2px 2px;
+  background-color: white;
   & .create {
-    border-bottom: 1px solid white;
-    padding: 20px 0;
+    padding: 10px 0;
     & .creation {
       font-size: 20px;
       font-weight: bold;
       text-decoration: none;
-      color: white;
+      color: black;
     }
   }
 }
-#articles {
-  margin: 20px 10px;
-}
 .article {
-  border: 1px solid white;
+  border: 1px solid #d2d2d2c7;
+  border-radius: 5px;
+  background-color: #dae0e6;
+  margin: 20px;
   & .headArt {
-    border-bottom: 1px solid white;
+    border-bottom: 1px solid #b6b3b39d;
   }
   & .commAccueil {
     display: flex;
@@ -174,7 +173,7 @@ section {
     padding: 20px;
   }
   & .footArt {
-    border-top: 1px solid white;
+    border-top: 1px solid #b6b3b39d;
     padding: 15px;
   }
   & .headArt,
@@ -203,9 +202,7 @@ section {
 }*/
 @media screen and (max-width: 767px) {
   section {
-    width: 90%;
-    margin: auto;
-    margin-bottom: 20px;
+    padding: 10px;
     & .create {
       & .creation {
         font-size: 15px;
@@ -214,13 +211,32 @@ section {
   }
   .article {
     font-size: 12px;
+    width: 90%;
+    margin: auto;
+    margin-bottom: 10px;
+    & .footArt {
+      justify-content: space-between;
+      padding: 10px;
+    }
   }
 }
 
 @media (min-width: 768px) and (max-width: 991px) {
   section {
-    width: 70%;
+    padding: 10px;
+    & .create {
+      & .creation {
+        font-size: 15px;
+      }
+    }
+  }
+  .article {
+    width: 90%;
     margin: auto;
+    margin-bottom: 10px;
+    & .footArt {
+      justify-content: space-between;
+    }
   }
 }
 </style>

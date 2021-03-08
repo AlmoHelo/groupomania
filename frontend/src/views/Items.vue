@@ -15,7 +15,7 @@
             >
           </li>
           <li class="searchUser">
-            <input type="search" placeholder="Rechercher un utilisateur"/>
+            <input type="search" placeholder="Rechercher un utilisateur" />
             <button><i class="fas fa-check"></i></button>
           </li>
         </ul>
@@ -211,6 +211,18 @@ img {
     display: flex;
     flex-direction: column-reverse;
   }
+  .articles {
+    & div ul {
+      width: 90%;
+      flex-wrap: wrap;
+      & li {
+        margin-top: 10px;
+      }
+      & .searchUser {
+        width: 90%;
+      }
+    }
+  }
   .apropos {
     position: initial;
     width: 90%;
@@ -233,6 +245,18 @@ img {
 }
 
 @media (min-width: 768px) and (max-width: 991px) {
+  .articles {
+    & div ul {
+      width: 90%;
+      flex-wrap: wrap;
+      & li {
+        margin-top: 10px;
+      }
+      & .searchUser {
+        width: 90%;
+      }
+    }
+  }
   img {
     width: 80%;
     margin: 10px 0;

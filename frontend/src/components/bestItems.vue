@@ -158,34 +158,28 @@ section {
 }
 @media screen and (max-width: 767px) {
   section {
-    width: 90%;
-    max-height: 800px;
-    margin-top: 0;
+    padding: 10px;
     & h2 {
       font-size: 15px;
     }
   }
   .article {
-    margin-bottom: 20px;
+    width: 90%;
+    margin: auto;
+    margin-bottom: 10px;
   }
 }
 
 @media (min-width: 768px) and (max-width: 991px) {
   section {
     width: 98%;
-    margin-bottom: 50px;
     & .allBest {
       margin: 10px;
     }
     & .article {
-      margin: 5px;
-      margin-top: 0;
       font-size: 14px;
       & .headArt {
-        max-height: 50px;
-        & p {
-          margin: 5px 0;
-        }
+        max-height: 40px;
       }
       & .texte {
         height: 50px;
