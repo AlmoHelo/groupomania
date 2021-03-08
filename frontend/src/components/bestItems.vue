@@ -10,10 +10,21 @@
         </div>
         <p class="texte">{{ mess.description }}</p>
         <div class="footArt">
-          <i class="far fa-thumbs-up" v-on:click="onLike(mess.id)"></i>
-          <i class="far fa-thumbs-down" v-on:click="onDislike(mess.id)"></i>
-          <i class="fas fa-comment-dots" @click="viewComments(mess.id)"></i>
-          <a class="signaler"><i class="far fa-flag"></i></a>
+          <div class="like">
+            <a><i class="far fa-thumbs-up" v-on:click="onLike(mess.id)"></i></a
+            >{{ mess.likes }}
+            <!--v-bind:style="{ color: activeColor }"-->
+            <a v-on:click="onDislike(mess.id)"
+              ><i class="far fa-thumbs-down"></i></a
+            >{{ mess.dislikes }}
+          </div>
+          <a class="commAccueil" @click="viewComments(mess.id)"
+            ><i class="fas fa-comment-dots"></i>
+            <p class="nbcomm">{{ mess.nbComm }} Commentaires</p></a
+          >
+          <a class="signaler"
+            ><i class="far fa-flag"></i><span>Signaler ce commentaire</span></a
+          >
         </div>
       </div>
     </div>
@@ -147,13 +158,11 @@ section {
 .article {
   border: 1px solid #d2d2d2c7;
   border-radius: 5px;
-  background-color: #DAE0E6;
+  background-color: #dae0e6;
   margin: 20px;
   & .footArt {
-    justify-content: flex-end;
-    & i {
-      margin-right: 10px;
-    }
+    border-top: 1px solid #b6b3b39d;
+    padding: 15px;
   }
 }
 @media screen and (max-width: 767px) {
@@ -167,6 +176,10 @@ section {
     width: 90%;
     margin: auto;
     margin-bottom: 10px;
+    & .footArt {
+      justify-content: space-between;
+      padding: 10px;
+    }
   }
 }
 
@@ -184,7 +197,7 @@ section {
         height: 50px;
       }
       & .footArt {
-        height: 10px;
+        justify-content: space-between;
       }
     }
   }

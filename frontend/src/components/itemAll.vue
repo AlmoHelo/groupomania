@@ -190,7 +190,6 @@ section {
   &:hover span {
     display: inline;
     white-space: nowrap;
-    color: white;
     padding: 3px;
   }
   & span {

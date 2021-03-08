@@ -159,20 +159,15 @@ export default {
   margin-left: 20px;
   text-align: start;
 }
-main {
-  width: 50%;
+h1 {
+  width: 80%;
   margin: auto;
-  margin-top: 50px;
-  & h1 {
-    width: 80%;
-    margin: auto;
-  }
 }
 form {
   display: flex;
   flex-direction: column;
   font-size: 22px;
-  width: 80%;
+  width: 50%;
   margin: auto;
   margin-top: 30px;
   margin-bottom: 30px;
@@ -185,7 +180,7 @@ form {
     border: none;
     border-radius: 8px;
     background-color: #c3c3c3;
-    width: 60%;
+    width: 90%;
     height: 30px;
     margin-left: 20px;
     margin-bottom: 10px;
@@ -194,6 +189,15 @@ form {
       color: rgb(39, 38, 38);
     }
   }
+}
+textarea {
+  width: 90%;
+  height: 70px;
+  margin-left: 20px;
+  margin-bottom: 20px;
+  background-color: #c3c3c3;
+  border-radius: 8px;
+  border: none;
 }
 button,
 .bouton {
@@ -214,15 +218,6 @@ button,
 }
 .bouton2 {
   text-decoration: underline;
-}
-textarea {
-  width: 500px;
-  height: 70px;
-  margin-left: 20px;
-  margin-bottom: 20px;
-  background-color: #c3c3c3;
-  border-radius: 8px;
-  border: none;
 }
 @media screen and (max-width: 767px) {
   main {

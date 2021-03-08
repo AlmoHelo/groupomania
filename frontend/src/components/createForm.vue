@@ -2,7 +2,7 @@
   <div>
     <h1>Créer votre article</h1>
     <form method="POST" @submit.prevent="envoie">
-      <p>Pseudo : {{ pseudoUser}} </p>
+      <p class="pseudo">Pseudo : {{ pseudoUser}} </p>
       <label>Description*:</label
       ><textarea
         name="description"
@@ -85,9 +85,9 @@ form {
   font-size: 22px;
   width: 80%;
   margin: auto;
-  margin-top: 30px;
+  margin-top: 40px;
   margin-bottom: 30px;
-  & label {
+  & label, .pseudo {
     margin-bottom: 15px;
     margin-top: 10px;
     text-align: start;
@@ -95,8 +95,8 @@ form {
   & input {
     border: none;
     border-radius: 8px;
-    background-color: rgb(119, 114, 114);
-    width: 500px;
+    background-color: #c3c3c3;
+  width: 100%;
     height: 30px;
     margin-left: 20px;
     margin-bottom: 25px;
@@ -107,11 +107,11 @@ form {
   }
 }
 textarea {
-  width: 500px;
-  height: 70px;
+  width: 100%;
+  height: 80px;
   margin-left: 20px;
   margin-bottom: 20px;
-  background-color: rgb(119, 114, 114);
+    background-color: #c3c3c3;
   border-radius: 8px;
   border: none;
 }
@@ -122,5 +122,29 @@ button {
   font-size: 13px;
   margin: auto;
   margin-bottom: 20px;
+}
+
+@media screen and (max-width: 767px) {
+  div {
+    width: 100%;
+  }
+  form {
+    width: 80%;
+    & input, textarea {
+      width: 90%;
+    }
+  }
+}
+ 
+@media (min-width: 768px) and (max-width: 991px) {
+  div {
+    width: 80%;
+  }
+  form {
+    width: 80%;
+    & input, textarea {
+      width: 90%;
+    }
+  }
 }
 </style>
