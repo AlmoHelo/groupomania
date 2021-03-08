@@ -3,7 +3,7 @@
   <h1>Les commentaires de l'article :</h1>
   {{ errorMessageItem }}
   <div id="articles" class="msg" v-for="mess in msg" :key="mess.idMessages">
-    <article class="article">
+    <article class="theArticle">
       <div class="headArt">
         <p>{{ mess.pseudoUser }}</p>
         <p>{{ mess.date }}</p>
@@ -32,8 +32,8 @@
   </button>
 
   <!--ajouter un commentaire-->
-  <div id="formComm">
-    <div id="formC">
+  <div id="formComm" class="formComm">
+    <div id="formC" class="formC">
       <h2>Ajouter un commentaire</h2>
       <div class="user">
         <label>Votre pseudo :</label>
@@ -53,7 +53,7 @@
   </div>
 
   <!--modifier un commentaire-->
-  <div id="newDescripComm">
+  <div id="newDescripComm" class="newDescripComm">
     <div class="form">
       <label> Nouvelle description :</label>
       <textarea
@@ -69,7 +69,7 @@
   </div>
 
   <!-- affichage de tous les commentaires -->
-  <div>
+  <div class="theComments">
     {{ errDeleteComm }}
     <div
       id="commentaires"
@@ -84,12 +84,14 @@
         </div>
         <p class="texte">{{ mess.descriptionComm }}</p>
       </article>
-      <a @click="updateComm(mess.idComment, mess.pseudoUserComm)"
-        ><i class="far fa-edit"></i
-      ></a>
-      <a @click="deleteComm(mess.idComment, mess.pseudoUserComm)"
-        ><i class="fas fa-times"></i
-      ></a>
+      <div class="icons">
+        <a @click="updateComm(mess.idComment, mess.pseudoUserComm)"
+          ><i class="far fa-edit"></i
+        ></a>
+        <a @click="deleteComm(mess.idComment, mess.pseudoUserComm)"
+          ><i class="fas fa-times"></i
+        ></a>
+      </div>
     </div>
   </div>
   <footerAll />
@@ -298,29 +300,21 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.article,
-.comm {
-  width: 80%;
+.theArticle {
+  border: 1px solid #c3c3c3;
+  border-radius: 5px;
+  background-color: #dae0e6;
+  width: 60%;
   margin: auto;
-}
-.comm {
-  border: 1px solid white;
-  display: flex;
-  & .comment {
-    width: 96%;
-  }
-  & i {
-    margin: 10px 10px 0 0;
-  }
   & .headArt {
-    border-bottom: 1px solid white;
+    border-bottom: 1px solid #b6b3b39d;
   }
   & .texte {
     padding: 20px;
   }
   & .footArt {
-    border-top: 1px solid white;
-    padding: 10px;
+    border-top: 1px solid #b6b3b39d;
+    padding: 15px;
   }
   & .headArt,
   .footArt {
@@ -332,25 +326,64 @@ export default {
     margin-left: 5px;
   }
 }
+
+.theComments {
+  border-bottom: none;
+  border-radius: 5px;
+  width: 60%;
+  margin: auto;
+  & .comm {
+    border: 1px solid #b6b3b39d;
+    background-color: #dae0e6;
+    border-radius: 5px;
+    display: flex;
+    margin-bottom: 10px;
+    & .comment {
+      width: 96%;
+    }
+    & .icons {
+      display: flex;
+      height: 100%;
+      border-bottom: 1px solid #b6b3b39d;
+      & i {
+        margin: 10px 10px 25px 0;
+      }
+    }
+    & .headComm {
+      border-bottom: 1px solid #b6b3b39d;
+      display: flex;
+      justify-content: space-around;
+    }
+    & .texte {
+      padding: 20px;
+    }
+  }
+}
+
 button {
   &:hover i {
     animation: turnAdd infinite linear 1s;
   }
   width: auto;
   height: inherit;
+  margin-top: 50px;
   margin-bottom: 50px;
   & i {
     margin-right: 10px;
   }
 }
-#formComm,
-#newDescripComm {
+.formComm,
+.newDescripComm {
   display: none;
-  border: 1px solid white;
-  width: 80%;
+  border: 1px solid #c3c3c3;
+  border-radius: 5px;
+  width: 60%;
   margin: auto;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  background-color: #dae0e6;
 }
-#formC {
+.formC {
   display: flex;
   flex-direction: column;
   width: 50%;
@@ -373,7 +406,7 @@ button {
   & textarea {
     height: 60px;
     margin: 20px 0;
-    background-color: rgb(119, 114, 114);
+    background-color: #c3c3c3;
   }
   & button {
     width: 200px;
@@ -383,7 +416,7 @@ button {
     margin-bottom: 50px;
   }
 }
-#newDescripComm {
+.newDescripComm {
   & .form {
     display: flex;
     flex-direction: column;
@@ -396,8 +429,8 @@ button {
     }
     & textarea {
       height: 60px;
-      margin: 10px 0;
-      background-color: rgb(119, 114, 114);
+      margin: 20px 0;
+      background-color: #c3c3c3;
     }
   }
   & i {
@@ -426,6 +459,118 @@ button {
   }
   100% {
     transform: rotate3d(0, 0, 1, 360deg);
+  }
+}
+
+@media screen and (max-width: 767px) {
+  h1 {
+    font-size: 20px;
+    margin: 40px 0px 40px 0px;
+  }
+  .theArticle {
+    width: 90%;
+    & .footArt {
+      justify-content: space-between;
+    }
+  }
+  .theComments {
+    width: 90%;
+    & .comm {
+      & .icons {
+        font-size: 12px;
+        & i {
+          margin: 5px 5px 21px 0px;
+        }
+      }
+      & .headComm {
+        font-size: 12px;
+      }
+    }
+  }
+  button {
+    width: 80%;
+    font-size: 18px;
+    margin-top: 30px;
+    margin-bottom: 30px;
+  }
+  .formComm,
+  .newDescripComm {
+    width: 90%;
+  }
+  .formC {
+    width: 80%;
+    & .user {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    & h2 {
+      margin: 40px 0 30px 0;
+      font-size: 20px;
+    }
+    & textarea {
+      margin: 10px 0;
+    }
+    & button {
+      width: 180px;
+      margin-top: 30px;
+      margin-bottom: 30px;
+    }
+  }
+  .newDescripComm {
+    & .form {
+      width: 80%;
+      margin: auto;
+      margin-top: 40px;
+      & label {
+        font-size: 20px;
+      }
+      & textarea {
+        margin: 10px 0;
+      }
+    }
+    & button {
+      width: 180px;
+    }
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  h1 {
+    margin: 60px 0 60px 0;
+  }
+  .theArticle,
+  .theComments,
+  .formComm,
+  .newDescripComm {
+    width: 70%;
+  }
+  button {
+    font-size: 20px;
+    margin-top: 30px;
+    margin-bottom: 30px;
+  }
+  .formC {
+    width: 70%;
+    & h2 {
+      margin: 40px 0 30px 0;
+    }
+    & textarea {
+      margin: 10px 0;
+    }
+    & button {
+      width: 180px;
+      margin-top: 30px;
+      margin-bottom: 30px;
+    }
+  }
+  .newDescripComm {
+    & .form {
+      width: 70%;
+      & label {
+        font-size: 25px;
+      }
+    }
   }
 }
 </style>

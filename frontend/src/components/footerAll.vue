@@ -34,7 +34,7 @@ footer {
       font-size: 50px;
       margin: 10px 40px;
       & a {
-          color: white;
+          color: black;
       }
     }
   }
