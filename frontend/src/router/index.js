@@ -3,9 +3,13 @@ import Home from '../views/Home.vue'
 import Login from '../views/Login.vue'
 import Signup from '../views/Signup.vue'
 import Profil from "../views/profil.vue"
+import otherProfil from "../views/otherProfil.vue"
 import Items from '../views/Items.vue'
 import createItem from "../views/createItem.vue"
 import comment from "../views/comments.vue"
+
+let user = localStorage.getItem("searchProfil")
+console.log(user)
 
 const routes = [
   {
@@ -29,6 +33,11 @@ const routes = [
     component: Profil
   },
   {
+    path: `/item/profil/${user}`,
+    name: "otherProfil",
+    component: otherProfil
+  },
+  {
     path: "/item",
     name: 'Items',
     component: Items
@@ -42,7 +51,7 @@ const routes = [
     path: "/comment",
     name: 'comment',
     component: comment
-  }
+  },
 ]
 
 const router = createRouter({

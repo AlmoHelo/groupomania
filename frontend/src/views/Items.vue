@@ -15,8 +15,8 @@
             >
           </li>
           <li class="searchUser">
-            <input type="search" placeholder="Rechercher un utilisateur" />
-            <button><i class="fas fa-check"></i></button>
+            <input type="search" placeholder="Rechercher un utilisateur" v-model="searchUser"/>
+            <button @click="searchOneUser()"><i class="fas fa-check"></i></button>
           </li>
         </ul>
       </div>
@@ -55,9 +55,15 @@ export default {
     return {
       nbUser: "",
       errMessage: "",
+      searchUser:""
     };
   },
   methods: {
+    searchOneUser: function(){
+      localStorage.setItem("searchProfil", this.searchUser)
+      const pseudoProfil = this.searchUser
+      window.location.href = `http://localhost:8080/item/profil/${pseudoProfil}`
+    },
     viewAll: function () {
       let myBest = document.getElementById("bestItemPage");
       let myAll = document.getElementById("itemAllPage");

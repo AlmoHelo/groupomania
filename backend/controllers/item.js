@@ -15,6 +15,18 @@ exports.getOne = (req, res, next) => {
     })
 }
 
+
+exports.getAllOtherUser = (req, res, next) => {
+    const pseudo = req.params.id
+    db.query('SELECT * FROM item WHERE pseudoUser= ?', pseudo, (error, result, field) => {
+        if (error) {
+            console.log(error)
+            return res.status(400).json({ error })
+        }
+        return res.status(200).json(result)
+    })
+}
+
 //Affichage de tous les items dans ordre descendant
 exports.getAll = (req, res, next) => {
     db.query('SELECT * FROM item ORDER BY date DESC', (error, result, field) => {

@@ -170,11 +170,13 @@ export default {
     this.pseudo = oneProfil.pseudo;
     this.mail = oneProfil.email;
     this.date = DATE_FORMAT(oneProfil.creationDate);
-    if (oneProfil.biographie != null || oneProfil.biographie != "") {
-      this.biographie = oneProfil.biographie;
-    } else {
+
+    if (oneProfil.biographie == null || oneProfil.biographie == "") {
       this.biographie = "Modifier votre profil pour ajouter une biographie";
+    } else {
+      this.biographie = oneProfil.biographie;
     }
+    
     axios
       .get("http://localhost:3000/api/items/" + userId, {
         headers: {
@@ -182,7 +184,6 @@ export default {
         },
       })
       .then((response) => {
-        console.log(response);
         this.msg = response.data.map((element) => {
           element.date = DATE_FORMAT(element.date);
           return element;
@@ -236,7 +237,8 @@ export default {
   margin: auto;
   margin-bottom: 50px;
 }
-.modifier, .newDescription {
+.modifier,
+.newDescription {
   width: 57%;
 }
 .profil {

@@ -111,9 +111,9 @@ exports.updateUser = (req, res, next) => {
                         }
                     }
                     db.query(`UPDATE item SET pseudoUser="${pseudo}" WHERE userItemId=${id}`), (err, res) => {
-                        if(err){
+                        if (err) {
                             console.log(err)
-                        }else{
+                        } else {
                             console.log("Données modif")
                         }
                     }
@@ -125,9 +125,9 @@ exports.updateUser = (req, res, next) => {
         });
 };
 
-//Affichage de l'utilisateur selectionné
+//Affichage de l'utilisateur connecté
 exports.getOneUser = (req, res, next) => {
-    const userId = JSON.parse(JSON.stringify(req.params.id))
+    const userId = req.params.id
     const oneU = 'SELECT userId, email, pseudo, biographie, creationDate FROM user WHERE userId=' + userId
     db.query(oneU, (error, results) => {
         if (error) {
@@ -138,12 +138,23 @@ exports.getOneUser = (req, res, next) => {
 }
 
 //Compter le nombre d'utilisateur 
-exports.getCountUsers = (req,res, next) => {
+exports.getCountUsers = (req, res, next) => {
     db.query(`SELECT COUNT(userId) FROM user`, (err, result) => {
-        if(err){
+        if (err) {
             return res.status(400).json(error)
         }
         let re = JSON.parse(JSON.stringify(result).split(':')[1].split("}")[0])
         return res.status(200).json(re)
+    })
+}
+
+//Affichage de l'utilisateur selectionné
+exports.getOneOtherUser = (req, res, next) => {
+    const pseudo = req.params.id
+    db.query(`SELECT userId, email, pseudo, biographie, creationDate FROM user WHERE pseudo="${pseudo}"`, (error, results) => {
+        if (error) {
+            return res.status(410).json(error)
+        }
+        return res.status(200).json(results[0])
     })
 }
