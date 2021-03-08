@@ -1,8 +1,6 @@
 <template>
-  <div>
-    <div class="headModif" id="headModif">
-      <h2>Modifier votre profil</h2>
-    </div>
+  <div class="all">
+    <h2>Modifier votre profil</h2>
     <form method="Put" @submit.prevent="sendUpdate">
       <label for="email">E-mail<span>*</span> :</label
       ><input
@@ -104,7 +102,7 @@ export default {
               })
               .catch((error) => {
                 console.log(error);
-                this.err
+                this.err;
               });
           })
           .catch((error) => {
@@ -125,12 +123,17 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-div {
-  width: 99%;
+.errorMsg {
+  color: rgb(124, 51, 51);
+  font-weight: bold;
+  font-size: 16px;
+  margin: 0;
 }
-.headModif {
-  display: flex;
+.all {
   width: 98%;
+  & h2 {
+    width: 100%;
+  }
 }
 form {
   display: flex;
@@ -140,25 +143,46 @@ form {
   }
   & input,
   textarea {
-    background-color: rgb(119, 114, 114);
+    background-color: #c3c3c3;
     width: 60%;
     height: 30px;
     margin: auto;
     margin-top: 10px;
     margin-bottom: 10px;
+    border-radius: 8px;
     border: none;
     &::placeholder {
       font-size: 15px;
       color: rgb(39, 38, 38);
     }
   }
+  & textarea {
+    height: 70px;
+  }
 }
 button {
-  border: 1px solid #5a85b1;
-  background-color: #5a85b1;
-  color: white;
-  font-size: 22px;
   margin: auto;
   margin-top: 20px;
+}
+@media screen and (max-width: 767px) {
+  form {
+    & input,
+    textarea {
+      width: 80%;
+      height: 20px;
+      border-radius: 5px;
+      &::placeholder {
+        font-size: 12px;
+      }
+    }
+    & textarea {
+      height: 70px;
+    }
+  }
+  button{
+    width: 180px;
+    font-size: 20px;
+    margin-bottom: 20px;
+  }
 }
 </style>

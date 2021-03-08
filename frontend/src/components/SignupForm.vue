@@ -185,7 +185,7 @@ form {
     border: none;
     border-radius: 8px;
     background-color: #c3c3c3;
-    width: 500px;
+    width: 60%;
     height: 30px;
     margin-left: 20px;
     margin-bottom: 10px;

@@ -1,5 +1,5 @@
 <template>
-  <div id="descriptionForm">
+  <div id="descriptionForm" class="descriptionForm">
     <label> Nouvelle description :</label>
     <textarea
       name="description"
@@ -61,7 +61,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-#descriptionForm {
+.descriptionForm {
   padding: 20px;
   display: flex;
   flex-direction: column;
@@ -72,16 +72,37 @@ label {
   font-size: 20px;
 }
 textarea {
-  width: 60%;
-  height: 60px;
-  margin: 20px 0;
-  background-color: rgb(119, 114, 114);
+    background-color: #c3c3c3;
+    width: 60%;
+    height: 70px;
+    margin: auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    border: none;
 }
 button {
-  border: 1px solid #5a85b1;
-  background-color: #5a85b1;
-  color: white;
-  font-size: 22px;
+  margin: auto;
   margin-top: 20px;
+}
+
+@media screen and (max-width: 767px) {
+  .descriptionForm{
+    padding: 5px;
+  }
+  label{
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+   textarea {
+      width: 90%;
+      border-radius: 5px;
+      margin-bottom: 0;
+   }
+}
+@media (min-width: 768px) and (max-width: 991px) {
+  textarea{
+    margin-bottom: 0;
+  }
 }
 </style>

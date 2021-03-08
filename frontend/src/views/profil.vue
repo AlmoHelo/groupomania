@@ -2,11 +2,12 @@
   <headerAll />
   <h1>Bonjour {{ pseudo }}, vous êtes sur votre profil !</h1>
 
-  <section id="modifier">
+  <!-- modifier profil -->
+  <section id="modifier" class="modifier">
     <updateUser />
   </section>
 
-<!--affiche les coordonnées du profil-->
+  <!--affiche les coordonnées du profil-->
   <section class="profil" id="profil">
     {{ errorMessageGetOne }}
     <p>Adresse mail : {{ mail }}</p>
@@ -14,18 +15,18 @@
     <p>Biographie : {{ biographie }}</p>
     <p class="errorMessage">{{ errDeleteUser }}</p>
     <div class="modifSupp">
-      <button @click="modifier">Modifier</button>
-      <button @click="deleteUser">Supprimer</button>
+      <button @click="modifier" class="buttonMS">Modifier</button>
+      <button @click="deleteUser" class="buttonMS">Supprimer</button>
     </div>
   </section>
 
-<!--modifier un article -->
-  <section id="newDescription">
+  <!--modifier un article -->
+  <section id="newDescription" class="newDescription">
     <updateItem />
   </section>
 
-<!-- affiche tous les article-->
-  <section id="articlesPerso">
+  <!-- affiche tous les article-->
+  <section id="articlesPerso" class="articlesPerso">
     <h2>Tous vos articles</h2>
 
     <div v-for="mess in msg" :key="mess.idMessages">
@@ -33,20 +34,38 @@
         <div class="headArt">
           <p>{{ mess.pseudoUser }}</p>
           <p>{{ mess.date }}</p>
+
+          <div class="modifSuppItem">
+            <div type="button" @click="modifierItem(mess.id)" id="buttonModif">
+              <i class="far fa-edit"></i>
+            </div>
+
+            <div type="button" @click="supprimerItem(mess.id)">
+              <i class="fas fa-trash-alt"></i>
+            </div>
+          </div>
         </div>
 
         <p class="texte" id="texte">{{ mess.description }}</p>
 
-        <div class="modifSuppItem">
-          <button @click="modifierItem(mess.id)" id="buttonModif">
-            <i class="far fa-edit"></i>Modifier
-          </button>
-
-          <button @click="supprimerItem(mess.id)">
-            <i class="fas fa-trash-alt"></i> Supprimer
-          </button>
-          {{ errorDeleteItem }}
+        <div class="footArt">
+          <div class="like">
+            <a><i class="far fa-thumbs-up" v-on:click="onLike(mess.id)"></i></a
+            >{{ mess.likes }}
+            <!--v-bind:style="{ color: activeColor }"-->
+            <a v-on:click="onDislike(mess.id)"
+              ><i class="far fa-thumbs-down"></i></a
+            >{{ mess.dislikes }}
+          </div>
+          <a class="commAccueil" @click="viewComments(mess.id)"
+            ><i class="fas fa-comment-dots"></i>
+            <p class="nbcomm">{{ mess.nbComm }} Commentaires</p></a
+          >
+          <a class="signaler"
+            ><i class="far fa-flag"></i><span>Signaler ce commentaire</span></a
+          >
         </div>
+        {{ errorDeleteItem }}
       </article>
     </div>
   </section>
@@ -163,7 +182,7 @@ export default {
         },
       })
       .then((response) => {
-        console.log(response)
+        console.log(response);
         this.msg = response.data.map((element) => {
           element.date = DATE_FORMAT(element.date);
           return element;
@@ -209,55 +228,75 @@ export default {
   margin: 0;
 }
 .profil,
-#modifier,
-#newDescription {
-  box-shadow: 1px 1px 0px white;
-  width: 70%;
+.modifier,
+.newDescription,
+.articlesPerso {
+  border: 1px solid #c3c3c3;
+  width: 60%;
   margin: auto;
   margin-bottom: 50px;
 }
-#newDescription,
-#modifier {
+.modifier, .newDescription {
+  width: 57%;
+}
+.profil {
+  & button {
+    margin: 10px;
+  }
+}
+.modifier,
+.newDescription {
   display: none;
   padding: 15px;
   justify-content: space-between;
 }
-#articlesPerso {
-  padding: 10px;
-  width: 70%;
-  margin: auto;
+.articlesPerso {
+  border-radius: 5px;
   & h2 {
     font-size: 25px;
     width: 100%;
   }
-  & .headArt {
-    border-bottom: 1px solid white;
-  }
-  & .texte {
-    padding: 20px;
-  }
-  & .footArt {
-    border-top: 1px solid white;
-    padding: 10px;
-  }
-  & .headArt {
-    display: flex;
-    justify-content: space-around;
-  }
-  & .modifSuppItem {
-    & button {
-      color: white;
+  & .article {
+    border: 1px solid #d2d2d2c7;
+    border-radius: 5px;
+    background-color: #dae0e6;
+    margin: 20px;
+    margin-bottom: 10px;
+    & .headArt {
+      border-bottom: 1px solid #b6b3b39d;
+      & .modifSuppItem {
+        display: flex;
+        justify-content: center;
+        width: 10%;
+        height: auto;
+        & div {
+          display: flex;
+          align-items: center;
+          & i {
+            margin-right: 0;
+          }
+        }
+      }
+    }
+    & .texte {
+      padding: 20px;
+    }
+    & .footArt {
+      border-top: 1px solid #b6b3b39d;
+      padding: 15px;
+    }
+    & .headArt,
+    .footArt {
+      display: flex;
+      justify-content: space-around;
+    }
+    & i {
+      margin-right: 5px;
+      margin-left: 5px;
     }
   }
-  & i {
-    margin-right: 5px;
-    margin-left: 5px;
-  }
 }
-.article {
-  margin-bottom: 25px;
-}
-button {
+.buttonMS {
   font-size: 15px;
   border: none;
   background: none;
@@ -276,7 +315,10 @@ button {
       margin-top: 20px;
     }
   }
-  #modifier {
+  .newDescription {
+    width: 85%;
+  }
+  .modifier {
     width: 90%;
     padding: 8px;
     & h2 {
@@ -302,7 +344,7 @@ button {
       margin-bottom: 20px;
     }
   }
-  #articlesPerso {
+  .articlesPerso {
     width: 90%;
     & h2 {
       font-size: 20px;
