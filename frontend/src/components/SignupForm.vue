@@ -20,6 +20,7 @@
         placeholder="*******  (max 8 caractères)"
         required
       />
+      <p class="errorMsg">{{ errPasswordReg }}</p>
       <label for="password2" maxlength="8"
         >Confirmation mot de passe<span>*</span> :</label
       ><input
@@ -67,31 +68,33 @@ export default {
       errEmail: "",
       errPseudo: "",
       errPassword: "",
-      rules: [
-        { message: "Une lettre minuscule est requise.", regex: /[a-z]+/ },
-        { message: "Une lettre majuscule est requise.", regex: /[A-Z]+/ },
-        { message: "8 caractères minimum.", regex: /.{8,}/ },
-        { message: "Un nombre est requis.", regex: /[0-9]+/ },
-      ],
+      errPasswordReg: "",
     };
   },
   methods: {
     envoie: function () {
       //envoie des informations de connexion à l'API pour authentification
       let token = "";
-      for (let condition of this.rules) {
-        let errors = [];
-        if (!condition.regex.test(this.password)) {
-          errors.push(condition.message);
-        }
-        if (errors.length === 0) {
-          return { valid: true, errors };
-        } else {
-          this.errPassword = errors;
-        }
-        
+      const lowcaseReg = /[a-z]+/;
+      const uppercaseReg = /[A-Z]+/;
+      const minCharactersReg = /.{8,}/;
+      const numberReg = /[0-9]+/;
+
+      const myPassword = this.password;
+      if (
+        myPassword.match(lowcaseReg) == null ||
+        myPassword.match(uppercaseReg) == null ||
+        myPassword.match(minCharactersReg) == null ||
+        myPassword.match(numberReg) == null
+      ) {
+        this.errPasswordReg =
+          "Votre mot de passe doit contenir au moins une minuscule, une majuscule et un nombre. Il doit avoir au minimum 8 caractères !";
+        console.log("ok");
+      } else {
+        console.log("pasOk");
         if (this.password != this.password2) {
           this.errPassword = "Veuillez mettre des mots de passe identiques";
+          this.errPasswordReg = "";
           this.errEmail = "";
           this.errPseudo = "";
           let myPassword = document.getElementById("Mot de passe2");
@@ -165,6 +168,17 @@ export default {
         }
       }
     },
+
+    /*for (let condition of this.rules) {
+        let errors = [];
+        if (!condition.regex.test(this.password)) {
+          errors.push(condition.message);
+        }
+        if (errors.length === 0) {
+          return { valid: true, errors };
+        } else {
+          this.errPassword = errors;
+        }*/
   },
 };
 </script>
