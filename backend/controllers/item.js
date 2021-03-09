@@ -4,9 +4,8 @@ require('dotenv').config()
 
 //Affichage un item
 exports.getOne = (req, res, next) => {
-    const itemId = req.params.id
-    console.log(itemId)
-    db.query('SELECT * FROM item WHERE id= ?', itemId, (error, result, field) => {
+    const userId = req.params.id
+    db.query('SELECT * FROM item WHERE userItemId= ?', userId, (error, result, field) => {
         if (error) {
             console.log(error)
             return res.status(400).json({ error })

@@ -45,8 +45,7 @@ exports.login = (req, res, next) => {
     const password = req.body.password;
     let token = process.env.DB_TOKEN;
 
-    console.log(email.includes("@"))
-    if (email.includes("@") == true) {
+    if (email.includes("@") == true) {          //if user uses email
         db.query(`SELECT userId, password, pseudo FROM user WHERE email="${email}"`, function (err, result) {
             console.log(result)
             if (result.length == 0) {                       //utilisateur pas dans la base de données !! 
@@ -67,7 +66,7 @@ exports.login = (req, res, next) => {
                     }
                 })
         });
-    } else {
+    } else {                    //if user uses pseudo
         db.query(`SELECT userId, password, email FROM user WHERE pseudo="${email}"`, function (err, result) {
             console.log(result)
             if (result.length == 0) {                       //utilisateur pas dans la base de données !! 

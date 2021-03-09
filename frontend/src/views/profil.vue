@@ -184,6 +184,7 @@ export default {
         },
       })
       .then((response) => {
+    console.log(response)
         this.msg = response.data.map((element) => {
           element.date = DATE_FORMAT(element.date);
           return element;
