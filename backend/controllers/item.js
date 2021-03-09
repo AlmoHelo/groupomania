@@ -7,7 +7,6 @@ exports.getOne = (req, res, next) => {
     const userId = req.params.id
     db.query('SELECT * FROM item WHERE userItemId= ?', userId, (error, result, field) => {
         if (error) {
-            console.log(error)
             return res.status(400).json({ error })
         }
         return res.status(200).json(result)
@@ -19,10 +18,8 @@ exports.getAllOtherUser = (req, res, next) => {
     const pseudo = req.params.id
     db.query('SELECT * FROM item WHERE pseudoUser= ?', pseudo, (error, result, field) => {
         if (error) {
-            console.log(error)
             return res.status(400).json({ error })
         }
-        console.log(result)
         return res.status(200).json(result)
     })
 }
@@ -69,7 +66,6 @@ exports.update = (req, result, next) => {
     db.query(
         `UPDATE item SET description="${description}", date=NOW() WHERE id=${id}`, (error, res) => {
             if (error) {
-                console.log(error)
                 return result.status(400).json(error)
             } else {
                 result.status(200).json({ message: "Item modifié" })

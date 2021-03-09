@@ -15,8 +15,15 @@
             >
           </li>
           <li class="searchUser">
-            <input type="search" placeholder="Rechercher un utilisateur" v-model="searchUser"/>
-            <button @click="searchOneUser()"><i class="fas fa-check"></i></button>
+            <input
+              type="search"
+              placeholder="Rechercher un utilisateur"
+              v-model="searchUser"
+            />
+            <button @click="searchOneUser()">
+              <i class="fas fa-check firstCheck"></i
+              ><i class="fas fa-check secondCheck"></i>
+            </button>
           </li>
         </ul>
       </div>
@@ -55,14 +62,18 @@ export default {
     return {
       nbUser: "",
       errMessage: "",
-      searchUser:""
+      searchUser: "",
     };
   },
   methods: {
-    searchOneUser: function(){
-      localStorage.setItem("searchProfil", this.searchUser)
-      const pseudoProfil = this.searchUser
-      window.location.href = `http://localhost:8080/item/profil/${pseudoProfil}`
+    searchOneUser: function () {
+      localStorage.setItem("searchProfil", this.searchUser);
+      const pseudoProfil = this.searchUser;
+      if (this.searchUser == "" || this.searchUser == null){
+        alert("Vous n'avez pas rentrer de nom dans la barre de recherche")
+      } else {
+      window.location.href = `http://localhost:8080/item/profil/${pseudoProfil}`;
+      }
     },
     viewAll: function () {
       let myBest = document.getElementById("bestItemPage");
@@ -118,6 +129,34 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.secondCheck {
+  position: relative;
+  bottom: 103.5%;
+  right: 0%;
+  &:hover {
+    color: rgb(27, 231, 27);
+    animation: checkOk 0.5s ease-out;
+  }
+}
+@keyframes checkOk {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+.firstCheck:hover {
+  animation: checkDontOk 1s ease-out;
+}
+@keyframes checkDontOk {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
 .articles {
   width: 60%;
   margin-left: 10%;
