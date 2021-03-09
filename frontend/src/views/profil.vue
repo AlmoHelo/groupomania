@@ -84,6 +84,62 @@ export default {
   name: "Profil",
   components: { headerAll, updateItem, updateUser, footerAll },
   methods: {
+    onLike: function (messId) {
+      this.dislike = -2;
+      this.like = 1;
+      let idOneItem = messId;
+      let user = JSON.parse(localStorage.getItem("user"));
+      axios
+        .post(
+          "http://localhost:3000/api/items/" + user.reponse.userId + "/like",
+          {
+            userId: user.reponse.userId,
+            email: user.mail,
+            like: this.like,
+            dislike: this.dislike,
+            idItem: idOneItem,
+          },
+          {
+            headers: {
+              authorization: "Bearer " + user.reponse.token,
+            },
+          }
+        )
+        .then((response) => {
+          console.log(response);
+        })
+        .catch((error) => console.log(error));
+    },
+    onDislike: function (messId) {
+      this.like = -1;
+      this.dislike = 2;
+      let idOneItem = messId;
+      let user = JSON.parse(localStorage.getItem("user"));
+      axios
+        .post(
+          "http://localhost:3000/api/items/" + user.reponse.userId + "/like",
+          {
+            userId: user.reponse.userId,
+            email: user.mail,
+            like: this.like,
+            dislike: this.dislike,
+            idItem: idOneItem,
+          },
+          {
+            headers: {
+              authorization: "Bearer " + user.reponse.token,
+            },
+          }
+        )
+        .then((response) => {
+          console.log(response);
+          /* let msg = JSON.stringify(response)
+            if(msg.includes("200")){
+              window.location.href="http://localhost:8080/item"
+            }*/
+        })
+        .catch((error) => console.log(error));
+    },
     modifier: function () {
       let myDescription = document.getElementById("profil");
       let modify = document.getElementById("modifier");
@@ -113,6 +169,10 @@ export default {
             console.log(error);
           });
       }
+    },
+    viewComments: function (messId) {
+      localStorage.setItem("commentOneItem", messId);
+      window.location.href = "http://localhost:8080/comment";
     },
     modifierItem: function (messId) {
       localStorage.setItem("UpdateOneItem", messId);
@@ -176,15 +236,15 @@ export default {
     } else {
       this.biographie = oneProfil.biographie;
     }
-    
+
     axios
-      .get("http://localhost:3000/api/items/" + userId, {
+      .get("http://localhost:3000/api/items/profil/" + userId, {
         headers: {
           authorization: "Bearer " + user.reponse.token,
         },
       })
       .then((response) => {
-    console.log(response)
+        console.log(response);
         this.msg = response.data.map((element) => {
           element.date = DATE_FORMAT(element.date);
           return element;

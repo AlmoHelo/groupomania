@@ -4,6 +4,17 @@ require('dotenv').config()
 
 //Affichage un item
 exports.getOne = (req, res, next) => {
+    const itemId = req.params.id
+    db.query('SELECT * FROM item WHERE id= ?', itemId, (error, result, field) => {
+        if (error) {
+            return res.status(400).json({ error })
+        }
+        return res.status(200).json(result)
+    })
+}
+
+//Affichage un item
+exports.getAllProfil = (req, res, next) => {
     const userId = req.params.id
     db.query('SELECT * FROM item WHERE userItemId= ?', userId, (error, result, field) => {
         if (error) {
@@ -12,7 +23,6 @@ exports.getOne = (req, res, next) => {
         return res.status(200).json(result)
     })
 }
-
 
 exports.getAllOtherUser = (req, res, next) => {
     const pseudo = req.params.id

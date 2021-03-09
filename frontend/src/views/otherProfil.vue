@@ -14,7 +14,7 @@
   <!-- affiche tous les article-->
   <section id="articlesPerso" class="articlesPerso">
     <h2>Tous vos articles</h2>
-    {{errItem}}
+    {{ errItem }}
 
     <div v-for="mess in msg" :key="mess.idMessages">
       <article class="article">
@@ -57,6 +57,68 @@ import footerAll from "../components/footerAll";
 export default {
   name: "otherProfil",
   components: { headerAll, footerAll },
+  methods: {
+    onLike: function (messId) {
+      this.dislike = -2;
+      this.like = 1;
+      let idOneItem = messId;
+      let user = JSON.parse(localStorage.getItem("user"));
+      axios
+        .post(
+          "http://localhost:3000/api/items/" + user.reponse.userId + "/like",
+          {
+            userId: user.reponse.userId,
+            email: user.mail,
+            like: this.like,
+            dislike: this.dislike,
+            idItem: idOneItem,
+          },
+          {
+            headers: {
+              authorization: "Bearer " + user.reponse.token,
+            },
+          }
+        )
+        .then((response) => {
+          console.log(response);
+        })
+        .catch((error) => console.log(error));
+    },
+    onDislike: function (messId) {
+      this.like = -1;
+      this.dislike = 2;
+      let idOneItem = messId;
+      let user = JSON.parse(localStorage.getItem("user"));
+      axios
+        .post(
+          "http://localhost:3000/api/items/" + user.reponse.userId + "/like",
+          {
+            userId: user.reponse.userId,
+            email: user.mail,
+            like: this.like,
+            dislike: this.dislike,
+            idItem: idOneItem,
+          },
+          {
+            headers: {
+              authorization: "Bearer " + user.reponse.token,
+            },
+          }
+        )
+        .then((response) => {
+          console.log(response);
+          /* let msg = JSON.stringify(response)
+            if(msg.includes("200")){
+              window.location.href="http://localhost:8080/item"
+            }*/
+        })
+        .catch((error) => console.log(error));
+    },
+    viewComments: function (messId) {
+      localStorage.setItem("commentOneItem", messId);
+      window.location.href = "http://localhost:8080/comment";
+    },
+  },
   data() {
     return {
       //for profil
@@ -71,7 +133,7 @@ export default {
       description: "",
       //for errors
       errorMessageGetOne: "",
-      errItem: ""
+      errItem: "",
     };
   },
   mounted() {
@@ -107,7 +169,7 @@ export default {
 
     //récupération de ses items
     axios
-      .get("http://localhost:3000/api/items/profil/" + userOther, {
+      .get("http://localhost:3000/api/items/profils/" + userOther, {
         headers: {
           authorization: "Bearer " + user.reponse.token,
         },
@@ -120,8 +182,7 @@ export default {
       })
       .catch((error) => {
         console.log(error);
-        this.errItem =
-          "Une erreur s'est produite. Veuillez recharger la page";
+        this.errItem = "Une erreur s'est produite. Veuillez recharger la page";
       });
   },
 };

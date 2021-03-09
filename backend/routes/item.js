@@ -12,6 +12,7 @@ router.post('/create', auth, multer, itemCtrl.create);
 router.put('/:id', auth, multer, itemCtrl.update);
 router.delete('/:id', auth, itemCtrl.delete);
 router.post('/:id/like', auth, itemCtrl.like);  
-router.get("/profil/:id", auth, itemCtrl.getAllOtherUser) 
+router.get("/profils/:id", auth, itemCtrl.getAllOtherUser) 
+router.get('/profil/:id', auth, itemCtrl.getAllProfil)
 
 module.exports = router;

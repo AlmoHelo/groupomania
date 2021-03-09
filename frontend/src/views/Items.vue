@@ -69,10 +69,10 @@ export default {
     searchOneUser: function () {
       localStorage.setItem("searchProfil", this.searchUser);
       const pseudoProfil = this.searchUser;
-      if (this.searchUser == "" || this.searchUser == null){
-        alert("Vous n'avez pas rentrer de nom dans la barre de recherche")
+      if (this.searchUser == "" || this.searchUser == null) {
+        alert("Vous n'avez pas rentrer de nom dans la barre de recherche");
       } else {
-      window.location.href = `http://localhost:8080/item/profil/${pseudoProfil}`;
+        window.location.href = `http://localhost:8080/item/profil/${pseudoProfil}`;
       }
     },
     viewAll: function () {
@@ -312,13 +312,14 @@ img {
     top: 225px;
     & h2 {
       font-size: 15px;
-      margin-bottom: 20px;
+      margin-top: 0;
+      margin-bottom: 00px;
     }
     & .employee,
     .text {
       font-size: 12px;
-      margin-top: 10px;
-      margin-bottom: 20px;
+      margin-top: 0px;
+      margin-bottom: 0px;
     }
   }
   .articles {
