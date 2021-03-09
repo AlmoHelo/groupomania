@@ -45,28 +45,51 @@ exports.login = (req, res, next) => {
     const password = req.body.password;
     let token = process.env.DB_TOKEN;
 
-    const sqlFindUser = "SELECT userId, password, pseudo FROM user WHERE email = ?";
+    console.log(email.includes("@"))
+    if (email.includes("@") == true) {
+        db.query(`SELECT userId, password, pseudo FROM user WHERE email="${email}"`, function (err, result) {
+            console.log(result)
+            if (result.length == 0) {                       //utilisateur pas dans la base de données !! 
+                return res.status(500).json("erreur");
+            };
+            bcrypt.compare(password, result[0].password)
+                .then(valid => {
+                    if (!valid) {
+                        return res.status(401).json({ error: "Mot de passe incorrect !" });         //mot de passe incorrect
+                    } else {
+                        res.status(200).json({
+                            token: jwt.sign(
+                                { userId: result[0].userId },
+                                token,
+                                { expiresIn: "24h" }
+                            ), userId: result[0].userId, pseudo: result[0].pseudo,
+                        });
+                    }
+                })
+        });
+    } else {
+        db.query(`SELECT userId, password, email FROM user WHERE pseudo="${email}"`, function (err, result) {
+            console.log(result)
+            if (result.length == 0) {                       //utilisateur pas dans la base de données !! 
+                return res.status(500).json("erreur");
+            };
+            bcrypt.compare(password, result[0].password)
+                .then(valid => {
+                    if (!valid) {
+                        return res.status(401).json({ error: "Mot de passe incorrect !" });         //mot de passe incorrect
+                    } else {
+                        res.status(200).json({
+                            token: jwt.sign(
+                                { userId: result[0].userId },
+                                token,
+                                { expiresIn: "24h" }
+                            ), userId: result[0].userId, pseudo: result[0].pseudo,
+                        });
+                    }
+                })
+        });
+    }
 
-    db.query(sqlFindUser, [email], function (err, result) {
-        console.log(result)
-        if (result.length == 0) {                       //utilisateur pas dans la base de données !! 
-            return res.status(500).json("erreur");
-        };
-        bcrypt.compare(password, result[0].password)
-            .then(valid => {
-                if (!valid) {
-                    return res.status(401).json({ error: "Mot de passe incorrect !" });         //mot de passe incorrect
-                } else {
-                    res.status(200).json({
-                        token: jwt.sign(
-                            { userId: result[0].userId },
-                            token,
-                            { expiresIn: "24h" }
-                        ), userId: result[0].userId, pseudo: result[0].pseudo,
-                    });
-                }
-            })
-    });
 }
 
 // Suppression Utilisateur

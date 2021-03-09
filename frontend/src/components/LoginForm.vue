@@ -52,6 +52,7 @@ export default {
   },
   methods: {
     envoie: function () {
+      console.log(this.email)
       //envoie des informations de connexion à l'API pour authentification
       let token = "";
       if (this.email == "" || this.password == "") {

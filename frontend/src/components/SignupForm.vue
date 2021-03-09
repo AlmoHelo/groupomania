@@ -168,17 +168,6 @@ export default {
         }
       }
     },
-
-    /*for (let condition of this.rules) {
-        let errors = [];
-        if (!condition.regex.test(this.password)) {
-          errors.push(condition.message);
-        }
-        if (errors.length === 0) {
-          return { valid: true, errors };
-        } else {
-          this.errPassword = errors;
-        }*/
   },
 };
 </script>
