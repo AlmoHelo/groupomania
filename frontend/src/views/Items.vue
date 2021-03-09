@@ -10,7 +10,7 @@
             </a>
           </li>
           <li>
-            <a @click="viewAll" id="linkAll"
+            <a @click="viewAll" id="linkAll" class="linkAll"
               ><i class="fas fa-globe"></i> Tous</a
             >
           </li>
@@ -129,6 +129,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.linkAll:hover {
+  & .fa-globe {
+    animation: turnGlobe 2s infinite ease-in-out;
+  }
+}
+@keyframes turnGlobe {
+  100% {
+    transform: rotateY(360deg);
+  }
+}
 .secondCheck {
   position: relative;
   bottom: 103.5%;
