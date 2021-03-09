@@ -17,7 +17,7 @@
         name="pass"
         id="Mot de passe"
         v-model="password"
-        placeholder="*******  (max 8 caractères)"
+        placeholder="*******  (min 8 caractères, 1 lettre majuscule et minuscule et 1 chiffre obligatoire)"
         required
       />
       <p class="errorMsg">{{ errPasswordReg }}</p>
@@ -28,7 +28,7 @@
         name="pass"
         id="Mot de passe2"
         v-model="password2"
-        placeholder="*******  (max 8 caractères)"
+        placeholder="*******"
         required
       />
       <p class="errorMsg">{{ errPassword }}</p>
