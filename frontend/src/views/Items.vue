@@ -183,8 +183,8 @@ export default {
     padding: 10px;
     & a {
       &:hover {
-        border: 1px solid #d2d2d2c7;
-        background-color: #d2d2d2c7;
+        border: 1px solid #F6D0D0;
+        background-color: #F6D0D0;
         padding: 6px;
         border-radius: 35px;
       }
@@ -210,13 +210,13 @@ export default {
   }
 }
 #linkBest {
-  border: 1px solid #d2d2d2c7;
-  background-color: #d2d2d2c7;
+  border: 1px solid #F6D0D0;
+  background-color: #F6D0D0;
   padding: 6px;
   border-radius: 35px;
   &:hover {
-    border: 1px solid #d2d2d2c7;
-    background-color: #d2d2d2c7;
+    border: 1px solid #F6D0D0;
+    background-color: #F6D0D0;
     padding: 6px;
     border-radius: 35px;
   }

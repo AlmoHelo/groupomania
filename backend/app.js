@@ -16,6 +16,7 @@ const limiter = rateLimit({
 const userRoutes = require('./routes/user');
 const itemRoutes = require('./routes/item');
 const commentRoutes = require('./routes/comment')
+const reportRoutes = require('./routes/report')
 
 const app = express();
 
@@ -41,5 +42,6 @@ app.use(helmet());    //sécurise HTTP headers
 app.use('/api/auth', userRoutes);
 app.use('/api/items', itemRoutes);
 app.use('/api/comments', commentRoutes);
+app.use('/api/report', reportRoutes)
 
 module.exports = app;

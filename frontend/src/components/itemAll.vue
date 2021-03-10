@@ -23,7 +23,8 @@
           <div class="like">
             <a
               ><i
-                class="far fa-thumbs-up" id="good"
+                class="far fa-thumbs-up"
+                id="good"
                 v-on:click="onLike(mess.id, index)"
               ></i></a
             >{{ mess.likes }}
@@ -36,7 +37,7 @@
             ><i class="fas fa-comment-dots"></i>
             <p class="nbcomm">{{ mess.nbComm }} Commentaires</p></a
           >
-          <a class="signaler"
+          <a class="signaler" @click="report(mess.id)"
             ><i class="far fa-flag"></i><span>Signaler ce commentaire</span></a
           >
         </div>
@@ -75,13 +76,13 @@ export default {
         )
         .then((response) => {
           console.log(response);
-          let good = document.getElementById("good")
-          let bad = document.getElementById("bad")
+          let good = document.getElementById("good");
+          let bad = document.getElementById("bad");
           if (response.data.addLike) {
             this.msg[indexI].likes++;
-            good.style.color= "green"
+            good.style.color = "green";
             this.msg[indexI].dislikes--;
-            bad.style.color= "black"
+            bad.style.color = "black";
           }
         })
         .catch((error) => {
@@ -111,13 +112,13 @@ export default {
         )
         .then((response) => {
           console.log(response);
-          let bad = document.getElementById("bad")
-          let good = document.getElementById("good")
+          let bad = document.getElementById("bad");
+          let good = document.getElementById("good");
           if (response.data.addDislike) {
             this.msg[indexI].dislikes++;
             this.msg[indexI].likes--;
-            good.style.color= "black"
-            bad.style.color= "red"
+            good.style.color = "black";
+            bad.style.color = "red";
           }
         })
         .catch((error) => {
@@ -127,6 +128,26 @@ export default {
     viewComments: function (messId) {
       localStorage.setItem("commentOneItem", messId);
       window.location.href = "http://localhost:8080/comment";
+    },
+    report: function (messId) {
+      let user = JSON.parse(localStorage.getItem("user"));
+      axios
+        .post(
+          `http://localhost:3000/api/report/`,
+          { itemId: messId, userId: user.userId },
+          {
+            headers: {
+              authorization: "Bearer " + user.token,
+            },
+          }
+        )
+        .then((response) => {
+          console.log(response);
+          alert(response.data)
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
   },
   mounted() {

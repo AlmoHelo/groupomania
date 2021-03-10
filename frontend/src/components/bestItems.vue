@@ -27,7 +27,7 @@
             ><i class="fas fa-comment-dots"></i>
             <p class="nbcomm">{{ mess.nbComm }} Commentaires</p></a
           >
-          <a class="signaler"
+          <a class="signaler" @click="report(mess.id)"
             ><i class="far fa-flag"></i><span>Signaler ce commentaire</span></a
           >
         </div>
@@ -125,6 +125,26 @@ export default {
       localStorage.setItem("commentOneItem", messId);
       window.location.href = "http://localhost:8080/comment";
     },
+    report: function (messId) {
+      let user = JSON.parse(localStorage.getItem("user"));
+      axios
+        .post(
+          `http://localhost:3000/api/report/`,
+          { itemId: messId, userId: user.userId },
+          {
+            headers: {
+              authorization: "Bearer " + user.token,
+            },
+          }
+        )
+        .then((response) => {
+          console.log(response);
+          alert(response.data)
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
   },
   mounted() {
     //Appel à l'api pour l'affichage de tous les messages
@@ -153,8 +173,6 @@ export default {
           localStorage.setItem("bestItem", JSON.stringify(myFavoriteItem));
         }
         this.msg = JSON.parse(localStorage.getItem("bestItem"));
-
-        console.log(test);
       })
       .catch((error) => {
         console.log(error);

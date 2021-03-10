@@ -2,7 +2,12 @@
   <headerAll />
   <h1>Les commentaires de l'article :</h1>
   {{ errorMessageItem }}
-  <div id="articles" class="msg" v-for="(mess, index) in msg" :key="mess.idMessages">
+  <div
+    id="articles"
+    class="msg"
+    v-for="(mess, index) in msg"
+    :key="mess.idMessages"
+  >
     <article class="theArticle">
       <div class="headArt">
         <p>{{ mess.pseudoUser }}</p>
@@ -11,14 +16,19 @@
       <p class="texte">{{ mess.description }}</p>
       <div class="footArt">
         <div class="like">
-          <a><i class="far fa-thumbs-up" id="good" v-on:click="onLike(mess.id, index)"></i></a
+          <a
+            ><i
+              class="far fa-thumbs-up"
+              id="good"
+              v-on:click="onLike(mess.id, index)"
+            ></i></a
           >{{ mess.likes }}
-          <a v-on:click="onDislike(mess.id, index)" 
+          <a v-on:click="onDislike(mess.id, index)"
             ><i class="far fa-thumbs-down" id="bad"></i></a
           >{{ mess.dislikes }}
         </div>
         <a><i class="fas fa-comment-dots"></i>Commentaires</a>
-        <a class="signaler"
+        <a class="signaler" @click="report(mess.id)"
           ><i class="far fa-flag"></i><span>Signaler ce commentaire</span></a
         >
       </div>
@@ -131,13 +141,13 @@ export default {
         )
         .then((response) => {
           console.log(response);
-          let good = document.getElementById("good")
-          let bad = document.getElementById("bad")
+          let good = document.getElementById("good");
+          let bad = document.getElementById("bad");
           if (response.data.addLike) {
             this.msg[indexI].likes++;
-            good.style.color= "green"
+            good.style.color = "green";
             this.msg[indexI].dislikes--;
-            bad.style.color= "black"
+            bad.style.color = "black";
           }
         })
         .catch((error) => {
@@ -167,13 +177,13 @@ export default {
         )
         .then((response) => {
           console.log(response);
-          let bad = document.getElementById("bad")
-          let good = document.getElementById("good")
+          let bad = document.getElementById("bad");
+          let good = document.getElementById("good");
           if (response.data.addDislike) {
             this.msg[indexI].dislikes++;
             this.msg[indexI].likes--;
-            good.style.color= "black"
-            bad.style.color= "red"
+            good.style.color = "black";
+            bad.style.color = "red";
           }
         })
         .catch((error) => {
@@ -293,6 +303,26 @@ export default {
           "Vous n'êtes pas autoriser à supprimer ce commentaire";
       }
     },
+    report: function (messId) {
+      let user = JSON.parse(localStorage.getItem("user"));
+      axios
+        .post(
+          `http://localhost:3000/api/report/`,
+          { itemId: messId, userId: user.userId },
+          {
+            headers: {
+              authorization: "Bearer " + user.token,
+            },
+          }
+        )
+        .then((response) => {
+          console.log(response);
+          alert(response.data)
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
   },
   data() {
     return {
@@ -320,7 +350,7 @@ export default {
         },
       })
       .then((response) => {
-        console.log(response)
+        console.log(response);
         this.msg = response.data.map((element) => {
           element.date = DATE_FORMAT(element.date);
           return element;

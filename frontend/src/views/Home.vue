@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/img/icon-left-font-monochrome-black.png" />
+    <img alt="Vue logo" src="../assets/img/icon-left-font-.png" />
     <h1 id="titleH1">Bienvenue sur le réseau social de votre entreprise !</h1>
 
     <ul>
@@ -35,8 +35,8 @@ ul {
 }
 .bouton, button {
   display: inline-block;
-  border: 1px solid #e7836f;
-  background-color: #e7836f;
+  border: 1px solid #F6D0D0;
+  background-color: #F6D0D0;
   border-radius: 10px;
   line-height: 40px;
   width: 200px;

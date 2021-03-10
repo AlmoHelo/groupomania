@@ -1,6 +1,6 @@
 <template>
   <header>
-    <img alt="Vue logo" src="../assets/img/logo-white.png" />
+    <img alt="Vue logo" src="../assets/img/icon-left-font-.png" />
     <ul id="menu">
       <a href="/item"> Accueil </a>
       <a class="signaler" id="report"> Signalement </a>
@@ -83,7 +83,7 @@ header {
     justify-content: center;
     margin: 0;
     & a {
-      color: black;
+      color: #F6D0D0;
       font-weight: bold;
       text-decoration: none;
       font-family: RocknRollOne, Helvetica, Arial, sans-serif;
