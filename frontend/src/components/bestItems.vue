@@ -3,7 +3,7 @@
     <h2>Top 3</h2>
     <div class="allBest">
       {{ errorMessage }}
-      <div class="article" v-for="mess in msg" :key="mess.idMessages">
+      <div class="article" v-for="(mess, index) in msg" :key="mess.idMessages">
         <div class="headArt">
           <p>{{ mess.pseudoUser }}</p>
           <p>{{ mess.date }}</p>
@@ -11,11 +11,16 @@
         <p class="texte">{{ mess.description }}</p>
         <div class="footArt">
           <div class="like">
-            <a><i class="far fa-thumbs-up" v-on:click="onLike(mess.id)"></i></a
+            <a
+              ><i
+                class="far fa-thumbs-up"
+                id="good"
+                v-on:click="onLike(mess.id, index)"
+              ></i></a
             >{{ mess.likes }}
             <!--v-bind:style="{ color: activeColor }"-->
-            <a v-on:click="onDislike(mess.id)"
-              ><i class="far fa-thumbs-down"></i></a
+            <a v-on:click="onDislike(mess.id, index)"
+              ><i class="far fa-thumbs-down" id="bad"></i></a
             >{{ mess.dislikes }}
           </div>
           <a class="commAccueil" @click="viewComments(mess.id)"
@@ -44,61 +49,77 @@ export default {
     };
   },
   methods: {
-    onLike: function (messId) {
-      this.dislike = -2;
+    onLike: function (messId, indexI) {
       this.like = 1;
+      this.dislike = -2;
       let idOneItem = messId;
       let user = JSON.parse(localStorage.getItem("user"));
       axios
         .post(
-          "http://localhost:3000/api/items/" + user.reponse.userId + "/like",
+          "http://localhost:3000/api/items/" + user.userId + "/like",
           {
-            userId: user.reponse.userId,
-            email: user.mail,
+            userId: user.userId,
+            email: user.email,
             like: this.like,
             dislike: this.dislike,
             idItem: idOneItem,
           },
           {
             headers: {
-              authorization: "Bearer " + user.reponse.token,
+              authorization: "Bearer " + user.token,
             },
           }
         )
         .then((response) => {
-          console.log(response);
+          console.log(response.data);
+          let good = document.getElementById("good");
+          let bad = document.getElementById("bad");
+          if (response.data.addLike) {
+            this.msg[indexI].likes++;
+            good.style.color = "green";
+            this.msg[indexI].dislikes--;
+            bad.style.color = "black";
+          }
         })
-        .catch((error) => console.log(error));
+        .catch((error) => {
+          console.log(error);
+        });
     },
-    onDislike: function (messId) {
+    onDislike: function (messId, indexI) {
       this.like = -1;
       this.dislike = 2;
       let idOneItem = messId;
       let user = JSON.parse(localStorage.getItem("user"));
       axios
         .post(
-          "http://localhost:3000/api/items/" + user.reponse.userId + "/like",
+          "http://localhost:3000/api/items/" + user.userId + "/like",
           {
-            userId: user.reponse.userId,
-            email: user.mail,
+            userId: user.userId,
+            email: user.email,
             like: this.like,
             dislike: this.dislike,
             idItem: idOneItem,
           },
           {
             headers: {
-              authorization: "Bearer " + user.reponse.token,
+              authorization: "Bearer " + user.token,
             },
           }
         )
         .then((response) => {
           console.log(response);
-          /* let msg = JSON.stringify(response)
-            if(msg.includes("200")){
-              window.location.href="http://localhost:8080/item"
-            }*/
+          let bad = document.getElementById("bad");
+          let good = document.getElementById("good");
+          if (response.data.addDislike) {
+            this.msg[indexI].dislikes++;
+            this.msg[indexI].likes--;
+            good.style.color = "black";
+            bad.style.color = "red";
+          }
         })
-        .catch((error) => console.log(error));
+        .catch((error) => {
+          console.log(error);
+        });
     },
     viewComments: function (messId) {
       localStorage.setItem("commentOneItem", messId);
@@ -111,7 +132,7 @@ export default {
     axios
       .get("http://localhost:3000/api/items/", {
         headers: {
-          authorization: "Bearer " + user.reponse.token,
+          authorization: "Bearer " + user.token,
         },
       })
       .then((response) => {

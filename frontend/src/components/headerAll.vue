@@ -3,6 +3,7 @@
     <img alt="Vue logo" src="../assets/img/logo-white.png" />
     <ul id="menu">
       <a href="/item"> Accueil </a>
+      <a class="signaler" id="report"> Signalement </a>
       <a v-on:click="profil"> Profil </a>
       <a v-on:click="deconnexion"> Deconnexion </a>
     </ul>
@@ -14,14 +15,21 @@ import axios from "axios";
 export default {
   name: "headerAll",
   el: "menu",
+  mounted(){
+    let myUser = JSON.parse(localStorage.getItem("user"))
+    if (myUser.admin === 1) {
+      let signalement = document.getElementById("report");
+      signalement.style.display = "flex";
+    }
+  },
   methods: {
     profil: function () {
       let user = JSON.parse(localStorage.getItem("user"));
-      let userId = user.reponse.userId;
+      let userId = user.userId;
       axios
         .get("http://localhost:3000/api/auth/" + userId, {
           headers: {
-            authorization: "Bearer " + user.reponse.token,
+            authorization: "Bearer " + user.token,
           },
         })
         .then((response) => {
@@ -43,6 +51,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.signaler {
+  display: none;
+}
 header {
   display: flex;
   justify-content: space-between;

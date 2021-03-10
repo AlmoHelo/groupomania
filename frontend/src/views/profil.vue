@@ -91,9 +91,9 @@ export default {
       let user = JSON.parse(localStorage.getItem("user"));
       axios
         .post(
-          "http://localhost:3000/api/items/" + user.reponse.userId + "/like",
+          "http://localhost:3000/api/items/" + user.userId + "/like",
           {
-            userId: user.reponse.userId,
+            userId: user.userId,
             email: user.mail,
             like: this.like,
             dislike: this.dislike,
@@ -101,7 +101,7 @@ export default {
           },
           {
             headers: {
-              authorization: "Bearer " + user.reponse.token,
+              authorization: "Bearer " + user.token,
             },
           }
         )
@@ -117,9 +117,9 @@ export default {
       let user = JSON.parse(localStorage.getItem("user"));
       axios
         .post(
-          "http://localhost:3000/api/items/" + user.reponse.userId + "/like",
+          "http://localhost:3000/api/items/" + user.userId + "/like",
           {
-            userId: user.reponse.userId,
+            userId: user.userId,
             email: user.mail,
             like: this.like,
             dislike: this.dislike,
@@ -127,7 +127,7 @@ export default {
           },
           {
             headers: {
-              authorization: "Bearer " + user.reponse.token,
+              authorization: "Bearer " + user.token,
             },
           }
         )
@@ -154,7 +154,7 @@ export default {
         axios
           .delete("http://localhost:3000/api/auth/" + userId, {
             headers: {
-              authorization: "Bearer " + user.reponse.token,
+              authorization: "Bearer " + user.token,
             },
           })
           .then((response) => {
@@ -189,7 +189,7 @@ export default {
         axios
           .delete("http://localhost:3000/api/items/" + myIdItem, {
             headers: {
-              authorization: "Bearer " + user.reponse.token,
+              authorization: "Bearer " + user.token,
             },
           })
           .then((response) => {
@@ -224,7 +224,7 @@ export default {
   },
   mounted() {
     let user = JSON.parse(localStorage.getItem("user"));
-    let userId = user.reponse.userId;
+    let userId = user.userId;
 
     let oneProfil = JSON.parse(localStorage.getItem("userProfil"));
     this.pseudo = oneProfil.pseudo;
@@ -240,7 +240,7 @@ export default {
     axios
       .get("http://localhost:3000/api/items/profil/" + userId, {
         headers: {
-          authorization: "Bearer " + user.reponse.token,
+          authorization: "Bearer " + user.token,
         },
       })
       .then((response) => {

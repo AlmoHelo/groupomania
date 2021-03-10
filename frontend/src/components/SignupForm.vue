@@ -73,7 +73,6 @@ export default {
   },
   methods: {
     envoie: function () {
-      //envoie des informations de connexion à l'API pour authentification
       let token = "";
       const lowcaseReg = /[a-z]+/;
       const uppercaseReg = /[A-Z]+/;
@@ -124,14 +123,7 @@ export default {
               }
             )
             .then((response) => {
-              console.log("Inscription réussi !");
-              let reponse = response.data;
-              console.log(response);
-              let userObject = JSON.stringify(reponse);
-              localStorage.setItem("user", userObject);
-
-              let user = JSON.parse(localStorage.getItem("user"));
-              token = user.token; //Token d'authentification
+              console.log(response.data.message);
               window.location.href = "http://localhost:8080/login";
             })
             .catch((error) => {

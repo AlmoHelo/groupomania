@@ -9,7 +9,6 @@ import createItem from "../views/createItem.vue"
 import comment from "../views/comments.vue"
 
 let user = localStorage.getItem("searchProfil")
-console.log(user)
 
 const routes = [
   {

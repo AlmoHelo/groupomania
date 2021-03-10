@@ -74,14 +74,11 @@ export default {
             }
           )
           .then((response) => {
-            let reponse = response.data;
-            let mail = this.email;
-            let all = { reponse, mail };
+            let reponse = JSON.stringify(response.data);
             console.log("Connexion réussi !");
-            let userObject = JSON.stringify(all);
-            localStorage.setItem("user", userObject);
+            localStorage.setItem("user", reponse);
             let user = JSON.parse(localStorage.getItem("user"));
-            token = user.reponse.token;
+            token = user.token;
             window.location.href = "http://localhost:8080/item";
           })
           .catch((err) => {

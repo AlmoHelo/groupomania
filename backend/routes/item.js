@@ -15,4 +15,5 @@ router.post('/:id/like', auth, itemCtrl.like);
 router.get("/profils/:id", auth, itemCtrl.getAllOtherUser) 
 router.get('/profil/:id', auth, itemCtrl.getAllProfil)
 
+
 module.exports = router;

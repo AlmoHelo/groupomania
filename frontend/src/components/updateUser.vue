@@ -15,11 +15,12 @@
       ><input
         type="password"
         name="pass"
-        id="Mot de passe"
+        id="password"
         v-model="password"
-        placeholder="*******  (max 8 caractères)"
+        placeholder="*******  (min 8 caractères, 1 lettre majuscule et minuscule et 1 chiffre obligatoire)"
         required
       />
+      <p class="errorMsg">{{ errPasswordReg }}</p>
       <label for="password2" maxlength="8"
         >Confirmation mot de passe<span>*</span> :</label
       ><input
@@ -27,7 +28,7 @@
         name="pass"
         id="Mot de passe2"
         v-model="password2"
-        placeholder="*******  (max 8 caractères)"
+        placeholder="*******"
         required
       />
       <p class="errorMsg">{{ errPassword }}</p>
@@ -59,6 +60,7 @@ export default {
       errEmail: "",
       errPseudo: "",
       errPassword: "",
+      errPasswordReg: "",
     };
   },
   methods: {
@@ -66,56 +68,106 @@ export default {
       let profil = JSON.parse(localStorage.getItem("userProfil"));
       let userId = profil.userId;
       let user = JSON.parse(localStorage.getItem("user"));
-      if (this.password != this.password2) {
-        this.errPassword = "Veuillez mettre des mots de passe identiques";
+      const lowcaseReg = /[a-z]+/;
+      const uppercaseReg = /[A-Z]+/;
+      const minCharactersReg = /.{8,}/;
+      const numberReg = /[0-9]+/;
+
+      const myPassword = this.password;
+      if (
+        myPassword.match(lowcaseReg) == null ||
+        myPassword.match(uppercaseReg) == null ||
+        myPassword.match(minCharactersReg) == null ||
+        myPassword.match(numberReg) == null
+      ) {
+        this.errPasswordReg =
+          "Votre mot de passe doit contenir au moins une minuscule, une majuscule et un nombre. Il doit avoir au minimum 8 caractères !";
+        console.log("ok");
       } else {
-        axios
-          .put(
-            "http://localhost:3000/api/auth/" + userId,
-            {
-              id: profil.userId,
-              email: this.email,
-              password: this.password,
-              pseudo: this.pseudo,
-              biographie: this.biographie,
-            },
-            {
-              headers: {
-                authorization: "Bearer " + user.reponse.token,
+        console.log("pasOk");
+        if (this.password != this.password2) {
+          this.errPassword = "Veuillez mettre des mots de passe identiques";
+          this.errPasswordReg = "";
+          this.errEmail = "";
+          this.errPseudo = "";
+          let myPassword = document.getElementById("Mot de passe2");
+          myPassword.style.border = "1px solid red";
+          myPassword.animate(
+            [
+              { transform: "translateX(10px)" },
+              { transform: "translateX(-10px)" },
+            ],
+            { duration: 60, iterations: 4, easing: "ease-in-out" }
+          );
+        } else {
+          axios
+            .put(
+              "http://localhost:3000/api/auth/" + userId,
+              {
+                id: profil.userId,
+                email: this.email,
+                password: this.password,
+                pseudo: this.pseudo,
+                biographie: this.biographie,
               },
-            }
-          )
-          .then((response) => {
-            alert(response.data.message);
-            localStorage.removeItem("userProfil");
-            axios
-              .get("http://localhost:3000/api/auth/" + userId, {
+              {
                 headers: {
-                  authorization: "Bearer " + user.reponse.token,
+                  authorization: "Bearer " + user.token,
                 },
-              })
-              .then((response) => {
-                console.log(response.data[0]);
-                let profil = JSON.stringify(response.data[0]);
-                localStorage.setItem("userProfil", profil);
-                window.location.href = "http://localhost:8080/items/profil";
-              })
-              .catch((error) => {
-                console.log(error);
-                this.err;
-              });
-          })
-          .catch((error) => {
-            console.log(error);
-            let msgErr = JSON.stringify(error);
-            if (msgErr.includes("410")) {
-              this.errEmail = "E-mail déjà utilisé !!";
-              this.errPassword = "";
-            } else if (msgErr.includes("420")) {
-              this.errPseudo = "Pseudo déjà utilisé !";
-              this.errEmail = "";
-            }
-          });
+              }
+            )
+            .then((response) => {
+              alert(response.data.message);
+              localStorage.removeItem("userProfil");
+              axios
+                .get("http://localhost:3000/api/auth/" + userId, {
+                  headers: {
+                    authorization: "Bearer " + user.token,
+                  },
+                })
+                .then((response) => {
+                  console.log(response.data[0]);
+                  let profil = JSON.stringify(response.data[0]);
+                  localStorage.setItem("userProfil", profil);
+                  window.location.href = "http://localhost:8080/items/profil";
+                })
+                .catch((error) => {
+                  console.log(error);
+                  this.err;
+                });
+            })
+            .catch((error) => {
+              let msgErr = JSON.stringify(error);
+              if (msgErr.includes("410")) {
+                this.errEmail = "E-mail déjà utilisé !!";
+                this.errPassword = "";
+                this.errPseudo = "";
+                let myEmail = document.getElementById("email");
+                myEmail.style.border = "1px solid red";
+                myEmail.animate(
+                  [
+                    { transform: "translateX(10px)" },
+                    { transform: "translateX(-10px)" },
+                  ],
+                  { duration: 60, iterations: 4, easing: "ease-in-out" }
+                );
+              } else if (msgErr.includes("420")) {
+                this.errPseudo = "Pseudo déjà utilisé !";
+                this.errEmail = "";
+                this.errPassword = "";
+                let myPseudo = document.getElementById("pseudo");
+                myPseudo.style.border = "1px solid red";
+                myPseudo.animate(
+                  [
+                    { transform: "translateX(10px)" },
+                    { transform: "translateX(-10px)" },
+                  ],
+                  { duration: 60, iterations: 4, easing: "ease-in-out" }
+                );
+              }
+              console.log("la connexion a échouée" + error);
+            });
+        }
       }
     },
   },
@@ -179,7 +231,7 @@ button {
       height: 70px;
     }
   }
-  button{
+  button {
     width: 180px;
     font-size: 20px;
     margin-bottom: 20px;

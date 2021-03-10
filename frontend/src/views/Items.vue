@@ -113,7 +113,7 @@ export default {
     axios
       .get("http://localhost:3000/api/auth/", {
         headers: {
-          authorization: "Bearer " + user.reponse.token,
+          authorization: "Bearer " + user.token,
         },
       })
       .then((response) => {

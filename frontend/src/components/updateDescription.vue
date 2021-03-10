@@ -41,7 +41,7 @@ export default {
             },
             {
               headers: {
-                authorization: "Bearer " + user.reponse.token,
+                authorization: "Bearer " + user.token,
               },
             }
           )
