@@ -7,6 +7,7 @@ import otherProfil from "../views/otherProfil.vue"
 import Items from '../views/Items.vue'
 import createItem from "../views/createItem.vue"
 import comment from "../views/comments.vue"
+import report from "../views/report.vue"
 
 let user = localStorage.getItem("searchProfil")
 
@@ -51,6 +52,11 @@ const routes = [
     name: 'comment',
     component: comment
   },
+  {
+    path: "/report",
+    name: 'report',
+    component: report
+  }
 ]
 
 const router = createRouter({

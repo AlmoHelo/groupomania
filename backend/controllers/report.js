@@ -3,13 +3,33 @@ const db = require('../database')
 require('dotenv').config()
 
 
-//Affichage de tous les signalements dans ordre descendant
-exports.getAll = (req, res, next) => {
-    db.query('SELECT * FROM report ORDER BY date DESC', (error, result, field) => {
+//Affichage de tous les signalements d'articles dans ordre descendant
+exports.getAllItem = (req, res, next) => {
+    db.query('SELECT * FROM report WHERE idReportItem IS NOT NULL ORDER BY dateReport DESC ', (error, result, field) => {
         if (error) {
             return res.status(400).json({ error })
         }
-        return res.status(200).json(result)
+        db.query(`SELECT * FROM report FULL JOIN item ON idReportItem = item.id`, (error, resp, fields) => {
+            if (error) {
+                return res.status(400).json({ error })
+            }
+            return res.status(200).json(resp)
+        })
+    })
+}
+
+//Affichage de tous les signalements de commentaires dans ordre descendant
+exports.getAllComment = (req, res, next) => {
+    db.query('SELECT * FROM report WHERE idReportComment IS NOT NULL ORDER BY dateReport DESC ', (error, result, field) => {
+        if (error) {
+            return res.status(400).json({ error })
+        }
+        db.query(`SELECT * FROM report FULL JOIN comment ON idReportComment = comment.idComment`, (error, resp, fields) => {
+            if (error) {
+                return res.status(400).json({ error })
+            }
+            return res.status(200).json(resp)
+        })
     })
 }
 

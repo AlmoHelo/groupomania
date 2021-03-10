@@ -3,7 +3,7 @@
     <img alt="Vue logo" src="../assets/img/icon-left-font-.png" />
     <ul id="menu">
       <a href="/item"> Accueil </a>
-      <a class="signaler" id="report"> Signalement </a>
+      <a class="signaler" id="report" href="/report"> Signalement </a>
       <a v-on:click="profil"> Profil </a>
       <a v-on:click="deconnexion"> Deconnexion </a>
     </ul>
