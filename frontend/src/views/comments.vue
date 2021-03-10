@@ -94,6 +94,9 @@
         <p class="texte">{{ mess.descriptionComm }}</p>
       </article>
       <div class="icons">
+        <a class="signaler" @click="reportComment(mess.idComment)"
+          ><i class="far fa-flag"></i
+        ></a>
         <a @click="updateComm(mess.idComment, mess.pseudoUserComm)"
           ><i class="far fa-edit"></i
         ></a>
@@ -317,10 +320,29 @@ export default {
         )
         .then((response) => {
           console.log(response);
-          alert(response.data)
+          alert(response.data);
         })
         .catch((error) => {
           console.log(error);
+        });
+    },
+    reportComment: function (messId) {
+      let user = JSON.parse(localStorage.getItem("user"));
+      axios
+        .post(
+          `http://localhost:3000/api/report/`,
+          { commentId: messId, userId: user.userId },
+          {
+            headers: {
+              authorization: "Bearer " + user.token,
+            },
+          }
+        )
+        .then((response) => {
+          alert(response.data);
+        })
+        .catch((error) => {
+          alert(error.data);
         });
     },
   },
