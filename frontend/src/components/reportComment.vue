@@ -1,4 +1,5 @@
 <template>
+<div class="commRep">
   <div id="articles" class="msg" v-for="mess in msg" :key="mess.idMessages">
     <article class="article">
       <div class="headArt">
@@ -18,6 +19,7 @@
       </div>
     </article>
   </div>
+</div>
 </template>
 
 <script>
@@ -56,11 +58,17 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.commRep {
+  border: 1px solid #c3c3c3;
+  border-radius: 5px;
+  background-color: white;
+  width: 60%;
+  padding: 10px;
+  margin: auto;
+}
 .article {
   border: 1px solid #b6b3b39d;
   background-color: #dae0e6;
-  margin: auto;
-  margin-bottom: 20px;
-  width: 60%;
+  margin: 10px;
 }
 </style>
