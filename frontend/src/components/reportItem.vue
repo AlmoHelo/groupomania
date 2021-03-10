@@ -69,6 +69,6 @@ export default {
 .article {
   border: 1px solid #b6b3b39d;
   background-color: #dae0e6;
-  margin: 10px;
+  margin: 20px;
 }
 </style>
