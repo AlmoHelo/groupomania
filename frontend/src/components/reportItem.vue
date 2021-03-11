@@ -143,6 +143,7 @@ export default {
   & .myImg {
     border-radius: 5px;
     max-width: 100%;
+    max-height: 150px;
   }
   & .texte {
     margin: auto;
@@ -158,6 +159,9 @@ export default {
       margin: auto;
       margin-top: 10px;
       max-width: 100%;
+    }
+    & .myImg {
+      max-height: 20%;
     }
     & .texte {
       margin-top: 0px;
@@ -181,6 +185,9 @@ export default {
       margin: auto;
       margin: 5px;
       max-width: 50%;
+      & .myImg {
+        max-height: 220px;
+      }
     }
   }
 }

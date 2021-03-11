@@ -220,12 +220,13 @@ section {
   display: flex;
   align-items: center;
   & .myLinkPict {
-    margin: 10px 0px 10px 40px;
+    margin: 10px 0px 10px 10%;
     max-width: 40%;
   }
   & .myImg {
     border-radius: 5px;
     max-width: 100%;
+    max-height: 150px;
   }
   & .texte {
     margin: auto;
@@ -292,6 +293,9 @@ section {
       margin-top: 10px;
       max-width: 100%;
     }
+    & .myImg {
+      max-height: 20%;
+    }
     & .texte {
       margin-top: 0px;
       margin-bottom: 10px;
@@ -322,6 +326,9 @@ section {
       margin: auto;
       margin: 5px;
       max-width: 50%;
+      & .myImg {
+        max-height: 220px;
+      }
     }
   }
   .article {

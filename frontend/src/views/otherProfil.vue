@@ -38,7 +38,12 @@
 
         <div class="footArt">
           <div class="like">
-            <a><i class="far fa-thumbs-up" id="good" v-on:click="onLike(mess.id, index)"></i></a
+            <a
+              ><i
+                class="far fa-thumbs-up"
+                id="good"
+                v-on:click="onLike(mess.id, index)"
+              ></i></a
             >{{ mess.likes }}
             <!--v-bind:style="{ color: activeColor }"-->
             <a v-on:click="onDislike(mess.id, index)"
@@ -93,13 +98,13 @@ export default {
         )
         .then((response) => {
           console.log(response);
-          let good = document.getElementById("good")
-          let bad = document.getElementById("bad")
+          let good = document.getElementById("good");
+          let bad = document.getElementById("bad");
           if (response.data.addLike) {
             this.msg[indexI].likes++;
-            good.style.color= "green"
+            good.style.color = "green";
             this.msg[indexI].dislikes--;
-            bad.style.color= "black"
+            bad.style.color = "black";
           }
         })
         .catch((error) => {
@@ -129,13 +134,13 @@ export default {
         )
         .then((response) => {
           console.log(response);
-          let bad = document.getElementById("bad")
-          let good = document.getElementById("good")
+          let bad = document.getElementById("bad");
+          let good = document.getElementById("good");
           if (response.data.addDislike) {
             this.msg[indexI].dislikes++;
             this.msg[indexI].likes--;
-            good.style.color= "black"
-            bad.style.color= "red"
+            good.style.color = "black";
+            bad.style.color = "red";
           }
         })
         .catch((error) => {
@@ -263,6 +268,7 @@ export default {
   & .myImg {
     border-radius: 5px;
     max-width: 100%;
+    max-height: 150px;
   }
   & .texte {
     margin: auto;
@@ -370,6 +376,9 @@ export default {
       margin-top: 10px;
       max-width: 100%;
     }
+    & .myImg {
+      max-height: 20%;
+    }
     & .texte {
       margin-top: 0px;
       margin-bottom: 10px;
@@ -392,6 +401,9 @@ export default {
       margin: auto;
       margin: 5px;
       max-width: 50%;
+      & .myImg {
+        max-height: 220px;
+      }
     }
   }
 }

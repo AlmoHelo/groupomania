@@ -229,7 +229,7 @@ export default {
         )
         .then((response) => {
           console.log(response);
-          alert(response.data)
+          alert(response.data);
         })
         .catch((error) => {
           console.log(error);
@@ -360,6 +360,7 @@ export default {
   & .myImg {
     border-radius: 5px;
     max-width: 100%;
+    max-height: 150px;
   }
   & .texte {
     margin: auto;
@@ -442,6 +443,9 @@ export default {
       margin-top: 10px;
       max-width: 100%;
     }
+    & .myImg {
+      max-height: 20%;
+    }
     & .texte {
       margin-top: 0px;
       margin-bottom: 10px;
@@ -490,6 +494,9 @@ export default {
       margin: auto;
       margin: 5px;
       max-width: 50%;
+      & .myImg {
+        max-height: 220px;
+      }
     }
   }
 }
