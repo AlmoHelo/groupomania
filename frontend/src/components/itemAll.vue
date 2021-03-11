@@ -17,8 +17,13 @@
           <p>{{ mess.pseudoUser }}</p>
           <p>{{ mess.date }}</p>
         </div>
-        <p class="texte">{{ mess.description }}</p>
-        <p>{{ mess.imageURL }}</p>
+        <div class="descrip">
+          <img
+            v-bind:src="'http://localhost:3000/images/' + mess.imageURL"
+            class="myImg" v-if="mess.imageURL != null"
+          />
+          <p class="texte" id="texte">{{ mess.description }}</p>
+        </div>
         <div class="footArt">
           <div class="like">
             <a
@@ -143,7 +148,7 @@ export default {
         )
         .then((response) => {
           console.log(response);
-          alert(response.data)
+          alert(response.data);
         })
         .catch((error) => {
           console.log(error);
@@ -204,6 +209,20 @@ section {
       text-decoration: none;
       color: black;
     }
+  }
+}
+.descrip {
+  display: flex;
+  align-items: center;
+  & .myImg {
+    border-radius: 5px;
+    max-width: 30%;
+    margin: 10px 0px 10px 100px;
+  }
+  & .texte {
+    margin: auto;
+    margin-top: 30px;
+    margin-bottom: 30px;
   }
 }
 .article {

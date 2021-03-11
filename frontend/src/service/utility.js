@@ -11,3 +11,4 @@ export const SEARCH_PICTURE = (pictureString) => {
     const name = pictureString.split('/images/')[1];
     return name
 }
+
