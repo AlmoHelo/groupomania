@@ -31,7 +31,10 @@
       <div id="bestItemPage"><bestItems /></div>
     </div>
     <div class="apropos">
-      <img src="../assets/img/icon-left-font-monochrome-black.png" />
+      <div class="imgLog">
+        <img src="../assets/img/logo-black.png" class="map" />
+        <img src="../assets/img/logo-black2.png" />
+      </div>
       <h2>A propos de l'entreprise</h2>
       <section class="employee">
         <p>Nombre d'employés : 620</p>
@@ -183,8 +186,8 @@ export default {
     padding: 10px;
     & a {
       &:hover {
-        border: 1px solid #F6D0D0;
-        background-color: #F6D0D0;
+        border: 1px solid #f6d0d0;
+        background-color: #f6d0d0;
         padding: 6px;
         border-radius: 35px;
       }
@@ -210,13 +213,13 @@ export default {
   }
 }
 #linkBest {
-  border: 1px solid #F6D0D0;
-  background-color: #F6D0D0;
+  border: 1px solid #f6d0d0;
+  background-color: #f6d0d0;
   padding: 6px;
   border-radius: 35px;
   &:hover {
-    border: 1px solid #F6D0D0;
-    background-color: #F6D0D0;
+    border: 1px solid #f6d0d0;
+    background-color: #f6d0d0;
     padding: 6px;
     border-radius: 35px;
   }
@@ -224,10 +227,22 @@ export default {
 #itemAllPage {
   display: none;
 }
-img {
-  width: 90%;
+.imgLog {
+  block-size: 100%;
   margin-top: 20px;
   margin-bottom: 20px;
+  display: flex;
+  max-height: 9%;
+  & .map {
+    margin-left: 5px;
+    margin-right: 10px;
+    animation: turnMap 3s infinite ease-in-out;
+  }
+}
+@keyframes turnMap {
+  100% {
+    transform: rotateZ(360deg);
+  }
 }
 .apropos {
   width: 25%;
@@ -262,6 +277,16 @@ img {
 }
 
 @media screen and (max-width: 767px) {
+  .imgLog {
+    & img {
+      height: 50px;
+    }
+    & .map {
+      width: 50px;
+      margin-left: 2px;
+      margin-right: 2px;
+    }
+  }
   .accueil {
     display: flex;
     flex-direction: column-reverse;
@@ -312,9 +337,15 @@ img {
       }
     }
   }
-  img {
-    width: 80%;
-    margin: 10px 0;
+  .imgLog {
+    & img {
+      height: 50px;
+    }
+    & .map {
+      width: 50px;
+      margin-left: 2px;
+      margin-right: 2px;
+    }
   }
   .apropos {
     width: 40%;
@@ -323,10 +354,11 @@ img {
     & h2 {
       font-size: 15px;
       margin-top: 0;
-      margin-bottom: 00px;
+      margin-bottom: 0px;
     }
     & .employee,
     .text {
+      padding: 0;
       font-size: 12px;
       margin-top: 0px;
       margin-bottom: 0px;

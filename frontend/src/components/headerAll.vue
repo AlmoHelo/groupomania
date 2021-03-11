@@ -1,6 +1,6 @@
 <template>
   <header>
-    <img alt="Vue logo" src="../assets/img/icon-left-font-.png" />
+    <img alt="Vue logo" src="../assets/img/logo-white.png" />
     <ul id="menu">
       <a href="/item"> Accueil </a>
       <a class="signaler" id="report" href="/report"> Signalement </a>
