@@ -33,7 +33,7 @@
     <div class="apropos">
       <div class="imgLog">
         <img src="../assets/img/logo-black.png" class="map" />
-        <img src="../assets/img/logo-black2.png" />
+        <img src="../assets/img/logo-black2.png" class="log" />
       </div>
       <h2>A propos de l'entreprise</h2>
       <section class="employee">
@@ -228,15 +228,19 @@ export default {
   display: none;
 }
 .imgLog {
-  block-size: 100%;
+  width: 100%;
+  height: 7%;
   margin-top: 20px;
   margin-bottom: 20px;
   display: flex;
-  max-height: 9%;
   & .map {
+    width: 15%;
     margin-left: 5px;
     margin-right: 10px;
     animation: turnMap 3s infinite ease-in-out;
+  }
+  & .log {
+    width: 75%;
   }
 }
 @keyframes turnMap {
@@ -278,11 +282,8 @@ export default {
 
 @media screen and (max-width: 767px) {
   .imgLog {
-    & img {
-      height: 50px;
-    }
     & .map {
-      width: 50px;
+      width: 20%;
       margin-left: 2px;
       margin-right: 2px;
     }
@@ -338,11 +339,10 @@ export default {
     }
   }
   .imgLog {
-    & img {
-      height: 50px;
-    }
+    height: 10%;
+    margin-top: 5px;
     & .map {
-      width: 50px;
+      width: 18%;
       margin-left: 2px;
       margin-right: 2px;
     }
@@ -367,6 +367,14 @@ export default {
   .articles {
     width: 50%;
     margin-left: 40px;
+  }
+}
+@media screen and (min-width: 1200px) {
+  .imgLog {
+    height: 10%;
+    & .map {
+      width: 18%;
+    }
   }
 }
 </style>
