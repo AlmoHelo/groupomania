@@ -24,11 +24,11 @@
         </div>
 
         <div class="descrip">
-          <img
+          <a v-bind:href="'http://localhost:3000/images/' + mess.imageURL"><img
             v-bind:src="'http://localhost:3000/images/' + mess.imageURL"
-            class="myImg"
+            class="myImg" title="Cliquer pour agrandir"
             v-if="mess.imageURL != null"
-          />
+          /></a>
           <p class="texte" id="texte">{{ mess.description }}</p>
         </div>
 

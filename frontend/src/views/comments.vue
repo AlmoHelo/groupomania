@@ -14,11 +14,11 @@
         <p>{{ mess.date }}</p>
       </div>
       <div class="descrip">
-        <img
-          v-bind:src="'http://localhost:3000/images/' + mess.imageURL"
-          class="myImg"
-          v-if="mess.imageURL != null"
-        />
+          <a v-bind:href="'http://localhost:3000/images/' + mess.imageURL"><img
+            v-bind:src="'http://localhost:3000/images/' + mess.imageURL"
+            class="myImg" title="Cliquer pour agrandir"
+            v-if="mess.imageURL != null"
+          /></a>
         <p class="texte" id="texte">{{ mess.description }}</p>
       </div>
       <div class="footArt">
