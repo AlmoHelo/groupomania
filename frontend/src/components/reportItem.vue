@@ -153,6 +153,21 @@ export default {
 }
 
 @media screen and (max-width: 767px) {
+  .itemRep{
+    width: 90%;
+    padding: 5px;
+  }
+  .article {
+    font-size: 12px;
+    width: 95%;
+    margin: auto;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    & .footArt {
+      justify-content: space-between;
+      padding: 10px;
+    }
+  }
   .descrip {
     flex-direction: column;
     & .myLinkPict {
@@ -166,16 +181,6 @@ export default {
     & .texte {
       margin-top: 0px;
       margin-bottom: 10px;
-    }
-  }
-  .article {
-    font-size: 12px;
-    width: 90%;
-    margin: auto;
-    margin-bottom: 10px;
-    & .footArt {
-      justify-content: space-between;
-      padding: 10px;
     }
   }
 }

@@ -19,4 +19,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+@media screen and (max-width: 767px) {
+  h2{
+    font-size: 22px;
+  }
+}
 </style>

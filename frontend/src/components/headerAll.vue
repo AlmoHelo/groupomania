@@ -103,6 +103,7 @@ header {
     & ul {
       flex-direction: row;
       justify-content: space-around;
+      flex-wrap: wrap;
       width: 100%;
     }
   }
