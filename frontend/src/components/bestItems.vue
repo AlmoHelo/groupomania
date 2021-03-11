@@ -9,10 +9,14 @@
           <p>{{ mess.date }}</p>
         </div>
         <div class="descrip">
-          <a v-bind:href="'http://localhost:3000/images/' + mess.imageURL"><img
-            v-bind:src="'http://localhost:3000/images/' + mess.imageURL"
-            class="myImg" title="Cliquer pour agrandir"
-            v-if="mess.imageURL != null"
+          <a
+            v-bind:href="'http://localhost:3000/images/' + mess.imageURL"
+            class="myLinkPict"
+            ><img
+              v-bind:src="'http://localhost:3000/images/' + mess.imageURL"
+              class="myImg"
+              title="Cliquer pour agrandir"
+              v-if="mess.imageURL != null"
           /></a>
           <p class="texte" id="texte">{{ mess.description }}</p>
         </div>
@@ -213,10 +217,13 @@ section {
 .descrip {
   display: flex;
   align-items: center;
+  & .myLinkPict {
+    margin: 10px 0px 10px 40px;
+    max-width: 40%;
+  }
   & .myImg {
     border-radius: 5px;
-    max-width: 30%;
-    margin: 10px 0px 10px 100px;
+    max-width: 100%;
   }
   & .texte {
     margin: auto;
@@ -243,14 +250,13 @@ section {
   }
   .descrip {
     flex-direction: column;
-    & .myImg {
-      border-radius: 5px;
-      max-width: 100%;
-      margin: 10px;
-    }
-    & .texte {
+    & .myLinkPict {
       margin: auto;
       margin-top: 10px;
+      max-width: 100%;
+    }
+    & .texte {
+      margin-top: 0px;
       margin-bottom: 10px;
     }
   }
@@ -276,10 +282,10 @@ section {
         max-height: 40px;
       }
       & .descrip {
-        & .myImg {
-          border-radius: 5px;
+        & .myLinkPict {
+          margin: auto;
+          margin: 5px;
           max-width: 50%;
-          margin: 10px;
         }
         & .texte {
           height: 50px;
