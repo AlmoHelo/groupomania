@@ -5,10 +5,12 @@
   <!--affiche les coordonnées du profil-->
   <section class="profil" id="profil">
     {{ errorMessageGetOne }}
-    <p>Adresse mail : {{ mail }}</p>
-    <p>Pseudo : {{ pseudo }}</p>
-    <p>Inscrit depuis le : {{ date }}</p>
-    <p>Biographie : {{ biographie }}</p>
+    <div class="allInfo">
+      <p>Adresse mail : {{ mail }}</p>
+      <p>Pseudo : {{ pseudo }}</p>
+      <p>Inscrit depuis le : {{ date }}</p>
+      <p>Biographie : {{ biographie }}</p>
+    </div>
   </section>
 
   <!-- affiche tous les article-->
@@ -193,6 +195,13 @@ export default {
         } else {
           this.biographie = response.data.biographie;
         }
+        let myPict = document.createElement("img");
+        myPict.setAttribute("src", response.data.pictureProfil);
+        myPict.style.width = "150px";
+        myPict.style.height = "150px";
+        myPict.style.margin = "auto";
+        let myProfil = document.getElementById("profil");
+        myProfil.appendChild(myPict);
       })
       .catch((error) => {
         console.log(error);
@@ -248,6 +257,12 @@ export default {
   width: 57%;
 }
 .profil {
+  display: flex;
+  flex-direction: row-reverse;
+  & .allInfo {
+    width: 50%;
+    margin: auto;
+  }
   & button {
     margin: 10px;
   }
@@ -335,6 +350,12 @@ export default {
   .profil {
     width: 90%;
     font-size: 13px;
+    flex-direction: column-reverse;
+    justify-content: center;
+    & .allInfo {
+      margin: auto;
+      width: 100%;
+    }
     & .modifSupp {
       display: flex;
       margin-top: 20px;

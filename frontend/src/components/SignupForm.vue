@@ -44,6 +44,16 @@
       <p class="errorMsg">{{ errPseudo }}</p>
       <label for="Biographie">Biographie :</label
       ><textarea name="biographie" v-model="biographie" id="biographie" />
+
+      <label>Image de profil:</label
+      ><input
+        type="file"
+        name="fichier"
+        id="choosePicture"
+        class="choosePicture"
+        v-on:change="sendFile($event)"
+      />
+
       <p class="champ">* : Champs obligatoires</p>
       <button type="submit">S'inscrire</button>
     </form>
@@ -69,6 +79,7 @@ export default {
       errPseudo: "",
       errPassword: "",
       errPasswordReg: "",
+      image: ""
     };
   },
   methods: {
@@ -104,16 +115,15 @@ export default {
             { duration: 60, iterations: 4, easing: "ease-in-out" }
           );
         } else {
+          const formData = new FormData();
+          formData.append("image", this.image);
+          formData.append("email", this.email);
+          formData.append("pseudo", this.pseudo);
+          formData.append("password", this.password);
+          formData.append("biographie", this.biographie);
           axios
             .post(
-              "http://localhost:3000/api/auth/signup",
-              {
-                email: this.email,
-                password: this.password,
-                pseudo: this.pseudo,
-                biographie: this.biographie,
-              },
-              {
+              "http://localhost:3000/api/auth/signup", formData, {
                 headers: {
                   "Content-type": "application/json",
                   Authorization: `Bearer` + token, //Renvoi du token par l'api en cas d'authentification
@@ -158,6 +168,9 @@ export default {
         }
       }
     },
+    sendFile(event) {
+      this.$data.image = event.target.files[0];
+    },
   },
 };
 </script>
@@ -200,6 +213,9 @@ form {
       color: rgb(39, 38, 38);
     }
   }
+}
+.choosePicture {
+  background-color: transparent;
 }
 textarea {
   width: 90%;

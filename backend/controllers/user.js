@@ -13,10 +13,11 @@ bcrypt.hash(pass, 10)
 //Inscription de l'utilisateur
 exports.signup = (req, res, next) => {
     const user = req.body
+    const imageURL = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
     bcrypt.hash(user.password, 10)
         .then((hash) => {
             user.password = hash
-            const insertUser = `INSERT INTO user (email, pseudo, password, biographie, creationDate) VALUES ("` + user.email + `", "` + user.pseudo + `", "` + user.password + `", "` + user.biographie + `", NOW() )`
+            const insertUser = `INSERT INTO user (email, pseudo, password, biographie, creationDate, pictureProfil) VALUES ("${user.email}", "${user.pseudo}", "${user.password}", "${user.biographie}", NOW(), "${imageURL}" )`
             db.query(insertUser, (err, result, field) => {
                 if (err) {
                     console.log(err)
@@ -149,7 +150,7 @@ exports.updateUser = (req, res, next) => {
 //Affichage de l'utilisateur connecté
 exports.getOneUser = (req, res, next) => {
     const userId = req.params.id
-    const oneU = 'SELECT userId, email, pseudo, biographie, creationDate FROM user WHERE userId=' + userId
+    const oneU = 'SELECT userId, email, pseudo, biographie, creationDate, pictureProfil FROM user WHERE userId=' + userId
     db.query(oneU, (error, results) => {
         if (error) {
             return res.status(400).json(error)
@@ -172,7 +173,7 @@ exports.getCountUsers = (req, res, next) => {
 //Affichage de l'utilisateur selectionné
 exports.getOneOtherUser = (req, res, next) => {
     const pseudo = req.params.id
-    db.query(`SELECT userId, email, pseudo, biographie, creationDate FROM user WHERE pseudo="${pseudo}"`, (error, results) => {
+    db.query(`SELECT userId, email, pseudo, biographie, creationDate, pictureProfil FROM user WHERE pseudo="${pseudo}"`, (error, results) => {
         if (error) {
             return res.status(410).json(error)
         }

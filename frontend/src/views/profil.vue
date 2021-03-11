@@ -10,13 +10,15 @@
   <!--affiche les coordonnées du profil-->
   <section class="profil" id="profil">
     {{ errorMessageGetOne }}
-    <p>Adresse mail : {{ mail }}</p>
-    <p>Inscrit depuis le : {{ date }}</p>
-    <p>Biographie : {{ biographie }}</p>
-    <p class="errorMessage">{{ errDeleteUser }}</p>
-    <div class="modifSupp">
-      <button @click="modifier" class="buttonMS">Modifier</button>
-      <button @click="deleteUser" class="buttonMS">Supprimer</button>
+    <div class="allInfo">
+      <p>Adresse mail : {{ mail }}</p>
+      <p>Inscrit depuis le : {{ date }}</p>
+      <p>Biographie : {{ biographie }}</p>
+      <p class="errorMessage">{{ errDeleteUser }}</p>
+      <div class="modifSupp">
+        <button @click="modifier" class="buttonMS">Modifier</button>
+        <button @click="deleteUser" class="buttonMS">Supprimer</button>
+      </div>
     </div>
   </section>
 
@@ -263,6 +265,14 @@ export default {
     this.mail = oneProfil.email;
     this.date = DATE_FORMAT(oneProfil.creationDate);
 
+    let myPict = document.createElement("img");
+    myPict.setAttribute("src", oneProfil.pictureProfil);
+    myPict.style.width = "150px";
+    myPict.style.height = "150px";
+    myPict.style.margin = "auto";
+    let myProfil = document.getElementById("profil");
+    myProfil.appendChild(myPict);
+
     if (oneProfil.biographie == null || oneProfil.biographie == "") {
       this.biographie = "Modifier votre profil pour ajouter une biographie";
     } else {
@@ -340,6 +350,18 @@ export default {
   width: 57%;
 }
 .profil {
+  display: flex;
+  flex-direction: row-reverse;
+  & .allInfo {
+    width: 50%;
+    margin: auto;
+  }
+  & .modifSupp {
+    width: 80%;
+    margin: auto;
+    display: flex;
+    margin-top: 20px;
+  }
   & button {
     margin: 10px;
   }
@@ -428,6 +450,12 @@ export default {
   .profil {
     width: 90%;
     font-size: 13px;
+    flex-direction: column-reverse;
+    justify-content: center;
+    & .allInfo {
+      margin: auto;
+      width: 100%;
+    }
     & .modifSupp {
       display: flex;
       margin-top: 20px;
