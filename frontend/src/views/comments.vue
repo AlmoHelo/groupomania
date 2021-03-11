@@ -13,7 +13,14 @@
         <p>{{ mess.pseudoUser }}</p>
         <p>{{ mess.date }}</p>
       </div>
-      <p class="texte">{{ mess.description }}</p>
+      <div class="descrip">
+        <img
+          v-bind:src="'http://localhost:3000/images/' + mess.imageURL"
+          class="myImg"
+          v-if="mess.imageURL != null"
+        />
+        <p class="texte" id="texte">{{ mess.description }}</p>
+      </div>
       <div class="footArt">
         <div class="like">
           <a
@@ -112,6 +119,7 @@
 <script>
 import axios from "axios";
 import { DATE_FORMAT } from "../service/utility";
+import { SEARCH_PICTURE } from "../service/utility";
 import headerAll from "../components/headerAll";
 import footerAll from "../components/footerAll";
 export default {
@@ -372,7 +380,12 @@ export default {
         },
       })
       .then((response) => {
-        console.log(response);
+        this.msg = response.data.map((element) => {
+          if (element.imageURL != null) {
+            element.imageURL = SEARCH_PICTURE(element.imageURL);
+            return element;
+          }
+        });
         this.msg = response.data.map((element) => {
           element.date = DATE_FORMAT(element.date);
           return element;
@@ -449,7 +462,20 @@ export default {
     margin-left: 5px;
   }
 }
-
+.descrip {
+  display: flex;
+  align-items: center;
+  & .myImg {
+    border-radius: 5px;
+    max-width: 30%;
+    margin: 10px 0px 10px 100px;
+  }
+  & .texte {
+    margin: auto;
+    margin-top: 30px;
+    margin-bottom: 30px;
+  }
+}
 .theComments {
   border-bottom: none;
   border-radius: 5px;
@@ -596,6 +622,20 @@ button {
       justify-content: space-between;
     }
   }
+
+  .descrip {
+    flex-direction: column;
+    & .myImg {
+      border-radius: 5px;
+      max-width: 100%;
+      margin: 10px;
+    }
+    & .texte {
+      margin: auto;
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
+  }
   .theComments {
     width: 90%;
     & .comm {
@@ -672,6 +712,13 @@ button {
     font-size: 20px;
     margin-top: 30px;
     margin-bottom: 30px;
+  }
+  .descrip {
+    & .myImg {
+      border-radius: 5px;
+      max-width: 50%;
+      margin: 10px;
+    }
   }
   .formC {
     width: 70%;

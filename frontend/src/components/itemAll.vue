@@ -20,7 +20,8 @@
         <div class="descrip">
           <img
             v-bind:src="'http://localhost:3000/images/' + mess.imageURL"
-            class="myImg" v-if="mess.imageURL != null"
+            class="myImg"
+            v-if="mess.imageURL != null"
           />
           <p class="texte" id="texte">{{ mess.description }}</p>
         </div>
@@ -268,9 +269,6 @@ section {
     display: none;
   }
 }
-/*.far:active {
-  color: red;
-}*/
 @media screen and (max-width: 767px) {
   section {
     padding: 10px;
@@ -278,6 +276,19 @@ section {
       & .creation {
         font-size: 15px;
       }
+    }
+  }
+  .descrip {
+    flex-direction: column;
+    & .myImg {
+      border-radius: 5px;
+      max-width: 100%;
+      margin: 10px;
+    }
+    & .texte {
+      margin: auto;
+      margin-top: 10px;
+      margin-bottom: 10px;
     }
   }
   .article {
@@ -291,7 +302,6 @@ section {
     }
   }
 }
-
 @media (min-width: 768px) and (max-width: 991px) {
   section {
     padding: 10px;
@@ -299,6 +309,13 @@ section {
       & .creation {
         font-size: 15px;
       }
+    }
+  }
+  .descrip {
+    & .myImg {
+      border-radius: 5px;
+      max-width: 50%;
+      margin: 10px;
     }
   }
   .article {

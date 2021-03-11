@@ -8,7 +8,14 @@
           <p>{{ mess.pseudoUser }}</p>
           <p>{{ mess.date }}</p>
         </div>
-        <p class="texte">{{ mess.description }}</p>
+        <div class="descrip">
+          <img
+            v-bind:src="'http://localhost:3000/images/' + mess.imageURL"
+            class="myImg"
+            v-if="mess.imageURL != null"
+          />
+          <p class="texte" id="texte">{{ mess.description }}</p>
+        </div>
         <div class="footArt">
           <div class="like">
             <a
@@ -38,6 +45,7 @@
 
 <script>
 import { DATE_FORMAT } from "../service/utility";
+import { SEARCH_PICTURE } from "../service/utility";
 import axios from "axios";
 export default {
   name: "bestItem",
@@ -139,7 +147,7 @@ export default {
         )
         .then((response) => {
           console.log(response);
-          alert(response.data)
+          alert(response.data);
         })
         .catch((error) => {
           console.log(error);
@@ -160,6 +168,14 @@ export default {
           element.date = DATE_FORMAT(element.date);
           return element;
         });
+
+        this.msg = response.data.map((element) => {
+          if (element.imageURL != null) {
+            element.imageURL = SEARCH_PICTURE(element.imageURL);
+            return element;
+          }
+        });
+
         let test = response.data;
         test.sort(function (a, b) {
           return a.likes - b.likes;
@@ -194,6 +210,20 @@ section {
   box-shadow: inherit;
   background-color: white;
 }
+.descrip {
+  display: flex;
+  align-items: center;
+  & .myImg {
+    border-radius: 5px;
+    max-width: 30%;
+    margin: 10px 0px 10px 100px;
+  }
+  & .texte {
+    margin: auto;
+    margin-top: 30px;
+    margin-bottom: 30px;
+  }
+}
 .article {
   border: 1px solid #d2d2d2c7;
   border-radius: 5px;
@@ -209,6 +239,19 @@ section {
     padding: 10px;
     & h2 {
       font-size: 15px;
+    }
+  }
+  .descrip {
+    flex-direction: column;
+    & .myImg {
+      border-radius: 5px;
+      max-width: 100%;
+      margin: 10px;
+    }
+    & .texte {
+      margin: auto;
+      margin-top: 10px;
+      margin-bottom: 10px;
     }
   }
   .article {
@@ -232,8 +275,15 @@ section {
       & .headArt {
         max-height: 40px;
       }
-      & .texte {
-        height: 50px;
+      & .descrip {
+        & .myImg {
+          border-radius: 5px;
+          max-width: 50%;
+          margin: 10px;
+        }
+        & .texte {
+          height: 50px;
+        }
       }
       & .footArt {
         justify-content: space-between;
