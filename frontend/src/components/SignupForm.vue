@@ -88,9 +88,7 @@ export default {
       ) {
         this.errPasswordReg =
           "Votre mot de passe doit contenir au moins une minuscule, une majuscule et un nombre. Il doit avoir au minimum 8 caractères !";
-        console.log("ok");
       } else {
-        console.log("pasOk");
         if (this.password != this.password2) {
           this.errPassword = "Veuillez mettre des mots de passe identiques";
           this.errPasswordReg = "";

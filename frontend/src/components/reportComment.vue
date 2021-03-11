@@ -1,5 +1,6 @@
 <template>
 <div class="commRep">
+  {{noneComment}}
   <div id="articles" class="msg" v-for="mess in msg" :key="mess.idMessages">
     <article class="article">
       <div class="headArt">
@@ -13,7 +14,7 @@
           <i class="far fa-edit"></i> Annuler
         </div>
 
-        <div type="button" @click="supprimerReport(mess.id)">
+        <div type="button" @click="supprimerReport(mess.idReport)">
           <i class="fas fa-trash-alt"></i> Supprimer
         </div>
       </div>
@@ -45,6 +46,24 @@ export default {
           console.log(error);
         });
     },
+    supprimerReport: function (messId) {
+      console.log(messId);
+      let user = JSON.parse(localStorage.getItem("user"));
+      axios
+        .delete(`http://localhost:3000/api/report/one/${messId}`, {
+          headers: {
+            authorization: "Bearer " + user.token,
+          },
+        })
+        .then((response) => {
+          console.log(response);
+          window.location.href="http://localhost:8080/report"
+        })
+        .catch((error) => {
+          alert("Une erreur s'est produite. Veuillez réessayer la page");
+          console.log(error);
+        });
+    },
   },
   mounted() {
     let user = JSON.parse(localStorage.getItem("user"));
@@ -55,14 +74,17 @@ export default {
         },
       })
       .then((response) => {
-        console.log(response.data);
-        this.msg = response.data.map((element) => {
-          element.dateReport = DATE_FORMAT(element.dateReport);
-          return element;
-        });
+        if (response.data[0] == undefined) {
+          this.noneComment = "Pas de commentaires signalés !"
+        } else {
+          this.msg = response.data.map((element) => {
+            element.dateReport = DATE_FORMAT(element.dateReport);
+            return element;
+          });
+        }
       })
       .catch((error) => {
-        this.errorMessageGetOne =
+        this.noneComment =
           "Une erreur s'est produite. Veuillez recharger la page";
         console.log(error);
       });
@@ -71,6 +93,7 @@ export default {
     return {
       message: "",
       msg: "",
+      noneComment: ""
     };
   },
 };

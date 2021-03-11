@@ -96,3 +96,50 @@ exports.delete = (req, res, next) => {
     )
 }
 
+//Delete item reported or comment reported
+exports.deleteOne = (req, res, next) => {
+    db.query(
+        'SELECT * FROM report WHERE idReport= ?', req.params.id, (error, resp, fields) => {
+            if (error) {
+                return res.status(400).json(error)
+            }
+            const idItem = resp[0].idReportItem
+            const idComment = resp[0].idReportComment
+            console.log(idItem)
+            console.log(idComment)
+            if (idItem != null) {
+                db.query(
+                    'DELETE FROM report WHERE idReport= ?', req.params.id, (error, resp, fields) => {
+                        if (error) {
+                            return res.status(400).json(error)
+                        }
+                        db.query(
+                            'DELETE FROM item WHERE id= ?', idItem, (error, resp, fields) => {
+                                if (error) {
+                                    return res.status(400).json(error)
+                                }
+                                return res.status(200).json({ message: 'L\'article a bien été supprimé du tableau report et item !' })
+                            }
+                        )
+                    }
+                )
+            } else if (idComment != null){
+                db.query(
+                    'DELETE FROM report WHERE idReport= ?', req.params.id, (error, resp, fields) => {
+                        if (error) {
+                            return res.status(400).json(error)
+                        }
+                        db.query(
+                            'DELETE FROM comment WHERE idComment= ?', idComment, (error, resp, fields) => {
+                                if (error) {
+                                    return res.status(400).json(error)
+                                }
+                                return res.status(200).json({ message: 'Le commentaire a bien été supprimé du tableau report et comment !' })
+                            }
+                        )
+                    }
+                )
+            }
+        }
+    )
+}
