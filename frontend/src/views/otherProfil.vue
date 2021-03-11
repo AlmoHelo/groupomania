@@ -23,7 +23,14 @@
           <p>{{ mess.date }}</p>
         </div>
 
-        <p class="texte" id="texte">{{ mess.description }}</p>
+        <div class="descrip">
+          <img
+            v-bind:src="'http://localhost:3000/images/' + mess.imageURL"
+            class="myImg"
+            v-if="mess.imageURL != null"
+          />
+          <p class="texte" id="texte">{{ mess.description }}</p>
+        </div>
 
         <div class="footArt">
           <div class="like">
@@ -53,6 +60,7 @@
 import axios from "axios";
 import headerAll from "../components/headerAll";
 import { DATE_FORMAT } from "../service/utility";
+import { SEARCH_PICTURE } from "../service/utility";
 import footerAll from "../components/footerAll";
 export default {
   name: "otherProfil",
@@ -192,6 +200,12 @@ export default {
       })
       .then((response) => {
         this.msg = response.data.map((element) => {
+          if (element.imageURL != null) {
+            element.imageURL = SEARCH_PICTURE(element.imageURL);
+            return element;
+          }
+        });
+        this.msg = response.data.map((element) => {
           element.date = DATE_FORMAT(element.date);
           return element;
         });
@@ -234,6 +248,20 @@ export default {
   display: none;
   padding: 15px;
   justify-content: space-between;
+}
+.descrip {
+  display: flex;
+  align-items: center;
+  & .myImg {
+    border-radius: 5px;
+    max-width: 30%;
+    margin: 10px 0px 10px 100px;
+  }
+  & .texte {
+    margin: auto;
+    margin-top: 30px;
+    margin-bottom: 30px;
+  }
 }
 .articlesPerso {
   border-radius: 5px;
@@ -329,6 +357,19 @@ export default {
       margin-bottom: 20px;
     }
   }
+  .descrip {
+    flex-direction: column;
+    & .myImg {
+      border-radius: 5px;
+      max-width: 100%;
+      margin: 10px;
+    }
+    & .texte {
+      margin: auto;
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
+  }
   .articlesPerso {
     width: 90%;
     & h2 {
@@ -340,6 +381,13 @@ export default {
   h1 {
     font-size: 30px;
     margin-top: 30px;
+  }
+  .descrip {
+    & .myImg {
+      border-radius: 5px;
+      max-width: 50%;
+      margin: 10px;
+    }
   }
 }
 </style>
