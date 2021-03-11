@@ -9,7 +9,7 @@
       <p class="texte">{{ mess.descriptionComm }}</p>
       <p>{{ mess.imageURL }}</p>
       <div class="footArt">
-        <div type="button" @click="annulerReport(mess.id)" id="buttonModif">
+        <div type="button" @click="annulerReport(mess.idReport)" id="buttonModif">
           <i class="far fa-edit"></i> Annuler
         </div>
 
@@ -27,6 +27,25 @@ import axios from "axios";
 import { DATE_FORMAT } from "../service/utility";
 export default {
   name: "reportItem",
+  methods: {
+    annulerReport: function (messId) {
+      let user = JSON.parse(localStorage.getItem("user"));
+      axios
+        .delete(`http://localhost:3000/api/report/${messId}`, {
+          headers: {
+            authorization: "Bearer " + user.token,
+          },
+        })
+        .then((response) => {
+          console.log(response);
+          window.location.href="http://localhost:8080/report"
+        })
+        .catch((error) => {
+          alert("Une erreur s'est produite. Veuillez réessayer la page");
+          console.log(error);
+        });
+    },
+  },
   mounted() {
     let user = JSON.parse(localStorage.getItem("user"));
     axios

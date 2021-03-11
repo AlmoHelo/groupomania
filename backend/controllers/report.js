@@ -84,14 +84,14 @@ exports.create = (req, res, next) => {
 }
 
 
-//Delete one report
-exports.delete = (req, resp, next) => {
+//Delete le report
+exports.delete = (req, res, next) => {
     db.query(
-        'DELETE FROM item WHERE id= ?', req.params.id, (error, res, fields) => {
+        'DELETE FROM report WHERE idReport= ?', req.params.id, (error, resp, fields) => {
             if (error) {
                 return res.status(400).json(error)
             }
-            return res.status(200).json({ message: 'Votre message a bien été supprimé !' })
+            return res.status(200).json({ message: 'Le signalement a bien été enlevé !' })
         }
     )
 }
