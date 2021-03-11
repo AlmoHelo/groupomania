@@ -1,14 +1,24 @@
 <template>
   <div class="itemRep">
-      {{ noneItem }}
+    {{ noneItem }}
     <div id="articles" class="msg" v-for="mess in msg" :key="mess.idMessages">
       <article class="article">
         <div class="headArt">
           <p>{{ mess.pseudoUser }}</p>
           <p>Signaler le : {{ mess.dateReport }}</p>
         </div>
-        <p class="texte">{{ mess.description }}</p>
-        <p>{{ mess.imageURL }}</p>
+        <div class="descrip">
+          <a
+            v-bind:href="'http://localhost:3000/images/' + mess.imageURL"
+            class="myLinkPict"
+            ><img
+              v-bind:src="'http://localhost:3000/images/' + mess.imageURL"
+              class="myImg"
+              title="Cliquer pour agrandir"
+              v-if="mess.imageURL != null"
+          /></a>
+          <p class="texte" id="texte">{{ mess.description }}</p>
+        </div>
         <div class="footArt">
           <div
             type="button"
@@ -30,6 +40,7 @@
 <script>
 import axios from "axios";
 import { DATE_FORMAT } from "../service/utility";
+import { SEARCH_PICTURE } from "../service/utility";
 export default {
   name: "reportItem",
   methods: {
@@ -61,7 +72,7 @@ export default {
         })
         .then((response) => {
           console.log(response);
-          window.location.href="http://localhost:8080/report"
+          window.location.href = "http://localhost:8080/report";
         })
         .catch((error) => {
           alert("Une erreur s'est produite. Veuillez réessayer la page");
@@ -79,8 +90,14 @@ export default {
       })
       .then((response) => {
         if (response.data[0] == undefined) {
-          this.noneItem = "Pas d'articles signalés !"
+          this.noneItem = "Pas d'articles signalés !";
         } else {
+          this.msg = response.data.map((element) => {
+            if (element.imageURL != null) {
+              element.imageURL = SEARCH_PICTURE(element.imageURL);
+              return element;
+            }
+          });
           this.msg = response.data.map((element) => {
             element.dateReport = DATE_FORMAT(element.dateReport);
             return element;
@@ -88,8 +105,7 @@ export default {
         }
       })
       .catch((error) => {
-        this.noneItem =
-          "Une erreur s'est produite. Veuillez recharger la page";
+        this.noneItem = "Une erreur s'est produite. Veuillez recharger la page";
         console.log(error);
       });
   },
@@ -116,5 +132,56 @@ export default {
   border: 1px solid #b6b3b39d;
   background-color: #dae0e6;
   margin: 20px;
+}
+.descrip {
+  display: flex;
+  align-items: center;
+  & .myLinkPict {
+    margin: 10px 0px 10px 40px;
+    max-width: 40%;
+  }
+  & .myImg {
+    border-radius: 5px;
+    max-width: 100%;
+  }
+  & .texte {
+    margin: auto;
+    margin-top: 30px;
+    margin-bottom: 30px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .descrip {
+    flex-direction: column;
+    & .myLinkPict {
+      margin: auto;
+      margin-top: 10px;
+      max-width: 100%;
+    }
+    & .texte {
+      margin-top: 0px;
+      margin-bottom: 10px;
+    }
+  }
+  .article {
+    font-size: 12px;
+    width: 90%;
+    margin: auto;
+    margin-bottom: 10px;
+    & .footArt {
+      justify-content: space-between;
+      padding: 10px;
+    }
+  }
+}
+@media (min-width: 768px) and (max-width: 991px) {
+  .descrip {
+    & .myLinkPict {
+      margin: auto;
+      margin: 5px;
+      max-width: 50%;
+    }
+  }
 }
 </style>
