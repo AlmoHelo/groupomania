@@ -1,7 +1,9 @@
 <template>
   <main>
-    <h1 class="id">Identifiez-vous</h1>
-
+    <div >
+      <h1 class="id">Identifiez-vous</h1>
+      <div class="anim"></div>
+    </div>
     <form method="POST" id="formulaire" @submit.prevent="envoie">
       <label for="email">E-mail ou nom d'utilisateur<span>*</span> :</label>
       <input
@@ -87,10 +89,10 @@ export default {
               this.errEmail = "E-mail ou pseudo inconnu !";
               this.errPassword = "";
               let myEmail = document.getElementById("email");
-              myEmail.style.border= "1px solid red"
+              myEmail.style.border = "1px solid red";
               myEmail.animate(
                 [
-                  { transform: "translateX(10px)"},
+                  { transform: "translateX(10px)" },
                   { transform: "translateX(-10px)" },
                 ],
                 { duration: 60, iterations: 4, easing: "ease-in-out" }
@@ -99,10 +101,10 @@ export default {
               this.errPassword = "Mot de passe incorrect !";
               this.errEmail = "";
               let myPassword = document.getElementById("password");
-              myPassword.style.border= "1px solid red"
+              myPassword.style.border = "1px solid red";
               myPassword.animate(
                 [
-                  { transform: "translateX(10px)"},
+                  { transform: "translateX(10px)" },
                   { transform: "translateX(-10px)" },
                 ],
                 { duration: 60, iterations: 4, easing: "ease-in-out" }
@@ -132,6 +134,20 @@ main {
   & h1 {
     width: 80%;
     margin: auto;
+  }
+  & .anim {
+    width: 100%;
+    margin: auto;
+    border-bottom: 5px solid #dfa9a99d;
+    animation: borderTest 10s ease-in-out infinite;
+  }
+}
+@keyframes borderTest {
+  0% {
+    width: 0%;
+  }
+  100% {
+    width: 80%;
   }
 }
 form {

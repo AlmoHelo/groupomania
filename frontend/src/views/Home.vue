@@ -1,8 +1,8 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/img/icon-left-font-.png" />
+    <img alt="Vue logo" src="../assets/img/icon-left-font-monochrome-black.png" />
     <h1 id="titleH1">Bienvenue sur le réseau social de votre entreprise !</h1>
-
+    <div class="anim"></div>
     <ul>
       <router-link to="/login" class="bouton" @click="pagelogin"
         >M'identifier
@@ -25,8 +25,22 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss">
 h1 {
-  margin: 80px 0 80px 0;
   font-size: 40px;
+}
+.anim {
+  width: 100%;
+  margin: auto;
+  margin-bottom: 80px;
+  border-bottom: 5px solid #dfa9a99d;
+  animation: borderTest 10s ease-in-out infinite;
+}
+@keyframes borderTest {
+  0% {
+    width: 0%;
+  }
+  100% {
+    width: 100%;
+  }
 }
 ul {
   list-style-type: none;
@@ -59,6 +73,7 @@ button:hover {
 footer {
   margin: 4% 0;
 }
+
 @media screen and (max-width: 767px) {
   img {
     width: 95%;
@@ -92,7 +107,7 @@ footer {
   }
 }
 
-h1, h2, .creation, .title {
+h1, h2, .creation, .title, .anim {
   font-family: RocknRollOne, Helvetica, Arial, sans-serif;
 }
 </style>

@@ -1,6 +1,9 @@
 <template>
   <main>
-    <h1 class="id">Inscrivez-vous</h1>
+    <div>
+      <h1 class="id">Inscrivez-vous</h1>
+      <div class="anim"></div>
+    </div>
     <form method="POST" @submit.prevent="envoie">
       <label for="email">E-mail ou nom d'utilisateur<span>*</span> :</label
       ><input
@@ -79,7 +82,7 @@ export default {
       errPseudo: "",
       errPassword: "",
       errPasswordReg: "",
-      image: ""
+      image: "",
     };
   },
   methods: {
@@ -122,14 +125,12 @@ export default {
           formData.append("password", this.password);
           formData.append("biographie", this.biographie);
           axios
-            .post(
-              "http://localhost:3000/api/auth/signup", formData, {
-                headers: {
-                  "Content-type": "application/json",
-                  Authorization: `Bearer` + token, //Renvoi du token par l'api en cas d'authentification
-                },
-              }
-            )
+            .post("http://localhost:3000/api/auth/signup", formData, {
+              headers: {
+                "Content-type": "application/json",
+                Authorization: `Bearer` + token, //Renvoi du token par l'api en cas d'authentification
+              },
+            })
             .then((response) => {
               console.log(response.data.message);
               window.location.href = "http://localhost:8080/login";
@@ -186,6 +187,20 @@ export default {
 h1 {
   width: 80%;
   margin: auto;
+}
+.anim {
+  width: 100%;
+  margin: auto;
+  border-bottom: 5px solid #dfa9a99d;
+  animation: borderTest 10s ease-in-out infinite;
+}
+@keyframes borderTest {
+  0% {
+    width: 0%;
+  }
+  100% {
+    width: 50%;
+  }
 }
 form {
   display: flex;

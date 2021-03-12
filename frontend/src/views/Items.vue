@@ -229,12 +229,12 @@ export default {
 }
 .imgLog {
   width: 100%;
-  height: 7%;
+  height: 5%;
   margin-top: 20px;
   margin-bottom: 20px;
   display: flex;
   & .map {
-    width: 15%;
+    width: 14%;
     margin-left: 5px;
     margin-right: 10px;
     animation: turnMap 3s infinite ease-in-out;

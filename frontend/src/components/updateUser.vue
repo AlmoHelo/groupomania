@@ -220,6 +220,9 @@ form {
     height: 70px;
   }
 }
+.choosePicture{
+  background-color: transparent;
+}
 button {
   margin: auto;
   margin-top: 20px;
