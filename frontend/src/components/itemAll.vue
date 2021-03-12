@@ -14,8 +14,14 @@
     >
       <article class="article">
         <div class="headArt">
-          <p>{{ mess.pseudoUser }}</p>
-          <p>{{ mess.date }}</p>
+          <p class="profilArt">
+            <img
+              v-bind:src="mess.pictureProfil"
+              class="myImgProfil"
+              v-if="mess.pictureProfil != null"
+            />{{ mess.pseudoUser }}
+          </p>
+          <p class="dateArt">{{ mess.date }}</p>
         </div>
         <div class="descrip">
           <a
@@ -240,7 +246,18 @@ section {
   background-color: #dae0e6;
   margin: 20px;
   & .headArt {
+    align-items: center;
     border-bottom: 1px solid #b6b3b39d;
+    & .profilArt {
+      display: flex;
+      align-items: center;
+      & .myImgProfil {
+        max-width: 80px;
+        max-height: 80px;
+        margin-right: 20px;
+        border-radius: 40px;
+      }
+    }
   }
   & .commAccueil {
     display: flex;
@@ -306,6 +323,18 @@ section {
     width: 90%;
     margin: auto;
     margin-bottom: 10px;
+    & .headArt {
+      & .profilArt {
+        & .myImgProfil {
+          max-width: 40px;
+          max-height: 40px;
+          margin-right: 10px;
+        }
+      }
+      & .dateArt {
+        width: 30%;
+      }
+    }
     & .footArt {
       justify-content: space-between;
       padding: 10px;
@@ -335,6 +364,19 @@ section {
     width: 90%;
     margin: auto;
     margin-bottom: 10px;
+    font-size: 14px;
+    & .headArt {
+      & .profilArt {
+        & .myImgProfil {
+          max-width: 50px;
+          max-height: 50px;
+          margin-right: 10px;
+        }
+      }
+      & .dateArt {
+        width: 40%;
+      }
+    }
     & .footArt {
       justify-content: space-between;
     }

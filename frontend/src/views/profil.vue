@@ -273,7 +273,7 @@ export default {
     let myProfil = document.getElementById("profil");
     myProfil.appendChild(myPict);
 
-    if (oneProfil.biographie == null || oneProfil.biographie == "") {
+    if (oneProfil.biographie == null || oneProfil.biographie == "" || oneProfil.biographie == "undefined") {
       this.biographie = "Modifier votre profil pour ajouter une biographie";
     } else {
       this.biographie = oneProfil.biographie;

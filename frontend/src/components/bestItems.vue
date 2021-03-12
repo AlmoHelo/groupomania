@@ -5,8 +5,14 @@
       {{ errorMessage }}
       <div class="article" v-for="(mess, index) in msg" :key="mess.idMessages">
         <div class="headArt">
-          <p>{{ mess.pseudoUser }}</p>
-          <p>{{ mess.date }}</p>
+          <p class="profilArt">
+            <img
+              v-bind:src="mess.pictureProfil"
+              class="myImgProfil"
+              v-if="mess.pictureProfil != null"
+            />{{ mess.pseudoUser }}
+          </p>
+          <p class="dateArt">{{ mess.date }}</p>
         </div>
         <div class="descrip">
           <a
@@ -168,6 +174,7 @@ export default {
         },
       })
       .then((response) => {
+        console.log(response);
         this.msg = response.data.map((element) => {
           element.date = DATE_FORMAT(element.date);
           return element;
@@ -237,6 +244,19 @@ section {
   border-radius: 5px;
   background-color: #dae0e6;
   margin: 20px;
+  & .headArt {
+    align-items: center;
+    & .profilArt {
+      display: flex;
+      align-items: center;
+      & .myImgProfil {
+        max-width: 80px;
+        max-height: 80px;
+        margin-right: 20px;
+        border-radius: 40px;
+      }
+    }
+  }
   & .footArt {
     border-top: 1px solid #b6b3b39d;
     padding: 15px;
@@ -268,6 +288,18 @@ section {
     width: 90%;
     margin: auto;
     margin-bottom: 10px;
+    & .headArt {
+      & .profilArt {
+        & .myImgProfil {
+          max-width: 40px;
+          max-height: 40px;
+          margin-right: 10px;
+        }
+      }
+      & .dateArt {
+        width: 30%;
+      }
+    }
     & .footArt {
       justify-content: space-between;
       padding: 10px;
@@ -283,7 +315,16 @@ section {
     & .article {
       font-size: 14px;
       & .headArt {
-        max-height: 40px;
+        & .profilArt {
+          & .myImgProfil {
+            max-width: 50px;
+            max-height: 50px;
+            margin-right: 10px;
+          }
+        }
+        & .dateArt {
+          width: 40%;
+        }
       }
       & .descrip {
         & .myLinkPict {

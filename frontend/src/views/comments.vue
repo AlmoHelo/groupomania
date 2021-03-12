@@ -10,19 +10,25 @@
   >
     <article class="theArticle">
       <div class="headArt">
-        <p>{{ mess.pseudoUser }}</p>
-        <p>{{ mess.date }}</p>
+        <p class="profilArt">
+          <img
+            v-bind:src="mess.pictureProfil"
+            class="myImgProfil"
+            v-if="mess.pictureProfil != null"
+          />{{ mess.pseudoUser }}
+        </p>
+        <p class="dateArt">{{ mess.date }}</p>
       </div>
       <div class="descrip">
-          <a
-            v-bind:href="'http://localhost:3000/images/' + mess.imageURL"
-            class="myLinkPict"
-            ><img
-              v-bind:src="'http://localhost:3000/images/' + mess.imageURL"
-              class="myImg"
-              title="Cliquer pour agrandir"
-              v-if="mess.imageURL != null"
-          /></a>
+        <a
+          v-bind:href="'http://localhost:3000/images/' + mess.imageURL"
+          class="myLinkPict"
+          ><img
+            v-bind:src="'http://localhost:3000/images/' + mess.imageURL"
+            class="myImg"
+            title="Cliquer pour agrandir"
+            v-if="mess.imageURL != null"
+        /></a>
         <p class="texte" id="texte">{{ mess.description }}</p>
       </div>
       <div class="footArt">
@@ -448,6 +454,18 @@ export default {
   margin: auto;
   & .headArt {
     border-bottom: 1px solid #b6b3b39d;
+    align-items: center;
+    border-bottom: 1px solid #b6b3b39d;
+    & .profilArt {
+      display: flex;
+      align-items: center;
+      & .myImgProfil {
+        max-width: 80px;
+        max-height: 80px;
+        margin-right: 20px;
+        border-radius: 40px;
+      }
+    }
   }
   & .texte {
     padding: 20px;
@@ -625,6 +643,18 @@ button {
   }
   .theArticle {
     width: 90%;
+    & .headArt {
+      & .profilArt {
+        & .myImgProfil {
+          max-width: 40px;
+          max-height: 40px;
+          margin-right: 10px;
+        }
+      }
+      & .dateArt {
+        width: 30%;
+      }
+    }
     & .footArt {
       justify-content: space-between;
     }
@@ -713,6 +743,20 @@ button {
   .formComm,
   .newDescripComm {
     width: 70%;
+  }
+  .theArticle {
+    & .headArt {
+      & .profilArt {
+        & .myImgProfil {
+          max-width: 50px;
+          max-height: 50px;
+          margin-right: 10px;
+        }
+      }
+      & .dateArt {
+        width: 40%;
+      }
+    }
   }
   button {
     font-size: 20px;

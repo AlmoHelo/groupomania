@@ -5,7 +5,7 @@ require('dotenv').config()
 //Affichage un item
 exports.getOne = (req, res, next) => {
     const itemId = req.params.id
-    db.query('SELECT * FROM item WHERE id= ?', itemId, (error, result, field) => {
+    db.query('SELECT * FROM item FULL JOIN user ON userItemId = user.userId WHERE id= ?', itemId, (error, result, field) => {
         if (error) {
             return res.status(400).json({ error })
         }
@@ -36,7 +36,7 @@ exports.getAllOtherUser = (req, res, next) => {
 
 //Affichage de tous les items dans ordre descendant
 exports.getAll = (req, res, next) => {
-    db.query('SELECT * FROM item ORDER BY date DESC', (error, result, field) => {
+    db.query('SELECT * FROM item FULL JOIN user ON userItemId = user.userId ORDER BY date DESC', (error, result, field) => {
         if (error) {
             return res.status(400).json({ error })
         }

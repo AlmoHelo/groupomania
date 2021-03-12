@@ -41,9 +41,19 @@
         placeholder="Groupo  (max 8 caractères)"
         required
       />
+
       <p class="errorMsg">{{ errPseudo }}</p>
       <label for="Biographie">Biographie :</label
       ><textarea name="biographie" v-model="biographie" id="biographie" />
+
+      <label>Image de profil:</label
+      ><input
+        type="file"
+        name="fichier"
+        id="choosePicture"
+        class="choosePicture"
+        v-on:change="sendFile($event)"
+      />
       <p class="champ">* : Champs obligatoires</p>
       <button type="submit">Modifier</button>
     </form>
@@ -61,6 +71,7 @@ export default {
       errPseudo: "",
       errPassword: "",
       errPasswordReg: "",
+      image: "",
     };
   },
   methods: {
@@ -82,9 +93,7 @@ export default {
       ) {
         this.errPasswordReg =
           "Votre mot de passe doit contenir au moins une minuscule, une majuscule et un nombre. Il doit avoir au minimum 8 caractères !";
-        console.log("ok");
       } else {
-        console.log("pasOk");
         if (this.password != this.password2) {
           this.errPassword = "Veuillez mettre des mots de passe identiques";
           this.errPasswordReg = "";
@@ -100,22 +109,18 @@ export default {
             { duration: 60, iterations: 4, easing: "ease-in-out" }
           );
         } else {
+          const formData = new FormData();
+          formData.append("image", this.image);
+          formData.append("email", this.email);
+          formData.append("pseudo", this.pseudo);
+          formData.append("password", this.password);
+          formData.append("biographie", this.biographie);
           axios
-            .put(
-              "http://localhost:3000/api/auth/" + userId,
-              {
-                id: profil.userId,
-                email: this.email,
-                password: this.password,
-                pseudo: this.pseudo,
-                biographie: this.biographie,
+            .put("http://localhost:3000/api/auth/" + userId, formData, {
+              headers: {
+                authorization: "Bearer " + user.token,
               },
-              {
-                headers: {
-                  authorization: "Bearer " + user.token,
-                },
-              }
-            )
+            })
             .then((response) => {
               alert(response.data.message);
               localStorage.removeItem("userProfil");
@@ -169,6 +174,9 @@ export default {
             });
         }
       }
+    },
+    sendFile(event) {
+      this.$data.image = event.target.files[0];
     },
   },
 };

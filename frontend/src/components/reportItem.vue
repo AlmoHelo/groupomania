@@ -4,7 +4,13 @@
     <div id="articles" class="msg" v-for="mess in msg" :key="mess.idMessages">
       <article class="article">
         <div class="headArt">
-          <p>{{ mess.pseudoUser }}</p>
+          <p class="profilArt">
+            <img
+              v-bind:src="mess.pictureProfil"
+              class="myImgProfil"
+              v-if="mess.pictureProfil != null"
+            />{{ mess.pseudoUser }}
+          </p>
           <p>Signaler le : {{ mess.dateReport }}</p>
         </div>
         <div class="descrip">
@@ -153,7 +159,7 @@ export default {
 }
 
 @media screen and (max-width: 767px) {
-  .itemRep{
+  .itemRep {
     width: 90%;
     padding: 5px;
   }

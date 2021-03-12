@@ -110,14 +110,15 @@ exports.deleteUser = (req, res, next) => {
 exports.updateUser = (req, res, next) => {
     const email = req.body.email
     const pseudo = req.body.pseudo
-    const id = req.body.id
+    const id = req.params.id
     let password = req.body.password
+    const imageURL = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
     const biographie = req.body.biographie
     bcrypt.hash(password, 10)
         .then((hash) => {
             password = hash
             db.query(
-                `UPDATE user SET email="` + email + `", pseudo="` + pseudo + `", password="` + password + `", biographie="` + biographie + `" WHERE userId=` + id, (error, results, fields) => {
+                `UPDATE user SET email="${email}", pseudo="${pseudo}", password="${password}", biographie="${biographie}", pictureProfil="${imageURL}" WHERE userId=${id}` , (error, results, fields) => {
                     if (error) {
                         console.log(error)
                         let myMsgError = JSON.stringify(error.sqlMessage)
