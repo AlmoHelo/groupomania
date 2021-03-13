@@ -1,33 +1,41 @@
 <template>
   <main>
-    <div >
+    <div>
       <h1 class="id">Identifiez-vous</h1>
-      <div class="anim"></div>
     </div>
-    <form method="POST" id="formulaire" @submit.prevent="envoie">
-      <label for="email">E-mail ou nom d'utilisateur<span>*</span> :</label>
-      <input
-        id="email"
-        placeholder="groupomania@gmail.com"
-        v-model="email"
-        required
-      />
-      <p class="errorMsg">{{ errEmail }}</p>
 
-      <label for="password">Mot de passe<span>*</span> :</label>
-      <input
-        type="password"
-        id="password"
-        placeholder="*******"
-        v-model="password"
-        required
-      />
-      <p class="errorMsg">{{ errPassword }}</p>
+    <div class="box">
+      <span class="bord"></span>
+      <span class="bord"></span>
+      <span class="bord"></span>
+      <span class="bord"></span>
+    </div>
+    <div class="content">
+      <form method="POST" id="formulaire" @submit.prevent="envoie">
+        <label for="email">E-mail ou nom d'utilisateur<span>*</span> :</label>
+        <input
+          id="email"
+          placeholder="groupomania@gmail.com"
+          v-model="email"
+          required
+        />
+        <p class="errorMsg">{{ errEmail }}</p>
 
-      <p class="champ">* : Champs obligatoires</p>
+        <label for="password">Mot de passe<span>*</span> :</label>
+        <input
+          type="password"
+          id="password"
+          placeholder="*******"
+          v-model="password"
+          required
+        />
+        <p class="errorMsg">{{ errPassword }}</p>
 
-      <button type="submit">S'identifier</button>
-    </form>
+        <p class="champ">* : Champs obligatoires</p>
+
+        <button type="submit">S'identifier</button>
+      </form>
+    </div>
 
     <p class="nouveau">
       Nouveau ?
@@ -119,6 +127,77 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+//animation bordure
+
+.box {
+  position: absolute;
+  width: 50%;
+  height: 390px;
+  top: 39%;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+.content {
+  position: relative;
+  border: 1px solid transparent;
+  text-align: center;
+}
+.box .bord {
+  position: relative;
+  width: 100%;
+  height: 55%;
+  display: block;
+  box-sizing: border-box;
+}
+.box .bord:nth-child(1) {
+  transform: rotate(0deg);
+  right: 365px;
+}
+
+.box .bord:nth-child(2) {
+  transform: rotate(90deg);
+  left: 258px;
+  bottom: 320px;
+}
+
+.box .bord:nth-child(3) {
+  transform: rotate(180deg);
+  bottom: 253px;
+  left: 365px;
+}
+.box .bord:nth-child(4) {
+  transform: rotate(270deg);
+  bottom: 355px;
+  right: 258px;
+}
+.box .bord:before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  background: #dfa9a99d;
+  animation: animate 4s linear infinite;
+}
+
+@keyframes animate {
+  0% {
+    transform: scaleX(0);
+    transform-origin: left;
+  }
+  50% {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+  50.1% {
+    transform: scaleX(1);
+    transform-origin: right;
+  }
+  100% {
+    transform: scaleX(0);
+    transform-origin: right;
+  }
+}
+//fin animation bordure
 .errorMsg {
   color: rgb(124, 51, 51);
   font-weight: bold;
@@ -134,20 +213,6 @@ main {
   & h1 {
     width: 80%;
     margin: auto;
-  }
-  & .anim {
-    width: 100%;
-    margin: auto;
-    border-bottom: 5px solid #dfa9a99d;
-    animation: borderTest 10s ease-in-out infinite;
-  }
-}
-@keyframes borderTest {
-  0% {
-    width: 0%;
-  }
-  100% {
-    width: 80%;
   }
 }
 form {

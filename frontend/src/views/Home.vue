@@ -1,6 +1,9 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/img/icon-left-font-monochrome-black.png" />
+    <img
+      alt="Vue logo"
+      src="../assets/img/icon-left-font-monochrome-black.png"
+    />
     <h1 id="titleH1">Bienvenue sur le réseau social de votre entreprise !</h1>
     <div class="anim"></div>
     <ul>
@@ -29,7 +32,6 @@ h1 {
 }
 .anim {
   width: 100%;
-  margin: auto;
   margin-bottom: 80px;
   border-bottom: 5px solid #dfa9a99d;
   animation: borderTest 10s ease-in-out infinite;
@@ -47,10 +49,11 @@ ul {
   padding: 0;
   margin-bottom: 150px;
 }
-.bouton, button {
+.bouton,
+button {
   display: inline-block;
-  border: 1px solid #F6D0D0;
-  background-color: #F6D0D0;
+  border: 1px solid #f6d0d0;
+  background-color: #f6d0d0;
   border-radius: 10px;
   line-height: 40px;
   width: 200px;
@@ -107,7 +110,11 @@ footer {
   }
 }
 
-h1, h2, .creation, .title, .anim {
+h1,
+h2,
+.creation,
+.title,
+.anim {
   font-family: RocknRollOne, Helvetica, Arial, sans-serif;
 }
 </style>
