@@ -1,65 +1,73 @@
 <template>
   <main>
-    <div>
-      <h1 class="id">Inscrivez-vous</h1>
-      <div class="anim"></div>
+    <h1 class="id">Inscrivez-vous</h1>
+
+    <div class="box">
+      <span class="bord"></span>
+      <span class="bord"></span>
+      <span class="bord"></span>
+      <span class="bord"></span>
     </div>
-    <form method="POST" @submit.prevent="envoie">
-      <label for="email">E-mail ou nom d'utilisateur<span>*</span> :</label
-      ><input
-        id="email"
-        type="email"
-        v-model="email"
-        placeholder="groupomania@gmail.com"
-        required
-      />
-      <p class="errorMsg">{{ errEmail }}</p>
-      <label for="password" maxlength="8">Mot de passe<span>*</span> :</label
-      ><input
-        type="password"
-        name="pass"
-        id="Mot de passe"
-        v-model="password"
-        placeholder="*******  (min 8 caractères, 1 lettre majuscule et minuscule et 1 chiffre obligatoire)"
-        required
-      />
-      <p class="errorMsg">{{ errPasswordReg }}</p>
-      <label for="password2" maxlength="8"
-        >Confirmation mot de passe<span>*</span> :</label
-      ><input
-        type="password"
-        name="pass"
-        id="Mot de passe2"
-        v-model="password2"
-        placeholder="*******"
-        required
-      />
-      <p class="errorMsg">{{ errPassword }}</p>
-      <label for="pseudo" maxlength="8">Nom d'utilisateur<span>*</span> :</label
-      ><input
-        type="name"
-        name="name"
-        id="pseudo"
-        v-model="pseudo"
-        placeholder="Groupo  (max 8 caractères)"
-        required
-      />
-      <p class="errorMsg">{{ errPseudo }}</p>
-      <label for="Biographie">Biographie :</label
-      ><textarea name="biographie" v-model="biographie" id="biographie" />
 
-      <label>Image de profil:</label
-      ><input
-        type="file"
-        name="fichier"
-        id="choosePicture"
-        class="choosePicture"
-        v-on:change="sendFile($event)"
-      />
+    <div class="content">
+      <form method="POST" @submit.prevent="envoie">
+        <label for="email">E-mail ou nom d'utilisateur<span>*</span> :</label
+        ><input
+          id="email"
+          type="email"
+          v-model="email"
+          placeholder="groupomania@gmail.com"
+          required
+        />
+        <p class="errorMsg">{{ errEmail }}</p>
+        <label for="password" maxlength="8">Mot de passe<span>*</span> :</label
+        ><input
+          type="password"
+          name="pass"
+          id="Mot de passe"
+          v-model="password"
+          placeholder="*******  (min 8 caractères, 1 lettre majuscule et minuscule et 1 chiffre obligatoire)"
+          required
+        />
+        <p class="errorMsg">{{ errPasswordReg }}</p>
+        <label for="password2" maxlength="8"
+          >Confirmation mot de passe<span>*</span> :</label
+        ><input
+          type="password"
+          name="pass"
+          id="Mot de passe2"
+          v-model="password2"
+          placeholder="*******"
+          required
+        />
+        <p class="errorMsg">{{ errPassword }}</p>
+        <label for="pseudo" maxlength="8"
+          >Nom d'utilisateur<span>*</span> :</label
+        ><input
+          type="name"
+          name="name"
+          id="pseudo"
+          v-model="pseudo"
+          placeholder="Groupo  (max 8 caractères)"
+          required
+        />
+        <p class="errorMsg">{{ errPseudo }}</p>
+        <label for="Biographie">Biographie :</label
+        ><textarea name="biographie" v-model="biographie" id="biographie" />
 
-      <p class="champ">* : Champs obligatoires</p>
-      <button type="submit">S'inscrire</button>
-    </form>
+        <label>Image de profil:</label
+        ><input
+          type="file"
+          name="fichier"
+          id="choosePicture"
+          class="choosePicture"
+          v-on:change="sendFile($event)"
+        />
+
+        <p class="champ">* : Champs obligatoires</p>
+        <button type="submit">S'inscrire</button>
+      </form>
+    </div>
   </main>
 
   <footer>
@@ -175,6 +183,7 @@ export default {
   },
 };
 </script>
+
 <style lang="scss" scoped>
 .errorMsg {
   color: rgb(124, 51, 51);
@@ -184,23 +193,77 @@ export default {
   margin-left: 20px;
   text-align: start;
 }
+//animation bordure
+.box {
+  position: absolute;
+  width: 50%;
+  height: 96%;
+  top: 35%;
+  left: 23%;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+.content {
+  position: relative;
+  border: 1px solid transparent;
+  text-align: center;
+}
+.box .bord {
+  position: relative;
+  width: 100%;
+  height: 55%;
+  display: block;
+  box-sizing: border-box;
+}
+.box .bord:nth-child(1) {
+  transform: rotate(0deg);
+  right: 50%;
+}
+.box .bord:nth-child(2) {
+  transform: rotate(90deg);
+  left: 25%;
+  bottom: 82.5%;
+}
+.box .bord:nth-child(3) {
+  transform: rotate(180deg);
+  bottom: 65%;
+  left: 50%;
+}
+.box .bord:nth-child(4) {
+  transform: rotate(270deg);
+  bottom: 92.5%;
+  right: 25%;
+}
+.box .bord:before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  background: #dfa9a99d;
+  animation: animate 4s linear infinite;
+}
+@keyframes animate {
+  0% {
+    transform: scaleX(0);
+    transform-origin: left;
+  }
+  50% {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+  50.1% {
+    transform: scaleX(1);
+    transform-origin: right;
+  }
+  100% {
+    transform: scaleX(0);
+    transform-origin: right;
+  }
+}
+//fin animation bordure
 h1 {
   width: 80%;
   margin: auto;
-}
-.anim {
-  width: 100%;
-  margin: auto;
-  border-bottom: 5px solid #dfa9a99d;
-  animation: borderTest 10s ease-in-out infinite;
-}
-@keyframes borderTest {
-  0% {
-    width: 0%;
-  }
-  100% {
-    width: 50%;
-  }
 }
 form {
   display: flex;
@@ -265,12 +328,28 @@ button,
   main {
     width: 90%;
     margin-top: 30px;
+    margin: auto;
     & h1 {
       font-size: 30px;
     }
   }
-  form {
+  .box {
     width: 90%;
+    height: 94%;
+    top: 21%;
+    left: 3%;
+  }
+  .box .bord:nth-child(2) {
+    width: 200%;
+    left: -53%;
+    bottom: 82.5%;
+  }
+  .box .bord:nth-child(4) {
+    width: 200%;
+    right: 47%;
+  }
+  form {
+    width: 100%;
     & label {
       font-size: 18px;
     }
@@ -302,6 +381,18 @@ button,
     & h1 {
       font-size: 45px;
     }
+  }
+  .box {
+    width: 90%;
+    height: 116%;
+    top: 38%;
+    left: 2%;
+  }
+  .box .bord:nth-child(2) {
+    left: 22.5%;
+  }
+  .box .bord:nth-child(4) {
+    right: 22%;
   }
   form {
     width: 90%;

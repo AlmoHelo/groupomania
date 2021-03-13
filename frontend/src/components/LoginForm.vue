@@ -1,8 +1,6 @@
 <template>
   <main>
-    <div>
       <h1 class="id">Identifiez-vous</h1>
-    </div>
 
     <div class="box">
       <span class="bord"></span>
