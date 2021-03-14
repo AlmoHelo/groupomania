@@ -13,30 +13,59 @@ bcrypt.hash(pass, 10)
 //Inscription de l'utilisateur
 exports.signup = (req, res, next) => {
     const user = req.body
-    const imageURL = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
-    bcrypt.hash(user.password, 10)
-        .then((hash) => {
-            user.password = hash
-            const insertUser = `INSERT INTO user (email, pseudo, password, biographie, creationDate, pictureProfil) VALUES ("${user.email}", "${user.pseudo}", "${user.password}", "${user.biographie}", NOW(), "${imageURL}" )`
-            db.query(insertUser, (err, result, field) => {
-                if (err) {
-                    console.log(err)
-                    let myMsgError = JSON.stringify(err.sqlMessage)
-                    let indexDuplicateEmail = myMsgError.indexOf(`${req.body.email}`)
-                    let indexDuplicatePseudo = myMsgError.indexOf(`${req.body.pseudo}`)
-                    console.log(indexDuplicateEmail)
-                    console.log(indexDuplicatePseudo)
-                    if (indexDuplicateEmail > -1) {
-                        return res.status(410).json(err.sqlMessage);
+    if (req.file == undefined) {
+        const imageURL = `${req.protocol}://${req.get('host')}/images/pictureDefault.jpg`
+
+        bcrypt.hash(user.password, 10)
+            .then((hash) => {
+                user.password = hash
+                const insertUser = `INSERT INTO user (email, pseudo, password, biographie, creationDate, pictureProfil) VALUES ("${user.email}", "${user.pseudo}", "${user.password}", "${user.biographie}", NOW(), "${imageURL}" )`
+                db.query(insertUser, (err, result, field) => {
+                    if (err) {
+                        console.log(err)
+                        let myMsgError = JSON.stringify(err.sqlMessage)
+                        let indexDuplicateEmail = myMsgError.indexOf(`${req.body.email}`)
+                        let indexDuplicatePseudo = myMsgError.indexOf(`${req.body.pseudo}`)
+                        console.log(indexDuplicateEmail)
+                        console.log(indexDuplicatePseudo)
+                        if (indexDuplicateEmail > -1) {
+                            return res.status(410).json(err.sqlMessage);
+                        }
+                        if (indexDuplicatePseudo > 1) {
+                            return res.status(420).json(err.sqlMessage);
+                        }
+                        return res.status(400).json({ message: err.sqlMessage })
                     }
-                    if (indexDuplicatePseudo > 1) {
-                        return res.status(420).json(err.sqlMessage);
-                    }
-                    return res.status(400).json({ message: err.sqlMessage })
-                }
-                return res.status(201).json({ message: 'Votre compte a bien été crée !' },)
+                    return res.status(201).json({ message: 'Votre compte a bien été crée !' },)
+                });
             });
-        });
+    } else {
+        const imageURL = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+
+        bcrypt.hash(user.password, 10)
+            .then((hash) => {
+                user.password = hash
+                const insertUser = `INSERT INTO user (email, pseudo, password, biographie, creationDate, pictureProfil) VALUES ("${user.email}", "${user.pseudo}", "${user.password}", "${user.biographie}", NOW(), "${imageURL}" )`
+                db.query(insertUser, (err, result, field) => {
+                    if (err) {
+                        console.log(err)
+                        let myMsgError = JSON.stringify(err.sqlMessage)
+                        let indexDuplicateEmail = myMsgError.indexOf(`${req.body.email}`)
+                        let indexDuplicatePseudo = myMsgError.indexOf(`${req.body.pseudo}`)
+                        console.log(indexDuplicateEmail)
+                        console.log(indexDuplicatePseudo)
+                        if (indexDuplicateEmail > -1) {
+                            return res.status(410).json(err.sqlMessage);
+                        }
+                        if (indexDuplicatePseudo > 1) {
+                            return res.status(420).json(err.sqlMessage);
+                        }
+                        return res.status(400).json({ message: err.sqlMessage })
+                    }
+                    return res.status(201).json({ message: 'Votre compte a bien été crée !' },)
+                });
+            });
+    }
 };
 
 
@@ -118,7 +147,7 @@ exports.updateUser = (req, res, next) => {
         .then((hash) => {
             password = hash
             db.query(
-                `UPDATE user SET email="${email}", pseudo="${pseudo}", password="${password}", biographie="${biographie}", pictureProfil="${imageURL}" WHERE userId=${id}` , (error, results, fields) => {
+                `UPDATE user SET email="${email}", pseudo="${pseudo}", password="${password}", biographie="${biographie}", pictureProfil="${imageURL}" WHERE userId=${id}`, (error, results, fields) => {
                     if (error) {
                         console.log(error)
                         let myMsgError = JSON.stringify(error.sqlMessage)

@@ -89,8 +89,8 @@ export default {
       myBestLink.style.border = "none";
 
       let myAllLink = document.getElementById("linkAll");
-      myAllLink.style.border = "1px solid #9da5ad";
-      myAllLink.style.backgroundColor = "#9da5ad";
+      myAllLink.style.border = "1px solid #f6d0d0";
+      myAllLink.style.backgroundColor = "#f6d0d0";
       myAllLink.style.borderRadius = "35px";
       myAllLink.style.padding = "6px";
     },
@@ -101,8 +101,8 @@ export default {
       myAll.style.display = "none";
 
       let myBestLink = document.getElementById("linkBest");
-      myBestLink.style.border = "1px solid #9da5ad";
-      myBestLink.style.backgroundColor = "#9da5ad";
+      myBestLink.style.border = "1px solid #f6d0d0";
+      myBestLink.style.backgroundColor = "#f6d0d0";
       myBestLink.style.borderRadius = "35px";
       myBestLink.style.padding = "6px";
 

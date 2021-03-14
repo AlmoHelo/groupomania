@@ -50,23 +50,43 @@ exports.create = (req, res, next) => {
     const currentDate = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + ' ' + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
     const description = req.body.description
     const pseudoUser = req.body.pseudoUser
-    const imageURL = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
-    db.query(`SELECT userId FROM user WHERE pseudo="${pseudoUser}"`, (err, response, fields) => {
-        if (err) {
-            console.log(err)
-        } else {
-            const userItemId = JSON.stringify(response[0].userId);
-            const sqlItemPost = "INSERT INTO item (date, description, imageURL, likes, dislikes, pseudoUser, userItemId) VALUES ( ?, ?, ?, 0, 0, ?, ?)"
-            const postItem = db.format(sqlItemPost, [currentDate, description, imageURL, pseudoUser, userItemId])
-            db.query(postItem, (error, result) => {
-                if (error) {
-                    console.log(error)
-                    return res.status(400).json("erreur")
-                }
-                return res.status(201).json('Votre message a été posté !')
-            })
-        }
-    })
+    if (req.file == undefined) {
+        const imageURL = "NULL";
+        db.query(`SELECT userId FROM user WHERE pseudo="${pseudoUser}"`, (err, response, fields) => {
+            if (err) {
+                console.log(err)
+            } else {
+                const userItemId = JSON.stringify(response[0].userId);
+                const sqlItemPost = "INSERT INTO item (date, description, imageURL, likes, dislikes, pseudoUser, userItemId) VALUES ( ?, ?, ?, 0, 0, ?, ?)"
+                const postItem = db.format(sqlItemPost, [currentDate, description, imageURL, pseudoUser, userItemId])
+                db.query(postItem, (error, result) => {
+                    if (error) {
+                        console.log(error)
+                        return res.status(400).json("erreur")
+                    }
+                    return res.status(201).json('Votre message a été posté !')
+                })
+            }
+        })
+    } else {
+        const imageURL = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+        db.query(`SELECT userId FROM user WHERE pseudo="${pseudoUser}"`, (err, response, fields) => {
+            if (err) {
+                console.log(err)
+            } else {
+                const userItemId = JSON.stringify(response[0].userId);
+                const sqlItemPost = "INSERT INTO item (date, description, imageURL, likes, dislikes, pseudoUser, userItemId) VALUES ( ?, ?, ?, 0, 0, ?, ?)"
+                const postItem = db.format(sqlItemPost, [currentDate, description, imageURL, pseudoUser, userItemId])
+                db.query(postItem, (error, result) => {
+                    if (error) {
+                        console.log(error)
+                        return res.status(400).json("erreur")
+                    }
+                    return res.status(201).json('Votre message a été posté !')
+                })
+            }
+        })
+    }
 }
 
 //Modifier un message 
