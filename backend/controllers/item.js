@@ -132,7 +132,7 @@ exports.delete = (req, resp, next) => {
 }
 
 
-exports.like = (req, resp, next) => {
+exports.like = (req, res, next) => {
     const like = req.body.like;
     console.log(like)
     const dislike = req.body.dislike;
@@ -153,10 +153,9 @@ exports.like = (req, resp, next) => {
     const itemIdDislikeFunction = (element) => {
         return element.idItemDislike === itemId
     };
-
     switch (like) {
         case 1: //if user likes the item
-            db.query('SELECT * FROM userLikes WHERE userIdLike=?', userId, (err, res_, field) => {  //on vérif si user pas dans le tableau userLikes
+            db.query('SELECT * FROM userLikes WHERE userIdLike=?', userId, (err, res_, field) => {  //on vérif si user pas dans le tableau userLikes 
                 console.log(res_.findIndex(userIdLikeFunction))
                 if (res_.findIndex(userIdLikeFunction) == -1) {                     //si pas dans le tableau on le rajoute
                     db.query(`INSERT INTO userLikes (userIdLike, userEmailLike, idItemLike) VALUES (${userId}, ${userEmail}, ${itemId})`, (err, response, field) => {
@@ -167,9 +166,10 @@ exports.like = (req, resp, next) => {
                                 let rep = JSON.parse(JSON.stringify(result).split(':')[1].split("}")[0])
                                 db.query(`UPDATE item SET likes=${parseInt(rep)} WHERE id=${itemId}`, (err, res_, fields) => {
                                     if (err) {
-                                        console.log(err)
+                                        console.log("L169")
                                     } else {
-                                        console.log("modification enregistrée ! L136")
+                                        console.log("modification enregistrée ! L172")
+                                        return res.status(200).json({addDislike: false, addLike: true,  message: 'Like ajouté !' })
                                     }
                                 })
 
@@ -178,79 +178,76 @@ exports.like = (req, resp, next) => {
                     })
                 } else if (res_.findIndex(userIdLikeFunction) != -1) {                // si dans le tableau 
                     db.query('SELECT * FROM userLikes WHERE idItemLike=?', itemId, (err, response, field) => {       //on vérifie que l'utilisateur n'a pas liké cet item 
-                        if (response.findIndex(itemIdLikeFunction) == -1) {
+                    console.log(response.findIndex(itemIdLikeFunction))
+                        if (response.findIndex(itemIdLikeFunction) == 0 || response.findIndex(itemIdLikeFunction) == -1) {    //si pas déjà like, on l'insère
                             db.query(`INSERT INTO userLikes (userIdLike, userEmailLike, idItemLike) VALUES (${userId}, ${userEmail}, ${itemId})`, (err, response, field) => {  //si non, on l'ajoute               
                                 if (err) {
-                                    console.log(err)
-                                    console.log("Utilisateur a déjà liker cet item")
+                                    console.log("L183")
+                                    console.log({ message: "Utilisateur a déjà liker cet item" })
                                 } else {
-                                    console.log({ message: "Utilisateur ajouté au tableau like" })
                                     db.query("SELECT COUNT(idItemLike) FROM userLikes WHERE idItemLike=" + itemId, (err, result, fields) => {
                                         let rep = JSON.parse(JSON.stringify(result).split(':')[1].split("}")[0])
-                                        db.query(`UPDATE item SET likes=${parseInt(rep)} WHERE id=${itemId}`, (err, res, fields) => {
+                                        db.query(`UPDATE item SET likes=${parseInt(rep)} WHERE id=${itemId}`, (err, res_, fields) => {
                                             if (err) {
-                                                console.log(err)
+                                                console.log("L190")
+                                                res.status(400).json(err)
                                             } else {
-                                                console.log("modification enregistrée ! L159")
+                                                console.log("modification enregistrée ! L193")
+                                                return res.status(200).json({addDislike: false, addLike: true,  message: 'Like ajouté !' })
                                             }
                                         })
 
                                     })
                                 }
                             })
-                        } else {
-                            console.log({ message: "Article déjà liker !" })
                         }
                     })
                 }
             })
             break;
 
-        case -1: //if user dislikes the item 
+        case -1: //if user likes the item
             db.query('SELECT * FROM userDislikes WHERE userIdDislike=?', userId, (err, res_, field) => {  //on vérif si user pas dans le tableau userDislikes
                 if (res_.findIndex(userIdDislikeFunction) == -1) {                     //si pas dans le tableau on le rajoute
                     db.query(`INSERT INTO userDislikes (userIdDislike, userEmailDislike, idItemDislike) VALUES (${userId}, ${userEmail}, ${itemId})`, (err, response, field) => {
                         if (err) {
+                            console.log(err)
                         } else {
-                            resp.status(200).json(
-                                { message: 'Utilisateur ajouté au tableau dislike !' },
-                                db.query("SELECT COUNT(idItemDislike) FROM userDislikes WHERE idItemDislike=" + itemId, (err, result, fields) => {
-                                    let rep = JSON.parse(JSON.stringify(result).split(':')[1].split("}")[0])
-                                    db.query(`UPDATE item SET dislikes=${parseInt(rep)} WHERE id=${itemId}`, (err, res, fields) => {
-                                        if (err) {
-                                            console.log(err)
-                                        } else {
-                                            console.log("modification enregistrée !")
-                                        }
-                                    })
-
+                            db.query("SELECT COUNT(idItemDislike) FROM userDislikes WHERE idItemDislike=" + itemId, (err, result, fields) => {
+                                let rep = JSON.parse(JSON.stringify(result).split(':')[1].split("}")[0])
+                                db.query(`UPDATE item SET dislikes=${parseInt(rep)} WHERE id=${itemId}`, (err, res_, fields) => {
+                                    if (err) {
+                                        console.log(err)
+                                    } else {
+                                        console.log("modification enregistrée ! L136")
+                                        return res.status(200).json({addLike: false, addDislike: true,  message: 'Dislike ajouté !' })
+                                    }
                                 })
-                            )
+
+                            })
                         }
                     })
                 } else if (res_.findIndex(userIdDislikeFunction) != -1) {                // si dans le tableau 
                     db.query('SELECT * FROM userDislikes WHERE idItemDislike=?', itemId, (err, response, field) => {       //on vérifie que l'utilisateur n'a pas disliké cet item 
-                        if (response.findIndex(itemIdDislikeFunction) == -1) {
-                            db.query(`INSERT INTO userDislikes (userIdDislike, userEmailDislike, idItemDislike) VALUES (${userId}, ${userEmail}, ${itemId})`, (err, response, field) => {  //si non, on l'ajoute
+                        if (response.findIndex(itemIdDislikeFunction) == -1 || response.findIndex(itemIdDislikeFunction) == 0) {    //si pas déjà dislike, on l'insère
+                            db.query(`INSERT INTO userDislikes (userIdDislike, userEmailDislike, idItemDislike) VALUES (${userId}, ${userEmail}, ${itemId})`, (err, response, field) => {  //si non, on l'ajoute               
                                 if (err) {
-                                    console.log("Utilisateur a déjà disliké cette sauce")
+                                    console.log({ message: "Utilisateur a déjà disliker cet item" })
                                 } else {
-                                    console.log({ message: "Utilisateur ajouté au tableau dislike" })
                                     db.query("SELECT COUNT(idItemDislike) FROM userDislikes WHERE idItemDislike=" + itemId, (err, result, fields) => {
                                         let rep = JSON.parse(JSON.stringify(result).split(':')[1].split("}")[0])
-                                        db.query(`UPDATE item SET dislikes=${parseInt(rep)} WHERE id=${itemId}`, (err, res, fields) => {
+                                        db.query(`UPDATE item SET dislikes=${parseInt(rep)} WHERE id=${itemId}`, (err, res_, fields) => {
                                             if (err) {
                                                 console.log(err)
                                             } else {
-                                                console.log("modification enregistrée !")
+                                                console.log("modification enregistrée ! L244")
+                                                return res.status(200).json({addLike: false, addDislike: true,  message: 'Dislike ajouté !' })
                                             }
                                         })
 
                                     })
                                 }
                             })
-                        } else {
-                            console.log({ message: "Article déjà disliké !" })
                         }
                     })
                 }
@@ -259,23 +256,20 @@ exports.like = (req, resp, next) => {
     }
     switch (dislike) {
         case 2:
-            db.query('SELECT * FROM userLikes WHERE userIdLike=?', userId, (err, res_, field) => {
+            db.query('SELECT * FROM userLikes WHERE userIdLike=?', userId, (err, res_, field) => {          //on vérif si user n'est pas dans le tableau userLikes
                 if (res_.findIndex(itemIdLikeFunction) != -1) {
                     db.query('DELETE FROM userLikes WHERE idItemLike=?', itemId, (err, response, field) => {  //si non, on le supprime
                         if (err) {
-                            console.log("Utilisateur pas dans le tableau des likes")
-                            return resp.status(400).json(err)
+                            console.log("Utilisateur plus dans le tableau des likes")
+                            res.status(400).json(err)
                         } else {
-                            console.log({ message: "Utilisateur supprimé au tableau like !" });
                             db.query("SELECT COUNT(idItemLike) FROM userLikes WHERE idItemLike=" + itemId, (err, result, fields) => {
                                 let rep = JSON.parse(JSON.stringify(result).split(':')[1].split("}")[0])
-                                db.query(`UPDATE item SET likes=${parseInt(rep)} WHERE id=${itemId}`, (err, res, fields) => {
+                                db.query(`UPDATE item SET likes=${parseInt(rep)} WHERE id=${itemId}`, (err, res_, fields) => {
                                     if (err) {
-                                        console.log(err)
-                                        resp.status(400).json(err)
+                                        res.status(400).json(err)
                                     } else {
-                                        console.log("modification enregistrée !")
-                                        resp.status(200).json({ message: 'Utilisateur supprimé au tableau like !', addLike: false, addDislike: true })
+                                        res.status(200).json({ addLike: false, addDislike: true, message: 'Utilisateur supprimé au tableau like !' })
                                     }
                                 })
 
@@ -292,18 +286,15 @@ exports.like = (req, resp, next) => {
                     db.query('DELETE FROM userDislikes WHERE idItemDislike=?', itemId, (err, response, field) => {  //si non, on le supprime
                         if (err) {
                             console.log("Utilisateur pas dans le tableau des dislikes")
-                            return resp.status(400).json(err)
+                            return res.status(400).json(err)
                         } else {
-                            console.log({ message: "Utilisateur supprimé au tableau dislike !" });
                             db.query("SELECT COUNT(idItemDislike) FROM userDislikes WHERE idItemDislike=" + itemId, (err, result, fields) => {
                                 let rep = JSON.parse(JSON.stringify(result).split(':')[1].split("}")[0])
-                                db.query(`UPDATE item SET dislikes=${parseInt(rep)} WHERE id=${itemId}`, (err, res, fields) => {
+                                db.query(`UPDATE item SET dislikes=${parseInt(rep)} WHERE id=${itemId}`, (err, res_, fields) => {
                                     if (err) {
-                                        console.log(err)
-                                        resp.status(400).json(err)
+                                        res.status(400).json(err)
                                     } else {
-                                        console.log("modification enregistrée !")
-                                        resp.status(200).json({ message: 'Utilisateur supprimé au tableau dislike !', addDislike: false, addLike: true })
+                                        res.status(200).json({addDislike: false, addLike: true, message: 'Utilisateur supprimé au tableau dislike !'})
                                     }
                                 })
 

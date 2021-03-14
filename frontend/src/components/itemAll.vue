@@ -44,7 +44,6 @@
                 v-on:click="onLike(mess.id, index)"
               ></i></a
             >{{ mess.likes }}
-            <!--v-bind:style="{ color: activeColor }"-->
             <a v-on:click="onDislike(mess.id, index)"
               ><i class="far fa-thumbs-down" id="bad"></i></a
             >{{ mess.dislikes }}
@@ -91,14 +90,9 @@ export default {
           }
         )
         .then((response) => {
-          console.log(response);
-          let good = document.getElementById("good");
-          let bad = document.getElementById("bad");
           if (response.data.addLike) {
             this.msg[indexI].likes++;
-            good.style.color = "green";
             this.msg[indexI].dislikes--;
-            bad.style.color = "black";
           }
         })
         .catch((error) => {
@@ -127,14 +121,9 @@ export default {
           }
         )
         .then((response) => {
-          console.log(response);
-          let bad = document.getElementById("bad");
-          let good = document.getElementById("good");
           if (response.data.addDislike) {
             this.msg[indexI].dislikes++;
             this.msg[indexI].likes--;
-            good.style.color = "black";
-            bad.style.color = "red";
           }
         })
         .catch((error) => {
