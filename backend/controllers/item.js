@@ -93,15 +93,30 @@ exports.create = (req, res, next) => {
 exports.update = (req, result, next) => {
     const description = req.body.description
     const id = req.params.id
-    db.query(
-        `UPDATE item SET description="${description}", date=NOW() WHERE id=${id}`, (error, res) => {
-            if (error) {
-                return result.status(400).json(error)
-            } else {
-                result.status(200).json({ message: "Item modifié" })
-            }
-        }
-    )
+    if (req.file == undefined) {
+        db.query(`SELECT imageURL FROM item WHERE id=${id}`, (err, resp, fields) => {
+            const imageURL = JSON.stringify(resp).split('"')[3];
+            db.query(
+                `UPDATE item SET description="${description}", imageURL="${imageURL}", date=NOW() WHERE id=${id}`, (error, res) => {
+                    if (error) {
+                        return result.status(400).json(error)
+                    } else {
+                        result.status(200).json({ message: "Item modifié" })
+                    }
+                }
+            )
+        })
+    } else {
+        const imageURL = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+        db.query(
+            `UPDATE item SET description="${description}", imageURL="${imageURL}", date=NOW() WHERE id=${id}`, (error, res) => {
+                if (error) {
+                    return result.status(400).json(error)
+                } else {
+                    result.status(200).json({ message: "Item modifié" })
+                }
+            })
+    }
 }
 
 //Delete one item

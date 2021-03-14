@@ -141,40 +141,77 @@ exports.updateUser = (req, res, next) => {
     const pseudo = req.body.pseudo
     const id = req.params.id
     let password = req.body.password
-    const imageURL = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
     const biographie = req.body.biographie
-    bcrypt.hash(password, 10)
-        .then((hash) => {
-            password = hash
-            db.query(
-                `UPDATE user SET email="${email}", pseudo="${pseudo}", password="${password}", biographie="${biographie}", pictureProfil="${imageURL}" WHERE userId=${id}`, (error, results, fields) => {
-                    if (error) {
-                        console.log(error)
-                        let myMsgError = JSON.stringify(error.sqlMessage)
-                        let indexDuplicateEmail = myMsgError.indexOf(`${email}`)
-                        let indexDuplicatePseudo = myMsgError.indexOf(`${pseudo}`)
-                        console.log(indexDuplicateEmail)
-                        console.log(indexDuplicatePseudo)
-                        if (indexDuplicateEmail > -1) {
-                            return res.status(410).json(error.sqlMessage);
-                        }
-                        if (indexDuplicatePseudo > 1) {
-                            return res.status(420).json(error.sqlMessage);
-                        }
-                    }
-                    db.query(`UPDATE item SET pseudoUser="${pseudo}" WHERE userItemId=${id}`), (err, res) => {
-                        if (err) {
-                            console.log(err)
-                        } else {
-                            console.log("Données modif")
-                        }
-                    }
-                    return res.status(200).json({ message: 'Vos information ont bien été modifié !' })
-                }
 
-            )
+    if (req.file == undefined) {
+        db.query(`SELECT pictureProfil FROM user WHERE userId=${id}`, (err, resp, fields) => {
+            const imageURL = JSON.stringify(resp).split('"')[3];
+            bcrypt.hash(password, 10)
+                .then((hash) => {
+                    password = hash
+                    db.query(
+                        `UPDATE user SET email="${email}", pseudo="${pseudo}", password="${password}", biographie="${biographie}", pictureProfil="${imageURL}" WHERE userId=${id}`, (error, results, fields) => {
+                            if (error) {
+                                console.log(error)
+                                let myMsgError = JSON.stringify(error.sqlMessage)
+                                let indexDuplicateEmail = myMsgError.indexOf(`${email}`)
+                                let indexDuplicatePseudo = myMsgError.indexOf(`${pseudo}`)
+                                console.log(indexDuplicateEmail)
+                                console.log(indexDuplicatePseudo)
+                                if (indexDuplicateEmail > -1) {
+                                    return res.status(410).json(error.sqlMessage);
+                                }
+                                if (indexDuplicatePseudo > 1) {
+                                    return res.status(420).json(error.sqlMessage);
+                                }
+                            }
+                            db.query(`UPDATE item SET pseudoUser="${pseudo}" WHERE userItemId=${id}`), (err, res) => {
+                                if (err) {
+                                    console.log(err)
+                                } else {
+                                    console.log("Données modif")
+                                }
+                            }
+                            return res.status(200).json({ message: 'Vos information ont bien été modifié !' })
+                        }
+                    )
+                });
+        })
+    } else {
+        const imageURL = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+        bcrypt.hash(password, 10)
+            .then((hash) => {
+                password = hash
+                db.query(
+                    `UPDATE user SET email="${email}", pseudo="${pseudo}", password="${password}", biographie="${biographie}", pictureProfil="${imageURL}" WHERE userId=${id}`, (error, results, fields) => {
+                        if (error) {
+                            console.log(error)
+                            let myMsgError = JSON.stringify(error.sqlMessage)
+                            let indexDuplicateEmail = myMsgError.indexOf(`${email}`)
+                            let indexDuplicatePseudo = myMsgError.indexOf(`${pseudo}`)
+                            console.log(indexDuplicateEmail)
+                            console.log(indexDuplicatePseudo)
+                            if (indexDuplicateEmail > -1) {
+                                return res.status(410).json(error.sqlMessage);
+                            }
+                            if (indexDuplicatePseudo > 1) {
+                                return res.status(420).json(error.sqlMessage);
+                            }
+                        }
+                        db.query(`UPDATE item SET pseudoUser="${pseudo}" WHERE userItemId=${id}`), (err, res) => {
+                            if (err) {
+                                console.log(err)
+                            } else {
+                                console.log("Données modif")
+                            }
+                        }
+                        return res.status(200).json({ message: 'Vos information ont bien été modifié !' })
+                    }
 
-        });
+                )
+
+            });
+    }
 };
 
 //Affichage de l'utilisateur connecté
