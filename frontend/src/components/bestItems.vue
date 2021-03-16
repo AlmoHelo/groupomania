@@ -156,7 +156,7 @@ export default {
     },
   },
   mounted() {
-    //Appel à l'api pour l'affichage de tous les messages
+    //Appel à l'api pour l'affichage du top 3
     let user = JSON.parse(localStorage.getItem("user"));
     axios
       .get("http://localhost:3000/api/items/", {
@@ -179,11 +179,11 @@ export default {
         });
 
         let test = response.data;
-        test.sort(function (a, b) {
+        test.sort(function (a, b) {       //trie tableau par les likes
           return a.likes - b.likes;
         });
-        test.reverse();
-        for (let i = 0; i < test.length && i < 3; i++) {
+        test.reverse();                   //mets du plus grand au plus petit
+        for (let i = 0; i < test.length && i < 3; i++) {      //récupère les 3 premiers
           let myFavoriteItem = [];
           myFavoriteItem[0] = test[0];
           myFavoriteItem[1] = test[1];

@@ -37,10 +37,9 @@ export default {
     };
   },
   methods: {
-    envoie: function () {
-      let tableau = localStorage.getItem("user");
-      let tab = JSON.parse(tableau);
-      let token = tab.token;
+    envoie: function () {                         //envoie du nouvel article
+      let tableau = JSON.parse(localStorage.getItem("user"));
+      let token = tableau.token;
 
       const formData = new FormData();
       formData.append("image", this.image);

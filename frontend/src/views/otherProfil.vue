@@ -1,69 +1,70 @@
 <template>
   <headerAll />
-  <h1>Vous êtes sur le profil de {{ pseudo }}</h1>
+  <body>
+    <h1>Vous êtes sur le profil de {{ pseudo }}</h1>
 
-  <!--affiche les coordonnées du profil-->
-  <section class="profil" id="profil">
-    {{ errorMessageGetOne }}
-    <div class="allInfo">
-      <p>Adresse mail : {{ mail }}</p>
-      <p>Pseudo : {{ pseudo }}</p>
-      <p>Inscrit depuis le : {{ date }}</p>
-      <p>Biographie : {{ biographie }}</p>
-    </div>
-  </section>
+    <!--affiche les coordonnées du profil-->
+    <section class="profil" id="profil">
+      {{ errorMessageGetOne }}
+      <div class="allInfo">
+        <p>Adresse mail : {{ mail }}</p>
+        <p>Pseudo : {{ pseudo }}</p>
+        <p>Inscrit depuis le : {{ date }}</p>
+        <p>Biographie : {{ biographie }}</p>
+      </div>
+    </section>
 
-  <!-- affiche tous les article-->
-  <section id="articlesPerso" class="articlesPerso">
-    <h2>Tous vos articles</h2>
-    {{ errItem }}
+    <!-- affiche tous les article-->
+    <section id="articlesPerso" class="articlesPerso">
+      <h2>Tous vos articles</h2>
+      {{ errItem }}
 
-    <div v-for="(mess, index) in msg" :key="mess.idMessages">
-      <article class="article">
-        <div class="headArt">
-          <p>{{ mess.pseudoUser }}</p>
-          <p>{{ mess.date }}</p>
-        </div>
-
-        <div class="descrip">
-          <a
-            v-bind:href="'http://localhost:3000/images/' + mess.imageURL"
-            class="myLinkPict"
-            ><img
-              v-bind:src="'http://localhost:3000/images/' + mess.imageURL"
-              class="myImg"
-              title="Cliquer pour agrandir"
-              v-if="mess.imageURL != null"
-          /></a>
-          <p class="texte" id="texte">{{ mess.description }}</p>
-        </div>
-
-        <div class="footArt">
-          <div class="like">
-            <a
-              ><i
-                class="far fa-thumbs-up"
-                id="good"
-                v-on:click="onLike(mess.id, index)"
-              ></i></a
-            >{{ mess.likes }}
-            <!--v-bind:style="{ color: activeColor }"-->
-            <a v-on:click="onDislike(mess.id, index)"
-              ><i class="far fa-thumbs-down" id="bad"></i></a
-            >{{ mess.dislikes }}
+      <div v-for="(mess, index) in msg" :key="mess.idMessages">
+        <article class="article">
+          <div class="headArt">
+            <p>{{ mess.pseudoUser }}</p>
+            <p>{{ mess.date }}</p>
           </div>
-          <a class="commAccueil" @click="viewComments(mess.id)"
-            ><i class="fas fa-comment-dots"></i>
-            <p class="nbcomm">{{ mess.nbComm }} Commentaires</p></a
-          >
-          <a class="signaler"
-            ><i class="far fa-flag"></i><span>Signaler ce commentaire</span></a
-          >
-        </div>
-      </article>
-    </div>
-  </section>
 
+          <div class="descrip">
+            <a
+              v-bind:href="'http://localhost:3000/images/' + mess.imageURL"
+              class="myLinkPict"
+              ><img
+                v-bind:src="'http://localhost:3000/images/' + mess.imageURL"
+                class="myImg"
+                title="Cliquer pour agrandir"
+                v-if="mess.imageURL != null"
+            /></a>
+            <p class="texte" id="texte">{{ mess.description }}</p>
+          </div>
+
+          <div class="footArt">
+            <div class="like">
+              <a
+                ><i
+                  class="far fa-thumbs-up"
+                  id="good"
+                  v-on:click="onLike(mess.id, index)"
+                ></i></a
+              >{{ mess.likes }}
+              <a v-on:click="onDislike(mess.id, index)"
+                ><i class="far fa-thumbs-down" id="bad"></i></a
+              >{{ mess.dislikes }}
+            </div>
+            <a class="commAccueil" @click="viewComments(mess.id)"
+              ><i class="fas fa-comment-dots"></i>
+              <p class="nbcomm">{{ mess.nbComm }} Commentaires</p></a
+            >
+            <a class="signaler"
+              ><i class="far fa-flag"></i
+              ><span>Signaler ce commentaire</span></a
+            >
+          </div>
+        </article>
+      </div>
+    </section>
+  </body>
   <footerAll />
 </template>
 

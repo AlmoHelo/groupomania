@@ -1,8 +1,13 @@
 <template>
   <header>
-    <img src="../assets/img/icon-left-font-monochrome-black.png" alt="logo groupomania" />
+    <img
+      src="../assets/img/icon-left-font-monochrome-black.png"
+      alt="logo groupomania"
+    />
   </header>
-  <LoginForm />
+  <body>
+    <LoginForm />
+  </body>
 </template>
 
 <script>

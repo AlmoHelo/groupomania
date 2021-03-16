@@ -1,13 +1,15 @@
 <template>
   <main>
-      <h1 class="id">Identifiez-vous</h1>
+    <h1 class="id">Identifiez-vous</h1>
 
+    <!-- animation bordures -->
     <div class="box">
       <span class="bord"></span>
       <span class="bord"></span>
       <span class="bord"></span>
       <span class="bord"></span>
     </div>
+
     <div class="content">
       <form method="POST" id="formulaire" @submit.prevent="envoie">
         <label for="email">E-mail ou nom d'utilisateur<span>*</span> :</label>
@@ -77,13 +79,13 @@ export default {
             {
               headers: {
                 "Content-type": "application/json",
-                Authorization: `Bearer ` + token, //Renvoie du token par l'api en cas d'authentification
+                Authorization: `Bearer ` + token, 
               },
             }
           )
           .then((response) => {
             let reponse = JSON.stringify(response.data);
-            console.log("Connexion réussi !");
+            //stockage des informations dans le localStorage pour pouvoir les réutiliser
             localStorage.setItem("user", reponse);
             let user = JSON.parse(localStorage.getItem("user"));
             token = user.token;
@@ -91,7 +93,7 @@ export default {
           })
           .catch((err) => {
             let msgErr = JSON.stringify(err);
-            if (msgErr.includes("500")) {
+            if (msgErr.includes("500")) {                   //si erreur sur email ou pseudo
               this.errEmail = "E-mail ou pseudo inconnu !";
               this.errPassword = "";
               let myEmail = document.getElementById("email");
@@ -103,7 +105,7 @@ export default {
                 ],
                 { duration: 60, iterations: 4, easing: "ease-in-out" }
               );
-            } else if (msgErr.includes("401")) {
+            } else if (msgErr.includes("401")) {        //si erreur sur le mot de passe
               this.errPassword = "Mot de passe incorrect !";
               this.errEmail = "";
               let myPassword = document.getElementById("password");

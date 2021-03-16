@@ -1,128 +1,130 @@
 <template>
   <headerAll />
-  <h1>Les commentaires de l'article :</h1>
-  {{ errorMessageItem }}
-  <div
-    id="articles"
-    class="msg"
-    v-for="(mess, index) in msg"
-    :key="mess.idMessages"
-  >
-    <article class="theArticle">
-      <div class="headArt">
-        <p class="profilArt">
-          <img
-            v-bind:src="mess.pictureProfil"
-            class="myImgProfil"
-            v-if="mess.pictureProfil != null"
-          />{{ mess.pseudoUser }}
-        </p>
-        <p class="dateArt">{{ mess.date }}</p>
-      </div>
-      <div class="descrip">
-        <a
-          v-bind:href="'http://localhost:3000/images/' + mess.imageURL"
-          class="myLinkPict"
-          ><img
-            v-bind:src="'http://localhost:3000/images/' + mess.imageURL"
-            class="myImg"
-            title="Cliquer pour agrandir"
-            v-if="mess.imageURL != null"
-        /></a>
-        <p class="texte" id="texte">{{ mess.description }}</p>
-      </div>
-      <div class="footArt">
-        <div class="like">
-          <a
-            ><i
-              class="far fa-thumbs-up"
-              id="good"
-              v-on:click="onLike(mess.id, index)"
-            ></i></a
-          >{{ mess.likes }}
-          <a v-on:click="onDislike(mess.id, index)"
-            ><i class="far fa-thumbs-down" id="bad"></i></a
-          >{{ mess.dislikes }}
-        </div>
-        <a><i class="fas fa-comment-dots"></i>Commentaires</a>
-        <a class="signaler" @click="report(mess.id)"
-          ><i class="far fa-flag"></i><span>Signaler ce commentaire</span></a
-        >
-      </div>
-    </article>
-  </div>
-  <button @click="addComm()" id="buttonModif">
-    <i class="fas fa-plus" id="add"></i>Ajouter un commentaire
-  </button>
-  <p>{{ nothingComm }}</p>
-  {{ errMessage }}
-
-  <!--ajouter un commentaire-->
-  <div id="formComm" class="formComm">
-    <div id="formC" class="formC">
-      <h2>Ajouter un commentaire</h2>
-      <div class="user">
-        <label>Votre pseudo :</label>
-        <p>{{ pseudoUserComm }}</p>
-      </div>
-      <label>Description*:</label
-      ><textarea
-        name="description"
-        id="descriptionComm"
-        v-model="descriptionComm"
-        required
-      />
-      {{ errMsg }}
-
-      <button type="submit" @click="sendNewComm()">Envoyer</button>
-    </div>
-  </div>
-
-  <!--modifier un commentaire-->
-  <div id="newDescripComm" class="newDescripComm">
-    <div class="form">
-      <label> Nouvelle description :</label>
-      <textarea
-        name="description"
-        v-model="description"
-        id="description"
-        required
-      />
-      <p class="errorMessage">{{ errUpdateItem }}</p>
-      <button @click="sendUpdateComm()" id="sendUpdateItem">Envoyer</button>
-    </div>
-    <a @click="closeFormUpdate()"><i class="fas fa-times"></i></a>
-  </div>
-
-  <!-- affichage de tous les commentaires -->
-  <div class="theComments">
-    {{ errDeleteComm }}
+  <body>
+    <h1>Les commentaires de l'article :</h1>
+    {{ errorMessageItem }}
     <div
-      id="commentaires"
-      class="comm"
-      v-for="mess in comm"
-      :key="mess.idComments"
+      id="articles"
+      class="msg"
+      v-for="(mess, index) in msg"
+      :key="mess.idMessages"
     >
-      <article class="comment">
-        <div class="headComm">
-          <p>{{ mess.pseudoUserComm }}</p>
-          <p>{{ mess.dateComm }}</p>
+      <article class="theArticle">
+        <div class="headArt">
+          <p class="profilArt">
+            <img
+              v-bind:src="mess.pictureProfil"
+              class="myImgProfil"
+              v-if="mess.pictureProfil != null"
+            />{{ mess.pseudoUser }}
+          </p>
+          <p class="dateArt">{{ mess.date }}</p>
         </div>
-        <p class="texte">{{ mess.descriptionComm }}</p>
+        <div class="descrip">
+          <a
+            v-bind:href="'http://localhost:3000/images/' + mess.imageURL"
+            class="myLinkPict"
+            ><img
+              v-bind:src="'http://localhost:3000/images/' + mess.imageURL"
+              class="myImg"
+              title="Cliquer pour agrandir"
+              v-if="mess.imageURL != null"
+          /></a>
+          <p class="texte" id="texte">{{ mess.description }}</p>
+        </div>
+        <div class="footArt">
+          <div class="like">
+            <a
+              ><i
+                class="far fa-thumbs-up"
+                id="good"
+                v-on:click="onLike(mess.id, index)"
+              ></i></a
+            >{{ mess.likes }}
+            <a v-on:click="onDislike(mess.id, index)"
+              ><i class="far fa-thumbs-down" id="bad"></i></a
+            >{{ mess.dislikes }}
+          </div>
+          <a><i class="fas fa-comment-dots"></i>Commentaires</a>
+          <a class="signaler" @click="report(mess.id)"
+            ><i class="far fa-flag"></i><span>Signaler ce commentaire</span></a
+          >
+        </div>
       </article>
-      <div class="icons">
-        <a class="signaler" @click="reportComment(mess.idComment)"
-          ><i class="far fa-flag"></i
-        ></a>
-        <a @click="updateComm(mess.idComment, mess.pseudoUserComm)"
-          ><i class="far fa-edit"></i
-        ></a>
-        <a @click="deleteComm(mess.idComment, mess.pseudoUserComm)"
-          ><i class="fas fa-times"></i
-        ></a>
+    </div>
+    <button @click="addComm()" id="buttonModif">
+      <i class="fas fa-plus" id="add"></i>Ajouter un commentaire
+    </button>
+    <p>{{ nothingComm }}</p>
+    {{ errMessage }}
+
+    <!--ajouter un commentaire-->
+    <div id="formComm" class="formComm">
+      <div id="formC" class="formC">
+        <h2>Ajouter un commentaire</h2>
+        <div class="user">
+          <label>Votre pseudo :</label>
+          <p>{{ pseudoUserComm }}</p>
+        </div>
+        <label>Description*:</label
+        ><textarea
+          name="description"
+          id="descriptionComm"
+          v-model="descriptionComm"
+          required
+        />
+        {{ errMsg }}
+
+        <button type="submit" @click="sendNewComm()">Envoyer</button>
       </div>
     </div>
-  </div>
+
+    <!--modifier un commentaire-->
+    <div id="newDescripComm" class="newDescripComm">
+      <div class="form">
+        <label> Nouvelle description :</label>
+        <textarea
+          name="description"
+          v-model="description"
+          id="description"
+          required
+        />
+        <p class="errorMessage">{{ errUpdateItem }}</p>
+        <button @click="sendUpdateComm()" id="sendUpdateItem">Envoyer</button>
+      </div>
+      <a @click="closeFormUpdate()"><i class="fas fa-times"></i></a>
+    </div>
+
+    <!-- affichage de tous les commentaires -->
+    <div class="theComments">
+      {{ errDeleteComm }}
+      <div
+        id="commentaires"
+        class="comm"
+        v-for="mess in comm"
+        :key="mess.idComments"
+      >
+        <article class="comment">
+          <div class="headComm">
+            <p>{{ mess.pseudoUserComm }}</p>
+            <p>{{ mess.dateComm }}</p>
+          </div>
+          <p class="texte">{{ mess.descriptionComm }}</p>
+        </article>
+        <div class="icons">
+          <a class="signaler" @click="reportComment(mess.idComment)"
+            ><i class="far fa-flag"></i
+          ></a>
+          <a @click="updateComm(mess.idComment, mess.pseudoUserComm)"
+            ><i class="far fa-edit"></i
+          ></a>
+          <a @click="deleteComm(mess.idComment, mess.pseudoUserComm)"
+            ><i class="fas fa-times"></i
+          ></a>
+        </div>
+      </div>
+    </div>
+  </body>
   <footerAll />
 </template>
 
@@ -161,14 +163,9 @@ export default {
           }
         )
         .then((response) => {
-          console.log(response);
-          let good = document.getElementById("good");
-          let bad = document.getElementById("bad");
           if (response.data.addLike) {
             this.msg[indexI].likes++;
-            good.style.color = "green";
             this.msg[indexI].dislikes--;
-            bad.style.color = "black";
           }
         })
         .catch((error) => {
@@ -197,21 +194,16 @@ export default {
           }
         )
         .then((response) => {
-          console.log(response);
-          let bad = document.getElementById("bad");
-          let good = document.getElementById("good");
           if (response.data.addDislike) {
             this.msg[indexI].dislikes++;
             this.msg[indexI].likes--;
-            good.style.color = "black";
-            bad.style.color = "red";
           }
         })
         .catch((error) => {
           console.log(error);
         });
     },
-    addComm: function () {
+    addComm: function () {                  //ajouter un commentaire
       let myForm = document.getElementById("formComm");
       myForm.style.display = "flex";
       let user = JSON.parse(localStorage.getItem("user"));
@@ -219,10 +211,9 @@ export default {
       let myButton = document.getElementById("buttonModif");
       myButton.style.display = "none";
     },
-    sendNewComm: function () {
-      let tableau = localStorage.getItem("user");
-      let tab = JSON.parse(tableau);
-      let token = tab.token;
+    sendNewComm: function () {            //envoyer le nouveau commentaire
+      let tableau = JSON.parse(localStorage.getItem("user"));
+      let token = tableau.token;
       axios
         .post(
           "http://localhost:3000/api/comments/",
@@ -235,7 +226,7 @@ export default {
           {
             headers: {
               "Content-type": "application/json",
-              Authorization: `Bearer ` + token, //Renvoie du token par l'api en cas d'authentification
+              Authorization: `Bearer ` + token, 
             },
           }
         )
@@ -248,7 +239,7 @@ export default {
           this.errMsg = "L'envoie a échoué ! Veuillez réessayer !";
         });
     },
-    updateComm: function (messId, pseudo) {
+    updateComm: function (messId, pseudo) {         //modifier un commentaire seulement si on en est l'auteur
       localStorage.setItem("updateComm", messId);
       let myPseudo = JSON.parse(localStorage.getItem("user")).pseudo;
       if (pseudo == myPseudo) {
@@ -259,7 +250,7 @@ export default {
           "Vous n'êtes pas autoriser à modifier ce commentaire";
       }
     },
-    sendUpdateComm: function () {
+    sendUpdateComm: function () {               //envoyer modification du commentaire 
       let myId = JSON.parse(localStorage.getItem("updateComm"));
       let token = JSON.parse(localStorage.getItem("user")).token;
 
@@ -272,7 +263,7 @@ export default {
           {
             headers: {
               "Content-type": "application/json",
-              Authorization: `Bearer ` + token, //Renvoie du token par l'api en cas d'authentification
+              Authorization: `Bearer ` + token, 
             },
           }
         )
@@ -290,7 +281,7 @@ export default {
       let myForm = document.getElementById("newDescripComm");
       myForm.style.display = "none";
     },
-    deleteComm: function (messId, pseudo) {
+    deleteComm: function (messId, pseudo) {                           //supprimer un commentaire si on en est l'auteur
       let myPseudo = JSON.parse(localStorage.getItem("user")).pseudo;
       let itemId = JSON.parse(localStorage.getItem("commentOneItem"));
       let token = JSON.parse(localStorage.getItem("user")).token;
@@ -324,7 +315,7 @@ export default {
           "Vous n'êtes pas autoriser à supprimer ce commentaire";
       }
     },
-    report: function (messId) {
+    report: function (messId) {                           //signaler article
       let user = JSON.parse(localStorage.getItem("user"));
       axios
         .post(
@@ -344,7 +335,7 @@ export default {
           console.log(error);
         });
     },
-    reportComment: function (messId) {
+    reportComment: function (messId) {                //signaler un commentaire
       let user = JSON.parse(localStorage.getItem("user"));
       axios
         .post(

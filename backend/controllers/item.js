@@ -26,7 +26,7 @@ exports.getAllProfil = (req, res, next) => {
 
 exports.getAllOtherUser = (req, res, next) => {
     const pseudo = req.params.id
-    db.query(`SELECT * FROM item WHERE pseudoUser=${pseudo}`, (error, result, field) => {
+    db.query(`SELECT * FROM item WHERE pseudoUser="${pseudo}"`, (error, result, field) => {
         if (error) {
             return res.status(400).json({ error })
         }

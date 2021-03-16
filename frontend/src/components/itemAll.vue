@@ -130,11 +130,11 @@ export default {
           console.log(error);
         });
     },
-    viewComments: function (messId) {
+    viewComments: function (messId) {           //fonction pour être rediriger vers la page commentaire
       localStorage.setItem("commentOneItem", messId);
       window.location.href = "http://localhost:8080/comment";
     },
-    report: function (messId) {
+    report: function (messId) {                 //signaler un article
       let user = JSON.parse(localStorage.getItem("user"));
       axios
         .post(
@@ -187,7 +187,6 @@ export default {
       message: "",
       msg: "",
       errorMessage: "",
-      //activeColor: "white",
     };
   },
 };
@@ -202,7 +201,7 @@ section {
   margin-top: 10px;
   background-color: white;
   & .create {
-    padding: 10px 0;
+    padding: 20px 0 10px 0;
     & .creation {
       font-size: 20px;
       font-weight: bold;
@@ -287,6 +286,7 @@ section {
   section {
     padding: 10px;
     & .create {
+      padding: 10px 0;
       & .creation {
         font-size: 15px;
       }
@@ -334,6 +334,7 @@ section {
   section {
     padding: 10px;
     & .create {
+      padding: 10px 0;
       & .creation {
         font-size: 15px;
       }

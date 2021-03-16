@@ -1,53 +1,55 @@
 <template>
   <headerAll />
-  <div class="accueil">
-    <div class="articles">
-      <div>
-        <ul>
-          <li>
-            <a @click="viewBest" id="linkBest"
-              ><i class="fas fa-fire-alt"></i> Best
-            </a>
-          </li>
-          <li>
-            <a @click="viewAll" id="linkAll" class="linkAll"
-              ><i class="fas fa-globe"></i> Tous</a
-            >
-          </li>
-          <li class="searchUser">
-            <input
-              type="search"
-              placeholder="Rechercher un utilisateur"
-              v-model="searchUser"
-            />
-            <button @click="searchOneUser()">
-              <i class="fas fa-check firstCheck"></i
-              ><i class="fas fa-check secondCheck"></i>
-            </button>
-          </li>
-        </ul>
+  <body>
+    <div class="accueil">
+      <div class="articles">
+        <div>
+          <ul>
+            <li>
+              <a @click="viewBest" id="linkBest"
+                ><i class="fas fa-fire-alt"></i> Best
+              </a>
+            </li>
+            <li>
+              <a @click="viewAll" id="linkAll" class="linkAll"
+                ><i class="fas fa-globe"></i> Tous</a
+              >
+            </li>
+            <li class="searchUser">
+              <input
+                type="search"
+                placeholder="Rechercher un utilisateur"
+                v-model="searchUser"
+              />
+              <button @click="searchOneUser()">
+                <i class="fas fa-check firstCheck"></i
+                ><i class="fas fa-check secondCheck"></i>
+              </button>
+            </li>
+          </ul>
+        </div>
+        <div id="itemAllPage"><itemAll /></div>
+        <div id="bestItemPage"><bestItems /></div>
       </div>
-      <div id="itemAllPage"><itemAll /></div>
-      <div id="bestItemPage"><bestItems /></div>
+      <aside class="apropos">
+        <div class="imgLog">
+          <img src="../assets/img/logo-black.png" class="map" />
+          <img src="../assets/img/logo-black2.png" class="log" />
+        </div>
+        <h2>A propos de l'entreprise</h2>
+        <section class="employee">
+          <p>Nombre d'employés : 620</p>
+          <p>Nombre d'inscrits sur le site : {{ nbUser }} {{ errorMessage }}</p>
+        </section>
+        <h2>Un mot de la direction</h2>
+        <p class="text">
+          Pour favoriser votre bien-être au travail. Nous avons mis en place ce
+          réseau social pour améliorer la communication entre collègues afin de
+          se vous connaître dans un cadre plus informel.
+        </p>
+      </aside>
     </div>
-    <div class="apropos">
-      <div class="imgLog">
-        <img src="../assets/img/logo-black.png" class="map" />
-        <img src="../assets/img/logo-black2.png" class="log" />
-      </div>
-      <h2>A propos de l'entreprise</h2>
-      <section class="employee">
-        <p>Nombre d'employés : 620</p>
-        <p>Nombre d'inscrits sur le site : {{ nbUser }} {{ errorMessage }}</p>
-      </section>
-      <h2>Un mot de la direction</h2>
-      <p class="text">
-        Pour favoriser votre bien-être au travail. Nous avons mis en place ce
-        réseau social pour améliorer la communication entre collègues afin de se
-        vous connaître dans un cadre plus informel.
-      </p>
-    </div>
-  </div>
+  </body>
   <footerAll />
 </template>
 
@@ -63,13 +65,14 @@ export default {
   components: { headerAll, itemAll, bestItems, footerAll },
   data() {
     return {
-      nbUser: "",
+      nbUser: "", //récupère le nb total d'inscrits
       errMessage: "",
-      searchUser: "",
+      searchUser: "", // récupère le nom d'utilisateur recherché
     };
   },
   methods: {
     searchOneUser: function () {
+      //recherche le profil et renvoie sa page
       localStorage.setItem("searchProfil", this.searchUser);
       const pseudoProfil = this.searchUser;
       if (this.searchUser == "" || this.searchUser == null) {
@@ -79,6 +82,7 @@ export default {
       }
     },
     viewAll: function () {
+      //tous les articles
       let myBest = document.getElementById("bestItemPage");
       let myAll = document.getElementById("itemAllPage");
       myBest.style.display = "none";
@@ -95,6 +99,7 @@ export default {
       myAllLink.style.padding = "6px";
     },
     viewBest: function () {
+      // top 3
       let myBest = document.getElementById("bestItemPage");
       let myAll = document.getElementById("itemAllPage");
       myBest.style.display = "flex";
@@ -112,6 +117,7 @@ export default {
     },
   },
   mounted() {
+    // requête pour avoir le nb d'inscrits
     let user = JSON.parse(localStorage.getItem("user"));
     axios
       .get("http://localhost:3000/api/auth/", {

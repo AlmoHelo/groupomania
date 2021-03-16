@@ -1,18 +1,20 @@
 <template>
   <footer>
-    <ul>
-      <li>
-        <a href="#"><i class="fab fa-facebook-f"></i></a>
-      </li>
-      <li>
-        <a href="#"><i class="fab fa-instagram"></i></a>
-      </li>
-      <li>
-        <a href="mailto:groupomania@gmail.com"
-          ><i class="far fa-envelope"></i
-        ></a>
-      </li>
-    </ul>
+    <nav>
+      <ul>
+        <li>
+          <a href="#"><i class="fab fa-facebook-f"></i></a>
+        </li>
+        <li>
+          <a href="#"><i class="fab fa-instagram"></i></a>
+        </li>
+        <li>
+          <a href="mailto:groupomania@gmail.com"
+            ><i class="far fa-envelope"></i
+          ></a>
+        </li>
+      </ul>
+    </nav>
   </footer>
 </template>
 
@@ -34,31 +36,31 @@ footer {
       font-size: 50px;
       margin: 10px 40px;
       & a {
-          color: black;
+        color: black;
       }
     }
   }
 }
 @media screen and (max-width: 767px) {
-    footer{
-      margin: 60px 0 40px 0;
-        & ul {
-            flex-direction: column;
-            & li{
-              font-size: 30px;
-            }
-        }
+  footer {
+    margin: 60px 0 40px 0;
+    & ul {
+      flex-direction: column;
+      & li {
+        font-size: 30px;
+      }
     }
+  }
 }
 
 @media (min-width: 768px) and (max-width: 991px) {
-    footer{
-      margin: 80px 0 50px 0;
-        & ul {
-            & li{
-              font-size: 40px;
-            }
-        }
+  footer {
+    margin: 80px 0 50px 0;
+    & ul {
+      & li {
+        font-size: 40px;
+      }
     }
+  }
 }
 </style>

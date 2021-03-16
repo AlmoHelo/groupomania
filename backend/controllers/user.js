@@ -67,7 +67,6 @@ exports.signup = (req, res, next) => {
     }
 };
 
-
 //Connexion de l'utilisateur
 exports.login = (req, res, next) => {
     const email = req.body.email;
@@ -241,7 +240,7 @@ exports.getOneOtherUser = (req, res, next) => {
     const pseudo = req.params.id
     db.query(`SELECT userId, email, pseudo, biographie, creationDate, pictureProfil FROM user WHERE pseudo="${pseudo}"`, (error, results) => {
         if (error) {
-            return res.status(410).json(error)
+            return res.status(400).json(error)
         }
         return res.status(200).json(results[0])
     })

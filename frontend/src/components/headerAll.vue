@@ -1,12 +1,14 @@
 <template>
   <header>
     <img alt="Vue logo" src="../assets/img/logo-white.png" />
-    <ul id="menu">
-      <a href="/item"> Accueil </a>
-      <a class="signaler" id="report" href="/report"> Signalement </a>
-      <a v-on:click="profil"> Profil </a>
-      <a v-on:click="deconnexion"> Deconnexion </a>
-    </ul>
+    <nav>
+      <ul id="menu">
+        <a href="/item"> Accueil </a>
+        <a class="signaler" id="report" href="/report"> Signalement </a>        <!--visible que par l'administrateur-->
+        <a v-on:click="profil"> Profil </a>
+        <a v-on:click="deconnexion"> Deconnexion </a>
+      </ul>
+    </nav>
   </header>
 </template>
 
@@ -16,8 +18,8 @@ import axios from "axios";
 export default {
   name: "headerAll",
   el: "menu",
-  mounted(){
-    let myUser = JSON.parse(localStorage.getItem("user"))
+  mounted() {
+    let myUser = JSON.parse(localStorage.getItem("user"));
     if (myUser.admin === 1) {
       let signalement = document.getElementById("report");
       signalement.style.display = "flex";
@@ -84,7 +86,7 @@ header {
     justify-content: center;
     margin: 0;
     & a {
-      color: #F6D0D0;
+      color: #f6d0d0;
       font-weight: bold;
       text-decoration: none;
       font-family: RocknRollOne, Helvetica, Arial, sans-serif;
@@ -119,9 +121,11 @@ header {
     }
     & ul {
       flex-direction: row;
-      justify-content: space-around;
       width: 100%;
       font-size: 25px;
+      & a{
+        margin: 0 30px;
+      }
     }
   }
 }

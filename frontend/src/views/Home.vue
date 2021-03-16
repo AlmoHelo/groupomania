@@ -34,9 +34,9 @@ h1 {
   width: 100%;
   margin-bottom: 80px;
   border-bottom: 5px solid #dfa9a99d;
-  animation: borderTest 10s ease-in-out infinite;
+  animation: borderAnim 10s ease-in-out infinite;
 }
-@keyframes borderTest {
+@keyframes borderAnim {
   0% {
     width: 0%;
   }
