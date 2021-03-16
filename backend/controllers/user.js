@@ -1,7 +1,6 @@
 const db = require('../database')
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const crypt = require('crypto-js');
 require('dotenv').config()
 
 /*
@@ -10,12 +9,12 @@ bcrypt.hash(pass, 10)
 .then((hash) => {
     db.query(`INSERT INTO user (email, pseudo, password, creationDate) VALUES ("almoyner.heloise@gmail.com", "almohelo", "`+ hash + `", "2021-02-24")`)
 })*/
+
 //Inscription de l'utilisateur
 exports.signup = (req, res, next) => {
     const user = req.body
-    if (req.file == undefined) {
+    if (req.file == undefined) {                        //si l'utilisateur n'a pas choisi d'image de profil, on lui en attribue une par défaut
         const imageURL = `${req.protocol}://${req.get('host')}/images/pictureDefault.jpg`
-
         bcrypt.hash(user.password, 10)
             .then((hash) => {
                 user.password = hash
@@ -39,7 +38,7 @@ exports.signup = (req, res, next) => {
                     return res.status(201).json({ message: 'Votre compte a bien été crée !' },)
                 });
             });
-    } else {
+    } else {                       //si l'utilisateur a choisi une photo de profil
         const imageURL = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
 
         bcrypt.hash(user.password, 10)
@@ -124,7 +123,7 @@ exports.login = (req, res, next) => {
 exports.deleteUser = (req, res, next) => {
     const userId = req.params.id
     db.query(
-        'DELETE FROM user WHERE userId= ?', userId, (error, result, field) => {
+        `DELETE FROM user WHERE userId=${userId}`, (error, result, field) => {
             if (error) {
                 console.log(error)
                 return res.status(400).json(error)
@@ -217,7 +216,7 @@ exports.updateUser = (req, res, next) => {
 //Affichage de l'utilisateur connecté
 exports.getOneUser = (req, res, next) => {
     const userId = req.params.id
-    const oneU = 'SELECT userId, email, pseudo, biographie, creationDate, pictureProfil FROM user WHERE userId=' + userId
+    const oneU = `SELECT userId, email, pseudo, biographie, creationDate, pictureProfil FROM user WHERE userId=${userId}`
     db.query(oneU, (error, results) => {
         if (error) {
             return res.status(400).json(error)

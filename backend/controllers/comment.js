@@ -66,7 +66,7 @@ exports.update = (req, result, next) => {
 exports.delete = (req, res, next) => {
     let itemId = req.body.itemId
     db.query(
-        'DELETE FROM comment WHERE idComment= ?', req.params.id, (error, result, fields) => {
+        `DELETE FROM comment WHERE idComment=${req.params.id}`, (error, result, fields) => {
             if (error) {
                 return res.status(400).json(error)
             }

@@ -44,7 +44,7 @@ exports.create = (req, res, next) => {
         return element.idReportUser === userId
     };
 
-    if (itemId != undefined) {
+    if (itemId != undefined) {                                //signalement des items
         const searchItem = (element) => {
             return element.idReportItem === itemId
         };
@@ -63,7 +63,7 @@ exports.create = (req, res, next) => {
                 return res.status(201).json('Votre signalement sur l\'article a déjà été posté !')
             }
         })
-    } else {
+    } else {                               //signalement des commentaires
         const searchComment = (element) => {
             return element.idReportComment === commentId
         };
@@ -83,11 +83,10 @@ exports.create = (req, res, next) => {
     }
 }
 
-
 //Delete le report
 exports.delete = (req, res, next) => {
     db.query(
-        'DELETE FROM report WHERE idReport= ?', req.params.id, (error, resp, fields) => {
+        `DELETE FROM report WHERE idReport=${req.params.id}`, (error, resp, fields) => {
             if (error) {
                 return res.status(400).json(error)
             }
@@ -99,7 +98,7 @@ exports.delete = (req, res, next) => {
 //Delete item reported or comment reported
 exports.deleteOne = (req, res, next) => {
     db.query(
-        'SELECT * FROM report WHERE idReport= ?', req.params.id, (error, resp, fields) => {
+        `SELECT * FROM report WHERE idReport=${req.params.id}`, (error, resp, fields) => {
             if (error) {
                 return res.status(400).json(error)
             }
@@ -107,14 +106,14 @@ exports.deleteOne = (req, res, next) => {
             const idComment = resp[0].idReportComment
             console.log(idItem)
             console.log(idComment)
-            if (idItem != null) {
+            if (idItem != null) {                           //supprime un signalement d'item
                 db.query(
-                    'DELETE FROM report WHERE idReport= ?', req.params.id, (error, resp, fields) => {
+                    `DELETE FROM report WHERE idReport=${req.params.id}`, (error, resp, fields) => {
                         if (error) {
                             return res.status(400).json(error)
                         }
                         db.query(
-                            'DELETE FROM item WHERE id= ?', idItem, (error, resp, fields) => {
+                            `DELETE FROM item WHERE id=${idItem}`, (error, resp, fields) => {
                                 if (error) {
                                     return res.status(400).json(error)
                                 }
@@ -123,14 +122,14 @@ exports.deleteOne = (req, res, next) => {
                         )
                     }
                 )
-            } else if (idComment != null){
+            } else if (idComment != null){                          //supprime un signalement de commentaire
                 db.query(
-                    'DELETE FROM report WHERE idReport= ?', req.params.id, (error, resp, fields) => {
+                    `DELETE FROM report WHERE idReport=${req.params.id}`, (error, resp, fields) => {
                         if (error) {
                             return res.status(400).json(error)
                         }
                         db.query(
-                            'DELETE FROM comment WHERE idComment= ?', idComment, (error, resp, fields) => {
+                            `DELETE FROM comment WHERE idComment=${idComment}`, (error, resp, fields) => {
                                 if (error) {
                                     return res.status(400).json(error)
                                 }

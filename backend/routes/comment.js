@@ -9,7 +9,6 @@ const multer = require('../middleware/multer');
 router.get('/all/:id', auth, commentCtrl.getAll);
 router.post('/', auth, multer, commentCtrl.create);
 router.put('/:id', auth, multer, commentCtrl.update);
-router.delete('/:id', auth, commentCtrl.delete);
-//router.post('/:id/like', auth, itemCtrl.like);   
+router.delete('/:id', auth, commentCtrl.delete); 
 
 module.exports = router;
