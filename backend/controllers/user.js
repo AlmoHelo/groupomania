@@ -160,13 +160,7 @@ exports.deleteUser = (req, res, next) => {
                                             db.query(`SELECT * FROM userLikes WHERE userIdLike=${userId}`, (err, response, fields) => {
                                                 console.log(response.length)
                                                 if (response.length > 0) {
-                                                    db.query(`DELETE FROM userLikes WHERE userIdLike=${userId}`, (err, resp, fields) => {
-                                                        if (err) {
-                                                            console.log(err)
-                                                        } else {
-                                                            console.log("supprimé des likes")
-                                                        }
-                                                    })
+                                                    const deleteLike = deleteItemLike(userId)
                                                 } else {
                                                     const deleteDislike = deleteItemDislike(userId)
                                                 }
@@ -176,13 +170,7 @@ exports.deleteUser = (req, res, next) => {
                                 } else {
                                     db.query(`SELECT * FROM userLikes WHERE userIdLike=${userId}`, (err, response, fields) => {
                                         if (response.length > 0) {
-                                            db.query(`DELETE FROM userLikes WHERE userIdLike=${userId}`, (err, resp, fields) => {
-                                                if (err) {
-                                                    console.log(err)
-                                                } else {
-                                                    console.log("supprimé des likes")
-                                                }
-                                            })
+                                            const deleteLike = deleteItemLike(userId)
                                         } else {
                                             const deleteDislike = deleteItemDislike(userId)
                                         }

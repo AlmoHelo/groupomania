@@ -96,6 +96,26 @@ exports.delete = (req, res, next) => {
 }
 
 //Delete item reported or comment reported
+
+let deleteItemLike = (itemId) => {
+    db.query(`DELETE FROM userLikes WHERE idItemLike=${itemId}`, (err, resp, fields) => {
+        if(err){
+            console.log(err)
+        }else {
+            console.log("supprimé des likes")
+        }
+    })
+}
+let deleteItemDislike = (itemId) => {
+    db.query(`DELETE FROM userDislikes WHERE idItemDislike=${itemId}`, (err, resp, fields) => {
+        if(err){
+            console.log(err)
+        }else {
+            console.log("supprimé des dislikes")
+        }
+    })
+}
+
 exports.deleteOne = (req, res, next) => {
     db.query(
         `SELECT * FROM report WHERE idReport=${req.params.id}`, (error, resp, fields) => {
@@ -104,25 +124,50 @@ exports.deleteOne = (req, res, next) => {
             }
             const idItem = resp[0].idReportItem
             const idComment = resp[0].idReportComment
-            console.log(idItem)
-            console.log(idComment)
-            if (idItem != null) {                           //supprime un signalement d'item
+            if (idItem != null) {                           //supprime un item signalé
                 db.query(
                     `DELETE FROM report WHERE idReport=${req.params.id}`, (error, resp, fields) => {
                         if (error) {
                             return res.status(400).json(error)
                         }
                         db.query(
-                            `DELETE FROM item WHERE id=${idItem}`, (error, resp, fields) => {
+                            `DELETE FROM item WHERE id=${req.params.id}`, (error, res, fields) => {
                                 if (error) {
-                                    return res.status(400).json(error)
+                                    return resp.status(400).json(error)
+                                } else {
+                                    db.query(`SELECT * FROM comment WHERE itemId=?`, req.params.id, (err, resp, fields) => {
+                                        if (resp.length > 0) {
+                                            db.query(`DELETE FROM comment WHERE itemId=?`, req.params.id, (err, res_, fields) => {
+                                                if (err) {
+                                                    return resp.status(400).json(error)
+                                                } else {
+                                                    db.query(`SELECT * FROM userLikes WHERE idItemLike=${req.params.id}`, (err, response, fields) => {
+                                                        console.log(response.length)
+                                                        if (response.length > 0) {
+                                                            const deleteLike = deleteItemLike(req.params.id)
+                                                        } else {
+                                                            const deleteDislike = deleteItemDislike(req.params.id)
+                                                        }
+                                                    })
+                                                }
+                                            })
+                                        } else {
+                                            db.query(`SELECT * FROM userLikes WHERE idItemLike=${req.params.id}`, (err, response, fields) => {
+                                                if (response.length > 0) {
+                                                    const deleteLike = deleteItemLike(req.params.id)
+                                                } else {
+                                                    const deleteDislike = deleteItemDislike(req.params.id)
+                                                }
+                                            })
+                                        }
+                                    })
+                                    return resp.status(200).json({message: "ok"})
                                 }
-                                return res.status(200).json({ message: 'L\'article a bien été supprimé du tableau report et item !' })
                             }
                         )
                     }
                 )
-            } else if (idComment != null){                          //supprime un signalement de commentaire
+            } else if (idComment != null){                          //supprime un commentaire signalé
                 db.query(
                     `DELETE FROM report WHERE idReport=${req.params.id}`, (error, resp, fields) => {
                         if (error) {

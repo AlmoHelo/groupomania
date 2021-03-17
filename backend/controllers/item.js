@@ -120,7 +120,6 @@ exports.update = (req, result, next) => {
 }
 
 //Delete one item
-
 let deleteItemLike = (itemId) => {
     db.query(`DELETE FROM userLikes WHERE idItemLike=${itemId}`, (err, resp, fields) => {
         if(err){
