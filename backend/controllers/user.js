@@ -94,7 +94,7 @@ exports.login = (req, res, next) => {
                 })
         });
     } else {                    //if user uses pseudo
-        db.query(`SELECT userId, password, email FROM user WHERE pseudo="${email}"`, function (err, result) {
+        db.query(`SELECT userId, password, email, pseudo, isAdmin FROM user WHERE pseudo="${email}"`, function (err, result) {
             console.log(result)
             if (result.length == 0) {                       //utilisateur pas dans la base de données !! 
                 return res.status(500).json("erreur");

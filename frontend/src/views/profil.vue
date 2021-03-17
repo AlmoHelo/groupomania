@@ -216,7 +216,6 @@ export default {
         axios
           .delete(
             "http://localhost:3000/api/items/" + myIdItem,
-            { pseudo: localStorage.getItem("user").pseudo },
             {
               headers: {
                 authorization: "Bearer " + user.token,

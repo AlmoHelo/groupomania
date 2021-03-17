@@ -148,7 +148,7 @@ exports.delete = (req, resp, next) => {
             } else {
                 db.query(`SELECT * FROM comment WHERE itemId=?`, req.params.id, (err, resp, fields) => {
                     if (resp.length > 0) {
-                        db.query(`DELETE FROM comment WHERE itemId=?`, req.params.id), (err, res_, fields) => {
+                        db.query(`DELETE FROM comment WHERE itemId=?`, req.params.id, (err, res_, fields) => {
                             if (err) {
                                 return resp.status(400).json(error)
                             } else {
@@ -161,7 +161,7 @@ exports.delete = (req, resp, next) => {
                                     }
                                 })
                             }
-                        }
+                        })
                     } else {
                         db.query(`SELECT * FROM userLikes WHERE idItemLike=${req.params.id}`, (err, response, fields) => {
                             if (response.length > 0) {
