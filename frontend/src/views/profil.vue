@@ -167,17 +167,21 @@ export default {
       myDescription.style.display = "none";
       modify.style.display = "flex";
     },
-    deleteUser: function () {                       //supprimer utilisateur
+    deleteUser: function () {
+      //supprimer utilisateur
       if (confirm("Confirmez la suppression de votre profil")) {
         let profil = JSON.parse(localStorage.getItem("userProfil"));
         let userId = profil.userId;
         let user = JSON.parse(localStorage.getItem("user"));
         axios
-          .delete("http://localhost:3000/api/auth/" + userId, {
-            headers: {
-              authorization: "Bearer " + user.token,
-            },
-          })
+          .delete(
+            "http://localhost:3000/api/auth/" + userId,
+            {
+              headers: {
+                authorization: "Bearer " + user.token,
+              },
+            }
+          )
           .then((response) => {
             let message = JSON.parse(JSON.stringify(response));
             alert(message.data.message);
@@ -195,24 +199,30 @@ export default {
       localStorage.setItem("commentOneItem", messId);
       window.location.href = "http://localhost:8080/comment";
     },
-    modifierItem: function (messId) {               //modifier ses articles
+    modifierItem: function (messId) {
+      //modifier ses articles
       localStorage.setItem("UpdateOneItem", messId);
       let myArticles = document.getElementById("articlesPerso");
       let myForm = document.getElementById("newDescription");
       myArticles.style.display = "none";
       myForm.style.display = "flex";
     },
-    supprimerItem: function (messId) {              //supprimer ses articles
+    supprimerItem: function (messId) {
+      //supprimer ses articles
       if (confirm("Confirmez la suppression de votre article")) {
         let myIdItem = messId;
         console.log(myIdItem);
         let user = JSON.parse(localStorage.getItem("user"));
         axios
-          .delete("http://localhost:3000/api/items/" + myIdItem, {
-            headers: {
-              authorization: "Bearer " + user.token,
-            },
-          })
+          .delete(
+            "http://localhost:3000/api/items/" + myIdItem,
+            { pseudo: localStorage.getItem("user").pseudo },
+            {
+              headers: {
+                authorization: "Bearer " + user.token,
+              },
+            }
+          )
           .then((response) => {
             console.log(response.data);
             window.location.href = "http://localhost:8080/items/profil/";
@@ -224,7 +234,8 @@ export default {
           });
       }
     },
-    report: function (messId) {                     //signaler un commentaire
+    report: function (messId) {
+      //signaler un commentaire
       let user = JSON.parse(localStorage.getItem("user"));
       axios
         .post(
@@ -363,7 +374,7 @@ export default {
 .profil {
   display: flex;
   flex-direction: row-reverse;
-    box-shadow: 0 5px 5px grey;
+  box-shadow: 0 5px 5px grey;
   & .allInfo {
     width: 50%;
     margin: auto;

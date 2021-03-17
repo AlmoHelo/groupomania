@@ -37,7 +37,8 @@ export default {
     };
   },
   methods: {
-    envoie: function () {                         //envoie du nouvel article
+    envoie: function () {
+      //envoie du nouvel article
       let tableau = JSON.parse(localStorage.getItem("user"));
       let token = tableau.token;
 
@@ -48,8 +49,10 @@ export default {
         JSON.parse(localStorage.getItem("user")).pseudo
       );
       formData.append("description", this.description);
-
-      console.log(formData);
+      formData.append(
+        "userId",
+        JSON.parse(localStorage.getItem("user")).userId
+      );
       if (this.description == "") {
         alert(
           "Veuillez remplir tous les champs avant d'envoyer le formulaire !"
@@ -64,7 +67,7 @@ export default {
           })
           .then((response) => {
             console.log(response);
-            window.location.href="http://localhost:8080/item/"
+            window.location.href = "http://localhost:8080/item/";
           })
           .catch(() => {
             console.log("l'envoi a échouée"); //En cas d'echec envoie de l'information à l'utilisateur
