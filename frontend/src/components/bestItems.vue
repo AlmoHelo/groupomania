@@ -35,7 +35,7 @@
                 v-on:click="onLike(mess.id, index)"
               ></i></a
             >{{ mess.likes }}
-            
+
             <a v-on:click="onDislike(mess.id, index)"
               ><i class="far fa-thumbs-down" id="bad"></i></a
             >{{ mess.dislikes }}
@@ -70,6 +70,7 @@ export default {
     onLike: function (messId, indexI) {
       let valueLike = "like";
       let idOneItem = messId;
+      console.log(document.getElementById("good"));
       let user = JSON.parse(localStorage.getItem("user"));
       axios
         .post(
@@ -89,7 +90,7 @@ export default {
         .then((response) => {
           if (response.data.addLike) {
             this.msg[indexI].likes++;
-            this.msg[indexI].dislikes--
+            this.msg[indexI].dislikes--;
           }
         })
         .catch((error) => {
@@ -99,7 +100,7 @@ export default {
     onDislike: function (messId, indexI) {
       let valueLike = "dislike";
       let idOneItem = messId;
-      console.log(indexI)
+      console.log(indexI);
       let user = JSON.parse(localStorage.getItem("user"));
       axios
         .post(
@@ -175,11 +176,13 @@ export default {
         });
 
         let test = response.data;
-        test.sort(function (a, b) {       //trie tableau par les likes
+        test.sort(function (a, b) {
+          //trie tableau par les likes
           return a.likes - b.likes;
         });
-        test.reverse();                   //mets du plus grand au plus petit
-        for (let i = 0; i < test.length && i < 3; i++) {      //récupère les 3 premiers
+        test.reverse(); //mets du plus grand au plus petit
+        for (let i = 0; i < test.length && i < 3; i++) {
+          //récupère les 3 premiers
           let myFavoriteItem = [];
           myFavoriteItem[0] = test[0];
           myFavoriteItem[1] = test[1];

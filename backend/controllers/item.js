@@ -120,20 +120,67 @@ exports.update = (req, result, next) => {
 }
 
 //Delete one item
+
+let deleteItemLike = (itemId) => {
+    db.query(`DELETE FROM userLikes WHERE idItemLike=${itemId}`, (err, resp, fields) => {
+        if(err){
+            console.log(err)
+        }else {
+            console.log("supprimé des likes")
+        }
+    })
+}
+let deleteItemDislike = (itemId) => {
+    db.query(`DELETE FROM userDislikes WHERE idItemDislike=${itemId}`, (err, resp, fields) => {
+        if(err){
+            console.log(err)
+        }else {
+            console.log("supprimé des dislikes")
+        }
+    })
+}
+
 exports.delete = (req, resp, next) => {
     db.query(
         `DELETE FROM item WHERE id=${req.params.id}`, (error, res, fields) => {
             if (error) {
-                return res.status(400).json(error)
+                return resp.status(400).json(error)
+            } else {
+                db.query(`SELECT * FROM comment WHERE itemId=?`, req.params.id, (err, resp, fields) => {
+                    if (resp.length > 0) {
+                        db.query(`DELETE FROM comment WHERE itemId=?`, req.params.id), (err, res_, fields) => {
+                            if (err) {
+                                return resp.status(400).json(error)
+                            } else {
+                                db.query(`SELECT * FROM userLikes WHERE idItemLike=${req.params.id}`, (err, response, fields) => {
+                                    console.log(response.length)
+                                    if (response.length > 0) {
+                                        const deleteLike = deleteItemLike(req.params.id)
+                                    } else {
+                                        const deleteDislike = deleteItemDislike(req.params.id)
+                                    }
+                                })
+                            }
+                        }
+                    } else {
+                        db.query(`SELECT * FROM userLikes WHERE idItemLike=${req.params.id}`, (err, response, fields) => {
+                            if (response.length > 0) {
+                                const deleteLike = deleteItemLike(req.params.id)
+                            } else {
+                                const deleteDislike = deleteItemDislike(req.params.id)
+                            }
+                        })
+                    }
+                })
+                return resp.status(200).json({message: "ok"})
             }
-            return res.status(200).json({ message: 'Votre message a bien été supprimé !' })
         }
     )
 }
 
 
 //fonctions pour la route like
-let searchUserInLike = (userId, itemId) => {                
+let searchUserInLike = (userId, itemId) => {
     return new Promise((resolve, reject) => {
         db.query(`SELECT userIdLike FROM userLikes WHERE userIdLike=${userId} AND idItemLike=${itemId}`, (err, resp, fields) => {
             if (err) {
@@ -202,7 +249,7 @@ let countUserLike = (itemId) => {
             resolve(resp)
             let myRep = JSON.stringify(resp).split(':')[1].split("}")[0]
             db.query(`UPDATE item SET likes=${myRep} WHERE id=${itemId}`, (err, result, fields) => {
-                if(err){
+                if (err) {
                     reject(err)
                 }
                 resolve(result)
@@ -219,7 +266,7 @@ let countUserDislike = (itemId) => {
             resolve(resp)
             let myRep = JSON.stringify(resp).split(':')[1].split("}")[0]
             db.query(`UPDATE item SET dislikes=${myRep} WHERE id=${itemId}`, (err, result, fields) => {
-                if(err){
+                if (err) {
                     reject(err)
                 }
                 resolve(result)
@@ -280,7 +327,7 @@ exports.like = async (req, res, next) => {
                     const deleteUserDis = await deleteUserDislike(userId, itemId)
                     const countDislike = await countUserDislike(itemId)
                     console.log(deleteUserDis, " L235")
-                    console.log( countDislike, " L267")
+                    console.log(countDislike, " L267")
                 } else if (valueLike == "dislike") {
                     const deleteUserLi = await deleteUserLike(userId, itemId)
                     console.log(deleteUserLi, " L238")
