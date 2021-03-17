@@ -64,13 +64,11 @@ export default {
       message: "",
       msg: "",
       errorMessage: "",
-      count: "",
     };
   },
   methods: {
     onLike: function (messId, indexI) {
-      this.like = 1;
-      this.dislike = -2;
+      let valueLike = "like";
       let idOneItem = messId;
       let user = JSON.parse(localStorage.getItem("user"));
       axios
@@ -79,8 +77,7 @@ export default {
           {
             userId: user.userId,
             email: user.email,
-            like: this.like,
-            dislike: this.dislike,
+            valueLike: valueLike,
             idItem: idOneItem,
           },
           {
@@ -100,9 +97,9 @@ export default {
         });
     },
     onDislike: function (messId, indexI) {
-      this.like = -1;
-      this.dislike = 2;
+      let valueLike = "dislike";
       let idOneItem = messId;
+      console.log(indexI)
       let user = JSON.parse(localStorage.getItem("user"));
       axios
         .post(
@@ -110,8 +107,7 @@ export default {
           {
             userId: user.userId,
             email: user.email,
-            like: this.like,
-            dislike: this.dislike,
+            valueLike: valueLike,
             idItem: idOneItem,
           },
           {
@@ -121,7 +117,7 @@ export default {
           }
         )
         .then((response) => {
-          if (response.data.addDislike) {
+          if (response.data.addLike == false) {
             this.msg[indexI].dislikes++;
             this.msg[indexI].likes--;
           }

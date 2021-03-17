@@ -108,8 +108,7 @@ export default {
   components: { headerAll, updateItem, updateUser, footerAll },
   methods: {
     onLike: function (messId, indexI) {
-      this.dislike = -2;
-      this.like = 1;
+      let valueLike = "like";
       let idOneItem = messId;
       let user = JSON.parse(localStorage.getItem("user"));
       axios
@@ -117,9 +116,8 @@ export default {
           "http://localhost:3000/api/items/" + user.userId + "/like",
           {
             userId: user.userId,
-            email: user.mail,
-            like: this.like,
-            dislike: this.dislike,
+            email: user.email,
+            valueLike: valueLike,
             idItem: idOneItem,
           },
           {
@@ -137,8 +135,7 @@ export default {
         .catch((error) => console.log(error));
     },
     onDislike: function (messId, indexI) {
-      this.like = -1;
-      this.dislike = 2;
+      let valueLike = "dislike";
       let idOneItem = messId;
       let user = JSON.parse(localStorage.getItem("user"));
       axios
@@ -146,9 +143,8 @@ export default {
           "http://localhost:3000/api/items/" + user.userId + "/like",
           {
             userId: user.userId,
-            email: user.mail,
-            like: this.like,
-            dislike: this.dislike,
+            email: user.email,
+            valueLike: valueLike,
             idItem: idOneItem,
           },
           {
@@ -158,7 +154,7 @@ export default {
           }
         )
         .then((response) => {
-          if (response.data.addDislike) {
+          if (response.data.addLike == false) {
             this.msg[indexI].dislikes++;
             this.msg[indexI].likes--;
           }

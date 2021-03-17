@@ -109,7 +109,7 @@ exports.login = (req, res, next) => {
                                 { userId: result[0].userId },
                                 token,
                                 { expiresIn: "24h" }
-                            ), userId: result[0].userId, pseudo: result[0].pseudo,
+                            ), userId: result[0].userId, pseudo: result[0].pseudo, admin: result[0].isAdmin, email: result[0].email
                         });
                     }
                 })

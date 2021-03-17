@@ -108,20 +108,20 @@
           <div class="headComm">
             <p>{{ mess.pseudoUserComm }}</p>
             <p>{{ mess.dateComm }}</p>
+            <div class="icons">
+              <a class="signaler" @click="reportComment(mess.idComment)"
+                ><i class="far fa-flag"></i
+              ></a>
+              <a @click="updateComm(mess.idComment, mess.pseudoUserComm)"
+                ><i class="far fa-edit"></i
+              ></a>
+              <a @click="deleteComm(mess.idComment, mess.pseudoUserComm)"
+                ><i class="fas fa-times"></i
+              ></a>
+            </div>
           </div>
           <p class="texte">{{ mess.descriptionComm }}</p>
         </article>
-        <div class="icons">
-          <a class="signaler" @click="reportComment(mess.idComment)"
-            ><i class="far fa-flag"></i
-          ></a>
-          <a @click="updateComm(mess.idComment, mess.pseudoUserComm)"
-            ><i class="far fa-edit"></i
-          ></a>
-          <a @click="deleteComm(mess.idComment, mess.pseudoUserComm)"
-            ><i class="fas fa-times"></i
-          ></a>
-        </div>
       </div>
     </div>
   </body>
@@ -142,8 +142,7 @@ export default {
   },
   methods: {
     onLike: function (messId, indexI) {
-      this.like = 1;
-      this.dislike = -2;
+      let valueLike = "like";
       let idOneItem = messId;
       let user = JSON.parse(localStorage.getItem("user"));
       axios
@@ -152,8 +151,7 @@ export default {
           {
             userId: user.userId,
             email: user.email,
-            like: this.like,
-            dislike: this.dislike,
+            valueLike: valueLike,
             idItem: idOneItem,
           },
           {
@@ -173,8 +171,7 @@ export default {
         });
     },
     onDislike: function (messId, indexI) {
-      this.like = -1;
-      this.dislike = 2;
+      let valueLike = "dislike";
       let idOneItem = messId;
       let user = JSON.parse(localStorage.getItem("user"));
       axios
@@ -183,8 +180,7 @@ export default {
           {
             userId: user.userId,
             email: user.email,
-            like: this.like,
-            dislike: this.dislike,
+            valueLike: valueLike,
             idItem: idOneItem,
           },
           {
@@ -194,7 +190,7 @@ export default {
           }
         )
         .then((response) => {
-          if (response.data.addDislike) {
+          if (response.data.addLike == false) {
             this.msg[indexI].dislikes++;
             this.msg[indexI].likes--;
           }
@@ -203,7 +199,8 @@ export default {
           console.log(error);
         });
     },
-    addComm: function () {                  //ajouter un commentaire
+    addComm: function () {
+      //ajouter un commentaire
       let myForm = document.getElementById("formComm");
       myForm.style.display = "flex";
       let user = JSON.parse(localStorage.getItem("user"));
@@ -211,7 +208,8 @@ export default {
       let myButton = document.getElementById("buttonModif");
       myButton.style.display = "none";
     },
-    sendNewComm: function () {            //envoyer le nouveau commentaire
+    sendNewComm: function () {
+      //envoyer le nouveau commentaire
       let tableau = JSON.parse(localStorage.getItem("user"));
       let token = tableau.token;
       axios
@@ -226,7 +224,7 @@ export default {
           {
             headers: {
               "Content-type": "application/json",
-              Authorization: `Bearer ` + token, 
+              Authorization: `Bearer ` + token,
             },
           }
         )
@@ -239,7 +237,8 @@ export default {
           this.errMsg = "L'envoie a échoué ! Veuillez réessayer !";
         });
     },
-    updateComm: function (messId, pseudo) {         //modifier un commentaire seulement si on en est l'auteur
+    updateComm: function (messId, pseudo) {
+      //modifier un commentaire seulement si on en est l'auteur
       localStorage.setItem("updateComm", messId);
       let myPseudo = JSON.parse(localStorage.getItem("user")).pseudo;
       if (pseudo == myPseudo) {
@@ -250,7 +249,8 @@ export default {
           "Vous n'êtes pas autoriser à modifier ce commentaire";
       }
     },
-    sendUpdateComm: function () {               //envoyer modification du commentaire 
+    sendUpdateComm: function () {
+      //envoyer modification du commentaire
       let myId = JSON.parse(localStorage.getItem("updateComm"));
       let token = JSON.parse(localStorage.getItem("user")).token;
 
@@ -263,7 +263,7 @@ export default {
           {
             headers: {
               "Content-type": "application/json",
-              Authorization: `Bearer ` + token, 
+              Authorization: `Bearer ` + token,
             },
           }
         )
@@ -281,7 +281,8 @@ export default {
       let myForm = document.getElementById("newDescripComm");
       myForm.style.display = "none";
     },
-    deleteComm: function (messId, pseudo) {                           //supprimer un commentaire si on en est l'auteur
+    deleteComm: function (messId, pseudo) {
+      //supprimer un commentaire si on en est l'auteur
       let myPseudo = JSON.parse(localStorage.getItem("user")).pseudo;
       let itemId = JSON.parse(localStorage.getItem("commentOneItem"));
       let token = JSON.parse(localStorage.getItem("user")).token;
@@ -315,7 +316,8 @@ export default {
           "Vous n'êtes pas autoriser à supprimer ce commentaire";
       }
     },
-    report: function (messId) {                           //signaler article
+    report: function (messId) {
+      //signaler article
       let user = JSON.parse(localStorage.getItem("user"));
       axios
         .post(
@@ -335,7 +337,8 @@ export default {
           console.log(error);
         });
     },
-    reportComment: function (messId) {                //signaler un commentaire
+    reportComment: function (messId) {
+      //signaler un commentaire
       let user = JSON.parse(localStorage.getItem("user"));
       axios
         .post(

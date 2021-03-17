@@ -79,8 +79,7 @@ export default {
   components: { headerAll, footerAll },
   methods: {
     onLike: function (messId, indexI) {
-      this.like = 1;
-      this.dislike = -2;
+      let valueLike = "like";
       let idOneItem = messId;
       let user = JSON.parse(localStorage.getItem("user"));
       axios
@@ -89,8 +88,7 @@ export default {
           {
             userId: user.userId,
             email: user.email,
-            like: this.like,
-            dislike: this.dislike,
+            valueLike: valueLike,
             idItem: idOneItem,
           },
           {
@@ -100,14 +98,9 @@ export default {
           }
         )
         .then((response) => {
-          console.log(response);
-          let good = document.getElementById("good");
-          let bad = document.getElementById("bad");
           if (response.data.addLike) {
             this.msg[indexI].likes++;
-            good.style.color = "green";
             this.msg[indexI].dislikes--;
-            bad.style.color = "black";
           }
         })
         .catch((error) => {
@@ -115,8 +108,7 @@ export default {
         });
     },
     onDislike: function (messId, indexI) {
-      this.like = -1;
-      this.dislike = 2;
+      let valueLike = "dislike";
       let idOneItem = messId;
       let user = JSON.parse(localStorage.getItem("user"));
       axios
@@ -125,8 +117,7 @@ export default {
           {
             userId: user.userId,
             email: user.email,
-            like: this.like,
-            dislike: this.dislike,
+            valueLike: valueLike,
             idItem: idOneItem,
           },
           {
@@ -136,14 +127,9 @@ export default {
           }
         )
         .then((response) => {
-          console.log(response);
-          let bad = document.getElementById("bad");
-          let good = document.getElementById("good");
-          if (response.data.addDislike) {
+          if (response.data.addLike == false) {
             this.msg[indexI].dislikes++;
             this.msg[indexI].likes--;
-            good.style.color = "black";
-            bad.style.color = "red";
           }
         })
         .catch((error) => {
