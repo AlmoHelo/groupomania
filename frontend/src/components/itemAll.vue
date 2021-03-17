@@ -126,11 +126,13 @@ export default {
           console.log(error);
         });
     },
-    viewComments: function (messId) {           //fonction pour être rediriger vers la page commentaire
+    viewComments: function (messId) {
+      //fonction pour être rediriger vers la page commentaire
       localStorage.setItem("commentOneItem", messId);
       window.location.href = "http://localhost:8080/comment";
     },
-    report: function (messId) {                 //signaler un article
+    report: function (messId) {
+      //signaler un article
       let user = JSON.parse(localStorage.getItem("user"));
       axios
         .post(
@@ -225,6 +227,7 @@ section {
   }
 }
 .article {
+  box-shadow: 0 3px 5px grey;
   border: 1px solid #d2d2d2c7;
   border-radius: 5px;
   background-color: #dae0e6;

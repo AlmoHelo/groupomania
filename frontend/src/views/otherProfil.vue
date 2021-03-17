@@ -16,7 +16,7 @@
 
     <!-- affiche tous les article-->
     <section id="articlesPerso" class="articlesPerso">
-      <h2>Tous vos articles</h2>
+      <h2>Tous les articles</h2>
       {{ errItem }}
 
       <div v-for="(mess, index) in msg" :key="mess.idMessages">
@@ -246,6 +246,7 @@ export default {
 .profil {
   display: flex;
   flex-direction: row-reverse;
+  box-shadow: 0 5px 5px grey;
   & .allInfo {
     width: 50%;
     margin: auto;
@@ -280,6 +281,7 @@ export default {
 }
 .articlesPerso {
   border-radius: 5px;
+  padding-bottom: 20px;
   & h2 {
     font-size: 25px;
     width: 100%;

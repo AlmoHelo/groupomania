@@ -363,6 +363,7 @@ export default {
 .profil {
   display: flex;
   flex-direction: row-reverse;
+    box-shadow: 0 5px 5px grey;
   & .allInfo {
     width: 50%;
     margin: auto;
@@ -403,11 +404,13 @@ export default {
 }
 .articlesPerso {
   border-radius: 5px;
+  padding-bottom: 20px;
   & h2 {
     font-size: 25px;
     width: 100%;
   }
   & .article {
+    box-shadow: 0 5px 5px grey;
     border: 1px solid #d2d2d2c7;
     border-radius: 5px;
     background-color: #dae0e6;

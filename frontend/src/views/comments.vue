@@ -106,7 +106,7 @@
       >
         <article class="comment">
           <div class="headComm">
-            <p>{{ mess.pseudoUserComm }}</p>
+            <p class="pseudoComm">{{ mess.pseudoUserComm }}</p>
             <p>{{ mess.dateComm }}</p>
             <div class="icons">
               <a class="signaler" @click="reportComment(mess.idComment)"
@@ -446,6 +446,7 @@ export default {
   background-color: #dae0e6;
   width: 60%;
   margin: auto;
+    box-shadow: 0 5px 5px grey;
   & .headArt {
     border-bottom: 1px solid #b6b3b39d;
     align-items: center;
@@ -504,23 +505,26 @@ export default {
     border: 1px solid #b6b3b39d;
     background-color: #dae0e6;
     border-radius: 5px;
-    display: flex;
-    margin-bottom: 10px;
-    & .comment {
-      width: 96%;
-    }
-    & .icons {
-      display: flex;
-      height: 100%;
-      border-bottom: 1px solid #b6b3b39d;
-      & i {
-        margin: 10px 10px 25px 0;
-      }
-    }
+    margin-bottom: 20px;
+    box-shadow: 0 3px 5px grey;
     & .headComm {
       border-bottom: 1px solid #b6b3b39d;
       display: flex;
-      justify-content: space-around;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      margin-right: 0;
+      & .pseudoComm {
+        margin-left: 20px;
+      }
+      & .icons {
+        display: flex;
+        height: 100%;
+        margin-right: 20px;
+        & i {
+          margin: 0 5px;
+        }
+      }
     }
     & .texte {
       padding: 20px;

@@ -231,6 +231,7 @@ section {
   border-radius: 5px;
   background-color: #dae0e6;
   margin: 20px;
+  box-shadow: 0 3px 5px grey;
   & .headArt {
     align-items: center;
     & .profilArt {
