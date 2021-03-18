@@ -355,12 +355,4 @@ exports.like = async (req, res, next) => {
     } catch (error) {
         console.log(error, " L167")
     }
-
-    /*if(valueLike == "like"){
-
-    }else if(valueLike == "dislike"){
-
-    } else {
-        res.status(400).json({message: "une erreur est survenue !"})
-    }*/
 }
