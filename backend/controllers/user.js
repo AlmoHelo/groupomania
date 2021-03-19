@@ -3,13 +3,6 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 require('dotenv').config()
 
-/*
-let pass = "123456"
-bcrypt.hash(pass, 10)
-.then((hash) => {
-    db.query(`INSERT INTO user (email, pseudo, password, creationDate) VALUES ("almoyner.heloise@gmail.com", "almohelo", "`+ hash + `", "2021-02-24")`)
-})*/
-
 //Inscription de l'utilisateur
 exports.signup = (req, res, next) => {
     const user = req.body
@@ -300,3 +293,11 @@ exports.getOneOtherUser = (req, res, next) => {
         return res.status(200).json(results[0]) 
     })
 }
+
+
+/*
+let pass = "123456"
+bcrypt.hash(pass, 10)
+.then((hash) => {
+    db.query(`INSERT INTO user (email, pseudo, password, creationDate) VALUES ("almoyner.heloise@gmail.com", "almohelo", "`+ hash + `", "2021-02-24")`)
+})*/
