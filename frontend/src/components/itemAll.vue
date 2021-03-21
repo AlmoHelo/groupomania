@@ -12,8 +12,8 @@
       v-for="(mess, index) in msg"
       :key="mess.idMessages"
     >
-      <a @click="viewComments(mess.id)">
-        <article class="article">
+      <article class="article">
+        <a @click="viewComments(mess.id)">
           <div class="headArt">
             <p class="profilArt">
               <img
@@ -42,30 +42,29 @@
             /></a>
             <p class="texte" id="texte">{{ mess.description }}</p>
           </div>
-          <div class="footArt">
-            <div class="like">
-              <a
-                ><i
-                  class="far fa-thumbs-up"
-                  id="good"
-                  v-on:click="onLike(mess.id, index)"
-                ></i></a
-              >{{ mess.likes }}
-              <a v-on:click="onDislike(mess.id, index)"
-                ><i class="far fa-thumbs-down" id="bad"></i></a
-              >{{ mess.dislikes }}
-            </div>
-            <a class="commAccueil" @click="viewComments(mess.id)"
-              ><i class="fas fa-comment-dots"></i>
-              <p class="nbcomm">{{ mess.nbComm }} Commentaires</p></a
-            >
-            <a class="signaler" @click="report(mess.id)"
-              ><i class="far fa-flag"></i
-              ><span>Signaler ce commentaire</span></a
-            >
+        </a>
+        <div class="footArt">
+          <div class="like">
+            <a
+              ><i
+                class="far fa-thumbs-up"
+                id="good"
+                v-on:click="onLike(mess.id, index)"
+              ></i></a
+            >{{ mess.likes }}
+            <a v-on:click="onDislike(mess.id, index)"
+              ><i class="far fa-thumbs-down" id="bad"></i></a
+            >{{ mess.dislikes }}
           </div>
-        </article>
-      </a>
+          <a class="commAccueil" @click="viewComments(mess.id)"
+            ><i class="fas fa-comment-dots"></i>
+            <p class="nbcomm">{{ mess.nbComm }} Commentaires</p></a
+          >
+          <a class="signaler" @click="report(mess.id)"
+            ><i class="far fa-flag"></i><span>Signaler ce commentaire</span></a
+          >
+        </div>
+      </article>
     </div>
   </section>
 </template>
