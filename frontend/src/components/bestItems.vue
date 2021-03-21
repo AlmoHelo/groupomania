@@ -159,6 +159,21 @@ export default {
     },
     deleteIsAdmin: function (messId) {
       console.log(messId);
+      let user = JSON.parse(localStorage.getItem("user"));
+      axios
+        .delete(`http://localhost:3000/api/report/one/${messId}`, {
+          headers: {
+            authorization: "Bearer " + user.token,
+          },
+        })
+        .then((response) => {
+          console.log(response);
+          //window.location.href = "http://localhost:8080/report";
+        })
+        .catch((error) => {
+          alert("Une erreur s'est produite. Veuillez réessayer la page");
+          console.log(error);
+        });
     },
   },
   mounted() {
