@@ -4,55 +4,58 @@
     <div class="allBest">
       {{ errorMessage }}
       <div class="article" v-for="(mess, index) in msg" :key="mess.idMessages">
-        <div class="headArt">
-          <p class="profilArt">
-            <img
-              v-bind:src="mess.pictureProfil"
-              class="myImgProfil"
-              v-if="mess.pictureProfil != null"
-            />{{ mess.pseudoUser }}
-          </p>
-          <p class="dateArt">{{ mess.date }}</p>
-          <div v-if="userAdmin == 1">
-            <a @click="deleteIsAdmin(mess.id)" id="reportItem"
-              ><i class="fas fa-times"></i
-            ></a>
+        <a @click="viewComments(mess.id)">
+          <div class="headArt">
+            <p class="profilArt">
+              <img
+                v-bind:src="mess.pictureProfil"
+                class="myImgProfil"
+                v-if="mess.pictureProfil != null"
+              />{{ mess.pseudoUser }}
+            </p>
+            <p class="dateArt">{{ mess.date }}</p>
+            <div v-if="userAdmin == 1">
+              <a @click="deleteIsAdmin(mess.id)" id="reportItem"
+                ><i class="fas fa-times"></i
+              ></a>
+            </div>
           </div>
-        </div>
-        <div class="descrip">
-          <a
-            v-bind:href="'http://localhost:3000/images/' + mess.imageURL"
-            class="myLinkPict"
-            ><img
-              v-bind:src="'http://localhost:3000/images/' + mess.imageURL"
-              class="myImg"
-              title="Cliquer pour agrandir"
-              v-if="mess.imageURL != null"
-          /></a>
-          <p class="texte" id="texte">{{ mess.description }}</p>
-        </div>
-        <div class="footArt">
-          <div class="like">
+          <div class="descrip">
             <a
-              ><i
-                class="far fa-thumbs-up"
-                id="good"
-                v-on:click="onLike(mess.id, index)"
-              ></i></a
-            >{{ mess.likes }}
-
-            <a v-on:click="onDislike(mess.id, index)"
-              ><i class="far fa-thumbs-down" id="bad"></i></a
-            >{{ mess.dislikes }}
+              v-bind:href="'http://localhost:3000/images/' + mess.imageURL"
+              class="myLinkPict"
+              ><img
+                v-bind:src="'http://localhost:3000/images/' + mess.imageURL"
+                class="myImg"
+                title="Cliquer pour agrandir"
+                v-if="mess.imageURL != null"
+            /></a>
+            <p class="texte" id="texte">{{ mess.description }}</p>
           </div>
-          <a class="commAccueil" @click="viewComments(mess.id)"
-            ><i class="fas fa-comment-dots"></i>
-            <p class="nbcomm">{{ mess.nbComm }} Commentaires</p></a
-          >
-          <a class="signaler" @click="report(mess.id)"
-            ><i class="far fa-flag"></i><span>Signaler ce commentaire</span></a
-          >
-        </div>
+          <div class="footArt">
+            <div class="like">
+              <a
+                ><i
+                  class="far fa-thumbs-up"
+                  id="good"
+                  v-on:click="onLike(mess.id, index)"
+                ></i></a
+              >{{ mess.likes }}
+
+              <a v-on:click="onDislike(mess.id, index)"
+                ><i class="far fa-thumbs-down" id="bad"></i></a
+              >{{ mess.dislikes }}
+            </div>
+            <a class="commAccueil" @click="viewComments(mess.id)"
+              ><i class="fas fa-comment-dots"></i>
+              <p class="nbcomm">{{ mess.nbComm }} Commentaires</p></a
+            >
+            <a class="signaler" @click="report(mess.id)"
+              ><i class="far fa-flag"></i
+              ><span>Signaler ce commentaire</span></a
+            >
+          </div>
+        </a>
       </div>
     </div>
   </section>
