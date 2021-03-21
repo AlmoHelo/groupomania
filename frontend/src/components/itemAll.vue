@@ -22,6 +22,12 @@
             />{{ mess.pseudoUser }}
           </p>
           <p class="dateArt">{{ mess.date }}</p>
+
+          <div v-if="userAdmin == 1">
+            <a @click="deleteIsAdmin(mess.id)" id="reportItem"
+              ><i class="fas fa-times"></i
+            ></a>
+          </div>
         </div>
         <div class="descrip">
           <a
@@ -152,10 +158,14 @@ export default {
           console.log(error);
         });
     },
+    deleteIsAdmin: function(messId){
+      console.log(messId)
+    }
   },
   mounted() {
     //Appel à l'api pour l'affichage de tous les messages
     let user = JSON.parse(localStorage.getItem("user"));
+    this.userAdmin = user.admin;
     axios
       .get("http://localhost:3000/api/items/", {
         headers: {
@@ -185,6 +195,7 @@ export default {
       message: "",
       msg: "",
       errorMessage: "",
+      userAdmin: ""
     };
   },
 };

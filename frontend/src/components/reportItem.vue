@@ -60,7 +60,7 @@ export default {
         })
         .then((response) => {
           console.log(response);
-          window.location.href = "http://localhost:8080/report";
+          //window.location.href = "http://localhost:8080/report";
         })
         .catch((error) => {
           alert("Une erreur s'est produite. Veuillez réessayer la page");
@@ -78,7 +78,7 @@ export default {
         })
         .then((response) => {
           console.log(response);
-          window.location.href = "http://localhost:8080/report";
+          //window.location.href = "http://localhost:8080/report";
         })
         .catch((error) => {
           alert("Une erreur s'est produite. Veuillez réessayer la page");
@@ -95,6 +95,7 @@ export default {
         },
       })
       .then((response) => {
+        console.log(response)
         if (response.data[0] == undefined) {
           this.noneItem = "Pas d'articles signalés !";
         } else {

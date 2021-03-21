@@ -30,10 +30,10 @@ CREATE TABLE `comment` (
   `dateComm` datetime NOT NULL,
   `pseudoUserComm` varchar(100) NOT NULL,
   PRIMARY KEY (`idComment`),
-  KEY `fk_comment_user` (`userCommId`),
   KEY `fk_comm_item` (`itemId`),
-  CONSTRAINT `fk_comm_item` FOREIGN KEY (`itemId`) REFERENCES `item` (`id`),
-  CONSTRAINT `fk_comment_user` FOREIGN KEY (`userCommId`) REFERENCES `user` (`userId`)
+  KEY `fk_comment_user` (`userCommId`),
+  CONSTRAINT `fk_comm_item` FOREIGN KEY (`itemId`) REFERENCES `item` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT,
+  CONSTRAINT `fk_comment_user` FOREIGN KEY (`userCommId`) REFERENCES `user` (`userId`) ON DELETE CASCADE ON UPDATE RESTRICT
 ) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -65,8 +65,8 @@ CREATE TABLE `item` (
   `userItemId` smallint unsigned NOT NULL,
   `nbComm` smallint NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
-  KEY `fk_user_id` (`userItemId`),
-  CONSTRAINT `fk_user_id` FOREIGN KEY (`userItemId`) REFERENCES `user` (`userId`)
+  KEY `fk_user_item` (`userItemId`),
+  CONSTRAINT `fk_user_item` FOREIGN KEY (`userItemId`) REFERENCES `user` (`userId`) ON DELETE CASCADE ON UPDATE RESTRICT
 ) ENGINE=InnoDB AUTO_INCREMENT=104 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -94,12 +94,12 @@ CREATE TABLE `report` (
   `idReportUser` smallint unsigned NOT NULL,
   `idReportComment` smallint unsigned DEFAULT NULL,
   PRIMARY KEY (`idReport`),
-  KEY `idReportComment` (`idReportComment`),
   KEY `fk_report_item` (`idReportItem`),
   KEY `fk_report_user` (`idReportUser`),
-  CONSTRAINT `fk_report_item` FOREIGN KEY (`idReportItem`) REFERENCES `item` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `fk_report_user` FOREIGN KEY (`idReportUser`) REFERENCES `user` (`userId`),
-  CONSTRAINT `report_ibfk_1` FOREIGN KEY (`idReportComment`) REFERENCES `comment` (`idComment`)
+  KEY `fk_report_comment` (`idReportComment`),
+  CONSTRAINT `fk_report_comment` FOREIGN KEY (`idReportComment`) REFERENCES `comment` (`idComment`) ON DELETE CASCADE ON UPDATE RESTRICT,
+  CONSTRAINT `fk_report_item` FOREIGN KEY (`idReportItem`) REFERENCES `item` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT,
+  CONSTRAINT `fk_report_user` FOREIGN KEY (`idReportUser`) REFERENCES `user` (`userId`) ON DELETE CASCADE ON UPDATE RESTRICT
 ) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -159,10 +159,10 @@ CREATE TABLE `userdislikes` (
   `userEmailDislike` varchar(100) NOT NULL,
   `idItemDislike` smallint unsigned NOT NULL,
   PRIMARY KEY (`idDislikes`),
-  KEY `fk_dislike_user` (`userIdDislike`),
   KEY `fk_dislike_item` (`idItemDislike`),
-  CONSTRAINT `fk_dislike_item` FOREIGN KEY (`idItemDislike`) REFERENCES `item` (`id`),
-  CONSTRAINT `fk_dislike_user` FOREIGN KEY (`userIdDislike`) REFERENCES `user` (`userId`)
+  KEY `fk_dislike_user` (`userIdDislike`),
+  CONSTRAINT `fk_dislike_item` FOREIGN KEY (`idItemDislike`) REFERENCES `item` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT,
+  CONSTRAINT `fk_dislike_user` FOREIGN KEY (`userIdDislike`) REFERENCES `user` (`userId`) ON DELETE CASCADE ON UPDATE RESTRICT
 ) ENGINE=InnoDB AUTO_INCREMENT=335 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -191,8 +191,8 @@ CREATE TABLE `userlikes` (
   PRIMARY KEY (`idLikes`),
   KEY `fk_like_user` (`userIdLike`),
   KEY `fk_like_item` (`idItemLike`),
-  CONSTRAINT `fk_like_item` FOREIGN KEY (`idItemLike`) REFERENCES `item` (`id`),
-  CONSTRAINT `fk_like_user` FOREIGN KEY (`userIdLike`) REFERENCES `user` (`userId`)
+  CONSTRAINT `fk_like_item` FOREIGN KEY (`idItemLike`) REFERENCES `item` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT,
+  CONSTRAINT `fk_like_user` FOREIGN KEY (`userIdLike`) REFERENCES `user` (`userId`) ON DELETE CASCADE ON UPDATE RESTRICT
 ) ENGINE=InnoDB AUTO_INCREMENT=328 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -215,4 +215,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-03-19 14:06:42
+-- Dump completed on 2021-03-20 17:06:10
