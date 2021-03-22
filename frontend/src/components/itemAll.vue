@@ -60,7 +60,7 @@
             ><i class="fas fa-comment-dots"></i>
             <p class="nbcomm">{{ mess.nbComm }} Commentaires</p></a
           >
-          <a class="signaler" @click="report(mess.id)"
+          <a class="signaler" @click="report(mess.id)" v-if="mess.userId != userId"
             ><i class="far fa-flag"></i><span>Signaler ce commentaire</span></a
           >
         </div>
@@ -182,6 +182,7 @@ export default {
   mounted() {
     //Appel à l'api pour l'affichage de tous les messages
     let user = JSON.parse(localStorage.getItem("user"));
+    this.userId = user.userId;
     this.userAdmin = user.admin;
     axios
       .get("http://localhost:3000/api/items/", {
@@ -213,6 +214,7 @@ export default {
       msg: "",
       errorMessage: "",
       userAdmin: "",
+      userId: ""
     };
   },
 };

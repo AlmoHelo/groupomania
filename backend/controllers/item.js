@@ -1,4 +1,5 @@
 const db = require('../database')
+const fs = require("fs"); // Permet de gérer les fichiers stockés
 
 require('dotenv').config()
 
@@ -138,43 +139,51 @@ let deleteItemDislike = (itemId) => {
         }
     })
 }
-
 exports.delete = (req, resp, next) => {
-    db.query(
-        `DELETE FROM item WHERE id=${req.params.id}`, (error, res, fields) => {
-            if (error) {
-                return resp.status(400).json(error)
-            } else {
-                db.query(`SELECT * FROM comment WHERE itemId=?`, req.params.id, (err, resp, fields) => {
-                    if (resp.length > 0) {
-                        db.query(`DELETE FROM comment WHERE itemId=?`, req.params.id, (err, res_, fields) => {
-                            if (err) {
-                                return resp.status(400).json(error)
-                            } else {
-                                db.query(`SELECT * FROM userLikes WHERE idItemLike=${req.params.id}`, (err, response, fields) => {
-                                    console.log(response.length)
-                                    if (response.length > 0) {
-                                        const deleteLike = deleteItemLike(req.params.id)
-                                    } else {
-                                        const deleteDislike = deleteItemDislike(req.params.id)
-                                    }
-                                })
-                            }
-                        })
-                    } else {
-                        db.query(`SELECT * FROM userLikes WHERE idItemLike=${req.params.id}`, (err, response, fields) => {
-                            if (response.length > 0) {
-                                const deleteLike = deleteItemLike(req.params.id)
-                            } else {
-                                const deleteDislike = deleteItemDislike(req.params.id)
-                            }
-                        })
+    db.query(`SELECT imageURL FROM item WHERE id=${req.params.id}`, (err, res, fields) => {
+        if(res.length > 0){
+            const filename = res[0].imageURL.split("/images/")[1];
+            fs.unlink(`images/${filename}`, () => { // On supprime le fichier image en amont
+                db.query(
+                    `DELETE FROM item WHERE id=${req.params.id}`, (error, res, fields) => {
+                        if (error) {
+                            return resp.status(400).json(error)
+                        } else {
+                            db.query(`SELECT * FROM comment WHERE itemId=?`, req.params.id, (err, response, fields) => {
+                                if (response.length > 0) {
+                                    db.query(`DELETE FROM comment WHERE itemId=?`, req.params.id, (err, res_, fields) => {
+                                        if (err) {
+                                            return resp.status(400).json(error)
+                                        } else {
+                                            db.query(`SELECT * FROM userLikes WHERE idItemLike=${req.params.id}`, (err, response, fields) => {
+                                                console.log(response.length)
+                                                if (response.length > 0) {
+                                                    const deleteLike = deleteItemLike(req.params.id)
+                                                } else {
+                                                    const deleteDislike = deleteItemDislike(req.params.id)
+                                                }
+                                            })
+                                        }
+                                    })
+                                } else {
+                                    db.query(`SELECT * FROM userLikes WHERE idItemLike=${req.params.id}`, (err, response, fields) => {
+                                        if (response.length > 0) {
+                                            const deleteLike = deleteItemLike(req.params.id)
+                                        } else {
+                                            const deleteDislike = deleteItemDislike(req.params.id)
+                                        }
+                                    })
+                                }
+                            })
+                            return resp.status(200).json({message: "ok"})
+                        }
                     }
-                })
-                return resp.status(200).json({message: "ok"})
-            }
+                )
+            })
+        } else{
+            console.log(err)
         }
-    )
+    })
 }
 
 

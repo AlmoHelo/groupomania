@@ -19,6 +19,11 @@
             />{{ mess.pseudoUser }}
           </p>
           <p class="dateArt">{{ mess.date }}</p>
+          <div v-if="userAdmin == 1">
+            <a @click="deleteIsAdmin(mess.id)" id="reportItem"
+              ><i class="fas fa-times"></i
+            ></a>
+          </div>
         </div>
         <div class="descrip">
           <a
@@ -46,7 +51,10 @@
             >{{ mess.dislikes }}
           </div>
           <a><i class="fas fa-comment-dots"></i>Commentaires</a>
-          <a class="signaler" @click="report(mess.id)"
+          <a
+            class="signaler"
+            @click="report(mess.id)"
+            v-if="mess.userId != userId"
             ><i class="far fa-flag"></i><span>Signaler ce commentaire</span></a
           >
         </div>
@@ -109,13 +117,20 @@
             <p class="pseudoComm">{{ mess.pseudoUserComm }}</p>
             <p>{{ mess.dateComm }}</p>
             <div class="icons">
-              <a class="signaler" @click="reportComment(mess.idComment)"
+              <a
+                class="signaler"
+                @click="reportComment(mess.idComment)"
+                v-if="mess.userCommId != userId"
                 ><i class="far fa-flag"></i
               ></a>
-              <a @click="updateComm(mess.idComment, mess.pseudoUserComm)"
+              <a
+                @click="updateComm(mess.idComment, mess.pseudoUserComm)"
+                v-if="mess.userCommId == userId"
                 ><i class="far fa-edit"></i
               ></a>
-              <a @click="deleteComm(mess.idComment, mess.pseudoUserComm)"
+              <a
+                @click="deleteComm(mess.idComment, mess.pseudoUserComm)"
+                v-if="mess.userCommId == userId || userId == 10"
                 ><i class="fas fa-times"></i
               ></a>
             </div>
@@ -358,6 +373,24 @@ export default {
           alert(error.data);
         });
     },
+    deleteIsAdmin: function (messId) {
+      console.log(messId);
+      let user = JSON.parse(localStorage.getItem("user"));
+      axios
+        .delete(`http://localhost:3000/api/report/one/${messId}`, {
+          headers: {
+            authorization: "Bearer " + user.token,
+          },
+        })
+        .then((response) => {
+          console.log(response);
+          window.location.href = "http://localhost:8080/report";
+        })
+        .catch((error) => {
+          alert("Une erreur s'est produite. Veuillez réessayer la page");
+          console.log(error);
+        });
+    },
   },
   data() {
     return {
@@ -372,10 +405,14 @@ export default {
       errMsg: "",
       errDeleteComm: "",
       description: "",
+      userId: "",
+      userAdmin: "",
     };
   },
   mounted() {
     let user = JSON.parse(localStorage.getItem("user"));
+    this.userId = user.userId;
+    this.userAdmin = user.admin;
     let idItem = JSON.parse(localStorage.getItem("commentOneItem"));
     //récupère un article
     axios

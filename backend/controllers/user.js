@@ -2,6 +2,7 @@ const db = require('../database')
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 require('dotenv').config()
+const fs = require("fs"); // Permet de gérer les fichiers stockés
 
 //Inscription de l'utilisateur
 exports.signup = (req, res, next) => {
@@ -132,53 +133,61 @@ let deleteItemDislike = (userId) => {
 // Suppression Utilisateur
 exports.deleteUser = (req, res, next) => {
     const userId = req.params.id
-    db.query(
-        `DELETE FROM user WHERE userId=${userId}`, (error, result, field) => {
-            if (error) {
-                console.log(error)
-                return res.status(400).json(error)
-            }
-            db.query(`SELECT * FROM item WHERE userItemId=${userId}`, (err, resp, fields) => {
-                if (resp.length > 0) {
-                    db.query(`DELETE FROM item WHERE userItemId=${userId}`, (err, result, fields) => {
-                        if (err) {
-                            console.log(err)
-                        } else {
-                            db.query(`SELECT * FROM comment WHERE userCommId=?`, userId, (err, resp, fields) => {
-                                if (resp.length > 0) {
-                                    db.query(`DELETE FROM comment WHERE userCommId=?`, userId, (err, res_, fields) => {
-                                        if (err) {
-                                            return resp.status(400).json(error)
-                                        } else {
-                                            db.query(`SELECT * FROM userLikes WHERE userIdLike=${userId}`, (err, response, fields) => {
-                                                console.log(response.length)
-                                                if (response.length > 0) {
-                                                    const deleteLike = deleteItemLike(userId)
-                                                } else {
-                                                    const deleteDislike = deleteItemDislike(userId)
-                                                }
-                                            })
-                                        }
-                                    })
-                                } else {
-                                    db.query(`SELECT * FROM userLikes WHERE userIdLike=${userId}`, (err, response, fields) => {
-                                        if (response.length > 0) {
-                                            const deleteLike = deleteItemLike(userId)
-                                        } else {
-                                            const deleteDislike = deleteItemDislike(userId)
-                                        }
-                                    })
-                                }
-                            })
+    db.query(`SELECT pictureProfil FROM user WHERE userId=${userId}`, (err, resp, fields) => {
+        if (resp.length > 0) {
+            const filename = resp[0].pictureProfil.split("/images/")[1];
+            fs.unlink(`images/${filename}`, () => {
+                db.query(
+                    `DELETE FROM user WHERE userId=${userId}`, (error, result, field) => {
+                        if (error) {
+                            console.log(error)
+                            return res.status(400).json(error)
                         }
-                    })
-                } else {
-                    return res.status(200).json({ message: 'Votre compte a bien été supprimé !' })
-                }
+                        db.query(`SELECT * FROM item WHERE userItemId=${userId}`, (err, resp, fields) => {
+                            if (resp.length > 0) {
+                                db.query(`DELETE FROM item WHERE userItemId=${userId}`, (err, result, fields) => {
+                                    if (err) {
+                                        console.log(err)
+                                    } else {
+                                        db.query(`SELECT * FROM comment WHERE userCommId=?`, userId, (err, resp, fields) => {
+                                            if (resp.length > 0) {
+                                                db.query(`DELETE FROM comment WHERE userCommId=?`, userId, (err, res_, fields) => {
+                                                    if (err) {
+                                                        return resp.status(400).json(error)
+                                                    } else {
+                                                        db.query(`SELECT * FROM userLikes WHERE userIdLike=${userId}`, (err, response, fields) => {
+                                                            console.log(response.length)
+                                                            if (response.length > 0) {
+                                                                const deleteLike = deleteItemLike(userId)
+                                                            } else {
+                                                                const deleteDislike = deleteItemDislike(userId)
+                                                            }
+                                                        })
+                                                    }
+                                                })
+                                            } else {
+                                                db.query(`SELECT * FROM userLikes WHERE userIdLike=${userId}`, (err, response, fields) => {
+                                                    if (response.length > 0) {
+                                                        const deleteLike = deleteItemLike(userId)
+                                                    } else {
+                                                        const deleteDislike = deleteItemDislike(userId)
+                                                    }
+                                                })
+                                            }
+                                        })
+                                    }
+                                })
+                            } else {
+                                return res.status(200).json({ message: 'Votre compte a bien été supprimé !' })
+                            }
+                        })
+                        return res.status(200).json({ message: 'Votre compte a bien été supprimé !' })
+                    }
+                )
+
             })
-            return res.status(200).json({ message: 'Votre compte a bien été supprimé !' })
         }
-    )
+    })
 }
 
 //Modification des infotmations utilisateurs
@@ -290,7 +299,7 @@ exports.getOneOtherUser = (req, res, next) => {
         if (error) {
             return res.status(400).json(error)
         }
-        return res.status(200).json(results[0]) 
+        return res.status(200).json(results[0])
     })
 }
 

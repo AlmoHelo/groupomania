@@ -82,10 +82,6 @@
               ><i class="fas fa-comment-dots"></i>
               <p class="nbcomm">{{ mess.nbComm }} Commentaires</p></a
             >
-            <a class="signaler" @click="report(mess.id)"
-              ><i class="far fa-flag"></i
-              ><span>Signaler ce commentaire</span></a
-            >
           </div>
           {{ errorDeleteItem }}
         </article>
@@ -232,27 +228,6 @@ export default {
             console.log(error);
           });
       }
-    },
-    report: function (messId) {
-      //signaler un commentaire
-      let user = JSON.parse(localStorage.getItem("user"));
-      axios
-        .post(
-          `http://localhost:3000/api/report/`,
-          { itemId: messId, userId: user.userId },
-          {
-            headers: {
-              authorization: "Bearer " + user.token,
-            },
-          }
-        )
-        .then((response) => {
-          console.log(response);
-          alert(response.data);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
     },
   },
   data() {
