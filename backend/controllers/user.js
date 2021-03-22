@@ -112,25 +112,99 @@ exports.login = (req, res, next) => {
 
 }
 
+// Suppression Utilisateur
+let searchPictureUser = (userId) => {
+    return new Promise((resolve, reject) => {
+        db.query(`SELECT pictureProfil FROM user WHERE userId=${userId}`, (err, resp, fields) => {
+            if (err) {
+                reject(resp)
+            }
+            resolve(resp)
+        })
+    })
+}
+
+let deleteThisUser = (userId) => {
+    return new Promise((resolve, reject) => {
+        db.query(`DELETE FROM user WHERE userId=${userId}`, (err, resp, fields) => {
+            if (err) {
+                reject(resp)
+            }
+            resolve(resp)
+        })
+    })
+}
+let searchAllItem = (userId) => {
+    return new Promise((resolve, reject) => {
+        db.query(`SELECT * FROM item WHERE userItemId=${userId}`, (err, resp, fields) => {
+            if (err) {
+                reject(resp)
+            }
+            resolve(resp)
+        })
+    })
+}
+let deleteAllItem = (userId) => {
+    return new Promise((resolve, reject) => {
+        db.query(`DELETE FROM item WHERE userItemId=${userId}`, (err, resp, fields) => {
+            if (err) {
+                reject(resp)
+            }
+            resolve(resp)
+        })
+    })
+}
+let searchAllComment = (userId) => {
+    return new Promise((resolve, reject) => {
+        db.query(`SELECT * FROM comment WHERE userCommId=${userId}`, (err, resp, fields) => {
+            if (err) {
+                reject(resp)
+            }
+            resolve(resp)
+        })
+    })
+}
+let deleteAllComment = (userId) => {
+    return new Promise((resolve, reject) => {
+        db.query(`DELETE FROM comment WHERE userCommId=${userId}`, (err, resp, fields) => {
+            if (err) {
+                reject(resp)
+            }
+            resolve(resp)
+        })
+    })
+}
+let searchAllLike = (userId) => {
+    return new Promise((resolve, reject) => {
+        db.query(`SELECT * FROM userLikes WHERE userIdLike=${userId}`, (err, resp, fields) => {
+            if (err) {
+                reject(resp)
+            }
+            resolve(resp)
+        })
+    })
+}
 let deleteItemLike = (userId) => {
-    db.query(`DELETE FROM userLikes WHERE userIdLike=${userId}`, (err, resp, fields) => {
-        if (err) {
-            console.log(err)
-        } else {
-            console.log("supprimé des likes")
-        }
+    return new Promise((resolve, reject) => {
+        db.query(`DELETE FROM userLikes WHERE userIdLike=${userId}`, (err, resp, fields) => {
+            if (err) {
+                reject(resp)
+            }
+            resolve(resp)
+        })
     })
 }
 let deleteItemDislike = (userId) => {
-    db.query(`DELETE FROM userDislikes WHERE userIdDislike=${userId}`, (err, resp, fields) => {
-        if (err) {
-            console.log(err)
-        } else {
-            console.log("supprimé des dislikes")
-        }
+    return new Promise((resolve, reject) => {
+        db.query(`DELETE FROM userDislikes WHERE userIdDislike=${userId}`, (err, resp, fields) => {
+            if (err) {
+                reject(resp)
+            }
+            resolve(resp)
+        })
     })
 }
-// Suppression Utilisateur
+
 exports.deleteUser = (req, res, next) => {
     const userId = req.params.id
     db.query(`SELECT pictureProfil FROM user WHERE userId=${userId}`, (err, resp, fields) => {
@@ -142,50 +216,21 @@ exports.deleteUser = (req, res, next) => {
                         if (error) {
                             console.log(error)
                             return res.status(400).json(error)
+                        } else {
+                            res.status(200).json({ message: "utilisateur supprimé" })
                         }
-                        db.query(`SELECT * FROM item WHERE userItemId=${userId}`, (err, resp, fields) => {
-                            if (resp.length > 0) {
-                                db.query(`DELETE FROM item WHERE userItemId=${userId}`, (err, result, fields) => {
-                                    if (err) {
-                                        console.log(err)
-                                    } else {
-                                        db.query(`SELECT * FROM comment WHERE userCommId=?`, userId, (err, resp, fields) => {
-                                            if (resp.length > 0) {
-                                                db.query(`DELETE FROM comment WHERE userCommId=?`, userId, (err, res_, fields) => {
-                                                    if (err) {
-                                                        return resp.status(400).json(error)
-                                                    } else {
-                                                        db.query(`SELECT * FROM userLikes WHERE userIdLike=${userId}`, (err, response, fields) => {
-                                                            console.log(response.length)
-                                                            if (response.length > 0) {
-                                                                const deleteLike = deleteItemLike(userId)
-                                                            } else {
-                                                                const deleteDislike = deleteItemDislike(userId)
-                                                            }
-                                                        })
-                                                    }
-                                                })
-                                            } else {
-                                                db.query(`SELECT * FROM userLikes WHERE userIdLike=${userId}`, (err, response, fields) => {
-                                                    if (response.length > 0) {
-                                                        const deleteLike = deleteItemLike(userId)
-                                                    } else {
-                                                        const deleteDislike = deleteItemDislike(userId)
-                                                    }
-                                                })
-                                            }
-                                        })
-                                    }
-                                })
-                            } else {
-                                return res.status(200).json({ message: 'Votre compte a bien été supprimé !' })
-                            }
-                        })
-                        return res.status(200).json({ message: 'Votre compte a bien été supprimé !' })
-                    }
-                )
-
+                    })
             })
+        } else {
+            db.query(
+                `DELETE FROM user WHERE userId=${userId}`, (error, result, field) => {
+                    if (error) {
+                        console.log(error)
+                        return res.status(400).json(error)
+                    } else {
+                        res.status(200).json({ message: "utilisateur supprimé" })
+                    }
+                })
         }
     })
 }

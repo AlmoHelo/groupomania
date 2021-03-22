@@ -123,22 +123,55 @@ exports.update = (req, result, next) => {
 //Delete one item
 let deleteItemLike = (itemId) => {
     db.query(`DELETE FROM userLikes WHERE idItemLike=${itemId}`, (err, resp, fields) => {
-        if(err){
+        if (err) {
             console.log(err)
-        }else {
+        } else {
             console.log("supprimé des likes")
         }
     })
 }
 let deleteItemDislike = (itemId) => {
     db.query(`DELETE FROM userDislikes WHERE idItemDislike=${itemId}`, (err, resp, fields) => {
-        if(err){
+        if (err) {
             console.log(err)
-        }else {
+        } else {
             console.log("supprimé des dislikes")
         }
     })
 }
+
+exports.delete = (req, res, next) => {
+    const itemId = req.params.id
+    db.query(`SELECT pictureProfil FROM user WHERE userId=${itemId}`, (err, resp, fields) => {
+        if (resp.length > 0) {
+            const filename = resp[0].pictureProfil.split("/images/")[1];
+            fs.unlink(`images/${filename}`, () => {
+                db.query(
+                    `DELETE FROM item WHERE id=${itemId}`, (error, result, field) => {
+                        if (error) {
+                            console.log(error)
+                            return res.status(400).json(error)
+                        } else {
+                            res.status(200).json({ message: "article supprimé" })
+                        }
+                    })
+            })
+        } else {
+            db.query(
+                `DELETE FROM item WHERE id=${itemId}`, (error, result, field) => {
+                    if (error) {
+                        console.log(error)
+                        return res.status(400).json(error)
+                    } else {
+                        res.status(200).json({ message: "article supprimé" })
+                    }
+                })
+        }
+    })
+}
+
+
+/*
 exports.delete = (req, resp, next) => {
     db.query(`SELECT imageURL FROM item WHERE id=${req.params.id}`, (err, res, fields) => {
         if(res.length > 0){
@@ -184,7 +217,7 @@ exports.delete = (req, resp, next) => {
             console.log(err)
         }
     })
-}
+}*/
 
 
 //fonctions pour la route like
