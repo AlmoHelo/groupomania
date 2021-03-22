@@ -208,9 +208,22 @@ let deleteItemDislike = (userId) => {
 exports.deleteUser = (req, res, next) => {
     const userId = req.params.id
     db.query(`SELECT pictureProfil FROM user WHERE userId=${userId}`, (err, resp, fields) => {
+        const filename = resp[0].pictureProfil.split("/images/")[1];
+        console.log(filename)
         if (resp.length > 0) {
-            const filename = resp[0].pictureProfil.split("/images/")[1];
-            fs.unlink(`images/${filename}`, () => {
+            if (filename !== "pictureDefault.jpg") {
+                fs.unlink(`images/${filename}`, () => {
+                    db.query(
+                        `DELETE FROM user WHERE userId=${userId}`, (error, result, field) => {
+                            if (error) {
+                                console.log(error)
+                                return res.status(400).json(error)
+                            } else {
+                                res.status(200).json({ message: "utilisateur supprimé" })
+                            }
+                        })
+                })
+            } else {
                 db.query(
                     `DELETE FROM user WHERE userId=${userId}`, (error, result, field) => {
                         if (error) {
@@ -220,7 +233,7 @@ exports.deleteUser = (req, res, next) => {
                             res.status(200).json({ message: "utilisateur supprimé" })
                         }
                     })
-            })
+            }
         } else {
             db.query(
                 `DELETE FROM user WHERE userId=${userId}`, (error, result, field) => {
