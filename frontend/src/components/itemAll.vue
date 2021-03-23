@@ -60,7 +60,10 @@
             ><i class="fas fa-comment-dots"></i>
             <p class="nbcomm">{{ mess.nbComm }} Commentaires</p></a
           >
-          <a class="signaler" @click="report(mess.id)" v-if="mess.userId != userId"
+          <a
+            class="signaler"
+            @click="report(mess.id)"
+            v-if="mess.userId != userId"
             ><i class="far fa-flag"></i><span>Signaler ce commentaire</span></a
           >
         </div>
@@ -214,7 +217,7 @@ export default {
       msg: "",
       errorMessage: "",
       userAdmin: "",
-      userId: ""
+      userId: "",
     };
   },
 };
@@ -235,6 +238,11 @@ section {
       font-weight: bold;
       text-decoration: none;
       color: black;
+      border: 1px solid #d2d2d2c7;
+      background-color: #d2d2d2c7;
+      box-shadow: 1px 2px 2px #a5a3a3c7;
+      padding: 6px;
+      border-radius: 35px;
     }
   }
 }

@@ -1,10 +1,13 @@
 <template>
   <header>
-    <img alt="Vue logo" src="../assets/img/logo-white.png" />
+    <a href="/item" class="groupo"
+      ><img alt="Vue logo" src="../assets/img/logo-white.png"
+    /></a>
     <nav>
       <ul id="menu">
         <a href="/item"> Accueil </a>
-        <a class="signaler" id="report" href="/report"> Signalement </a>        <!--visible que par l'administrateur-->
+        <a class="signaler" id="report" href="/report"> Signalement </a>
+        <!--visible que par l'administrateur-->
         <a v-on:click="profil"> Profil </a>
         <a v-on:click="deconnexion"> Deconnexion </a>
       </ul>
@@ -64,9 +67,12 @@ header {
   height: auto;
   padding: 30px 10px;
   background-image: url("../assets/img/batiment.jpg");
-  & img {
-    width: 25%;
-    margin: 0;
+  & .groupo {
+    width: 40%;
+    & img {
+      width: 100%;
+      margin: 0;
+    }
   }
   & .search {
     width: 40%;
@@ -97,16 +103,21 @@ header {
   header {
     flex-direction: column;
     margin-bottom: 30px;
-    & img {
+    & .groupo {
       width: 100%;
-      height: auto;
-      margin-bottom: 20px;
+      & img {
+        height: auto;
+        margin-bottom: 20px;
+      }
     }
     & ul {
       flex-direction: row;
       justify-content: space-around;
       flex-wrap: wrap;
       width: 100%;
+      & a {
+        margin: 0 10px;
+      }
     }
   }
 }
@@ -123,7 +134,7 @@ header {
       flex-direction: row;
       width: 100%;
       font-size: 25px;
-      & a{
+      & a {
         margin: 0 30px;
       }
     }
