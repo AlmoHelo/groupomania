@@ -7,7 +7,7 @@ Le projet consiste à construire un réseau social interne pour les employés de
 <section>
 <h2>🔨   Installation </h2>
 <ul><li>
-Cloner ce projet depuis GitHub. (https://github.com/AlmoHelo/So_Pekocko.git)</li>
+Cloner ce projet depuis GitHub. (https://github.com/AlmoHelo/groupomania.git)</li>
 </ul>
 <h3>Pour le Frontend</h3>
 <ul>
@@ -27,10 +27,8 @@ Cloner ce projet depuis GitHub. (https://github.com/AlmoHelo/So_Pekocko.git)</li
 <h3>Pour la base de données</h3>
 <ul>
 <li>Se connecter au serveur MySql de votre choix.</li>
-<li>Exécuter CREATE DATABASE groupomania et vérifier les identifiants dans le fichier config.json du dossier backend</li>
 <li>Importer le fichier groupomania.sql en éxécutant mysql -u root -p groupomania < groupomania.sql</li>
 <li>Il faut précéder groupomania.sql par le chemin du fichier dans votre machine.</li>
-<li>Vous pouvez lancer le projet sans importer le fichier .sql, au lancement de l'application un compte administrateur est automatiquement créé (les identifiants vous ont été fourni dans le fichier .env dans le dossier backend)</li>
 </ul>
 
 <h3>🖥 Connexion</h3>

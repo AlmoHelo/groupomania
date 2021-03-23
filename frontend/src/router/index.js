@@ -1,10 +1,10 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../views/Home.vue'
-import Login from '../views/Login.vue'
-import Signup from '../views/Signup.vue'
+import Login from '../views/login.vue'
+import Signup from '../views/signup.vue'
 import Profil from "../views/profil.vue"
 import otherProfil from "../views/otherProfil.vue"
-import Items from '../views/Items.vue'
+import Items from '../views/items.vue'
 import createItem from "../views/createItem.vue"
 import comment from "../views/comments.vue"
 import report from "../views/report.vue"
