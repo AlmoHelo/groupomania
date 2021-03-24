@@ -121,25 +121,6 @@ exports.update = (req, result, next) => {
 }
 
 //Delete one item
-let deleteItemLike = (itemId) => {
-    db.query(`DELETE FROM userLikes WHERE idItemLike=${itemId}`, (err, resp, fields) => {
-        if (err) {
-            console.log(err)
-        } else {
-            console.log("supprimé des likes")
-        }
-    })
-}
-let deleteItemDislike = (itemId) => {
-    db.query(`DELETE FROM userDislikes WHERE idItemDislike=${itemId}`, (err, resp, fields) => {
-        if (err) {
-            console.log(err)
-        } else {
-            console.log("supprimé des dislikes")
-        }
-    })
-}
-
 exports.delete = (req, res, next) => {
     const itemId = req.params.id
     db.query(`SELECT pictureProfil FROM user WHERE userId=${itemId}`, (err, resp, fields) => {
@@ -169,55 +150,6 @@ exports.delete = (req, res, next) => {
         }
     })
 }
-
-
-/*
-exports.delete = (req, resp, next) => {
-    db.query(`SELECT imageURL FROM item WHERE id=${req.params.id}`, (err, res, fields) => {
-        if(res.length > 0){
-            const filename = res[0].imageURL.split("/images/")[1];
-            fs.unlink(`images/${filename}`, () => { // On supprime le fichier image en amont
-                db.query(
-                    `DELETE FROM item WHERE id=${req.params.id}`, (error, res, fields) => {
-                        if (error) {
-                            return resp.status(400).json(error)
-                        } else {
-                            db.query(`SELECT * FROM comment WHERE itemId=?`, req.params.id, (err, response, fields) => {
-                                if (response.length > 0) {
-                                    db.query(`DELETE FROM comment WHERE itemId=?`, req.params.id, (err, res_, fields) => {
-                                        if (err) {
-                                            return resp.status(400).json(error)
-                                        } else {
-                                            db.query(`SELECT * FROM userLikes WHERE idItemLike=${req.params.id}`, (err, response, fields) => {
-                                                console.log(response.length)
-                                                if (response.length > 0) {
-                                                    const deleteLike = deleteItemLike(req.params.id)
-                                                } else {
-                                                    const deleteDislike = deleteItemDislike(req.params.id)
-                                                }
-                                            })
-                                        }
-                                    })
-                                } else {
-                                    db.query(`SELECT * FROM userLikes WHERE idItemLike=${req.params.id}`, (err, response, fields) => {
-                                        if (response.length > 0) {
-                                            const deleteLike = deleteItemLike(req.params.id)
-                                        } else {
-                                            const deleteDislike = deleteItemDislike(req.params.id)
-                                        }
-                                    })
-                                }
-                            })
-                            return resp.status(200).json({message: "ok"})
-                        }
-                    }
-                )
-            })
-        } else{
-            console.log(err)
-        }
-    })
-}*/
 
 
 //fonctions pour la route like
