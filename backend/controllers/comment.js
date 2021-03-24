@@ -63,28 +63,35 @@ exports.update = (req, result, next) => {
 }
 
 //Delete one commentaire
-exports.delete = (req, res, next) => {
-    let itemId = req.body.itemId
-    db.query(
-        `DELETE FROM comment WHERE idComment=${req.params.id}`, (error, result, fields) => {
-            if (error) {
-                return res.status(400).json(error)
-            }
-            res.status(200).json({ message: 'Votre message a bien été supprimé !' })
-            db.query(`SELECT COUNT(idComment) FROM comment WHERE itemId=${itemId}`, (err, result) => {
-                if (err) {
-                    return res.status(400).json(err)
-                } else {
-                    let response = JSON.parse(JSON.stringify(result).split(':')[1].split("}")[0])
-                    db.query(`UPDATE item SET nbComm=${response} WHERE id=${itemId}`, (error, res) => {
-                        if (err) {
-                            return res.status(400).json(err)
-                        } else {
-                            console.log('Nombre de commentaires mis à jour')
-                        }
-                    })
-                }
-            })
+
+let countComment = (itemId) => {
+    db.query(`SELECT COUNT(idComment) FROM comment WHERE itemId=${itemId}`, (err, resp, fields) => {
+        if (err) {
+            console.log(err)
         }
-    )
+        let myRep = JSON.stringify(resp).split(':')[1].split("}")[0]
+        db.query(`UPDATE item SET nbComm=${myRep} WHERE id=${itemId}`, (err, result, fields) => {
+            if (err) {
+                console.log(err)
+            }
+            console.log("nb commentaires mis à jour" )
+        })
+    })
+}
+exports.delete = (req, res, next) => {
+    db.query(`SELECT itemId FROM comment WHERE idComment=${req.params.id}`, (error, response, fields) => {
+        const itemId = response[0].itemId
+        if(error){
+            console.log(error)
+        }
+        db.query(
+            `DELETE FROM comment WHERE idComment=${req.params.id}`, (error, result, fields) => {
+                if (error) {
+                    return res.status(400).json(error)
+                }
+                res.status(200).json({ message: 'Votre message a bien été supprimé !' })
+                const count = countComment(itemId)
+            }
+        )
+    })
 }

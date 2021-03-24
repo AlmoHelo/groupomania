@@ -113,98 +113,6 @@ exports.login = (req, res, next) => {
 }
 
 // Suppression Utilisateur
-let searchPictureUser = (userId) => {
-    return new Promise((resolve, reject) => {
-        db.query(`SELECT pictureProfil FROM user WHERE userId=${userId}`, (err, resp, fields) => {
-            if (err) {
-                reject(resp)
-            }
-            resolve(resp)
-        })
-    })
-}
-
-let deleteThisUser = (userId) => {
-    return new Promise((resolve, reject) => {
-        db.query(`DELETE FROM user WHERE userId=${userId}`, (err, resp, fields) => {
-            if (err) {
-                reject(resp)
-            }
-            resolve(resp)
-        })
-    })
-}
-let searchAllItem = (userId) => {
-    return new Promise((resolve, reject) => {
-        db.query(`SELECT * FROM item WHERE userItemId=${userId}`, (err, resp, fields) => {
-            if (err) {
-                reject(resp)
-            }
-            resolve(resp)
-        })
-    })
-}
-let deleteAllItem = (userId) => {
-    return new Promise((resolve, reject) => {
-        db.query(`DELETE FROM item WHERE userItemId=${userId}`, (err, resp, fields) => {
-            if (err) {
-                reject(resp)
-            }
-            resolve(resp)
-        })
-    })
-}
-let searchAllComment = (userId) => {
-    return new Promise((resolve, reject) => {
-        db.query(`SELECT * FROM comment WHERE userCommId=${userId}`, (err, resp, fields) => {
-            if (err) {
-                reject(resp)
-            }
-            resolve(resp)
-        })
-    })
-}
-let deleteAllComment = (userId) => {
-    return new Promise((resolve, reject) => {
-        db.query(`DELETE FROM comment WHERE userCommId=${userId}`, (err, resp, fields) => {
-            if (err) {
-                reject(resp)
-            }
-            resolve(resp)
-        })
-    })
-}
-let searchAllLike = (userId) => {
-    return new Promise((resolve, reject) => {
-        db.query(`SELECT * FROM userLikes WHERE userIdLike=${userId}`, (err, resp, fields) => {
-            if (err) {
-                reject(resp)
-            }
-            resolve(resp)
-        })
-    })
-}
-let deleteItemLike = (userId) => {
-    return new Promise((resolve, reject) => {
-        db.query(`DELETE FROM userLikes WHERE userIdLike=${userId}`, (err, resp, fields) => {
-            if (err) {
-                reject(resp)
-            }
-            resolve(resp)
-        })
-    })
-}
-let deleteItemDislike = (userId) => {
-    return new Promise((resolve, reject) => {
-        db.query(`DELETE FROM userDislikes WHERE userIdDislike=${userId}`, (err, resp, fields) => {
-            if (err) {
-                reject(resp)
-            }
-            resolve(resp)
-        })
-    })
-}
-
 exports.deleteUser = (req, res, next) => {
     const userId = req.params.id
     db.query(`SELECT pictureProfil FROM user WHERE userId=${userId}`, (err, resp, fields) => {
@@ -285,7 +193,7 @@ exports.updateUser = (req, res, next) => {
                                     console.log("Données modif")
                                 }
                             }
-                            return res.status(200).json({ message: 'Vos information ont bien été modifié !' })
+                            return res.status(200).json({ message: 'Vos informations ont bien été modifié !' })
                         }
                     )
                 });

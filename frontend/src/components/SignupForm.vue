@@ -11,7 +11,7 @@
 
     <div class="content">
       <form method="POST" @submit.prevent="envoie">
-        <label for="email">E-mail ou nom d'utilisateur<span>*</span> :</label
+        <label for="email">E-mail<span>*</span> :</label
         ><input
           id="email"
           type="email"

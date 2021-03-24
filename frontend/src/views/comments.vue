@@ -298,21 +298,17 @@ export default {
     },
     deleteComm: function (messId, pseudo) {
       //supprimer un commentaire si on en est l'auteur
+      let myId = messId;
       let myPseudo = JSON.parse(localStorage.getItem("user")).pseudo;
-      let itemId = JSON.parse(localStorage.getItem("commentOneItem"));
       let token = JSON.parse(localStorage.getItem("user")).token;
       let isAdmin = JSON.parse(localStorage.getItem("user")).admin;
       if (pseudo == myPseudo || isAdmin == 1) {
         if (confirm("Confirmez la suppression de votre commentaire")) {
           axios
             .delete(
-              `http://localhost:3000/api/comments/${messId}`,
-              {
-                itemId: itemId,
-              },
+              `http://localhost:3000/api/comments/${myId}`,
               {
                 headers: {
-                  "Content-type": "application/json",
                   Authorization: `Bearer ` + token, //Renvoie du token par l'api en cas d'authentification
                 },
               }
