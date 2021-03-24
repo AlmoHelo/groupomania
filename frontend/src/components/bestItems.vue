@@ -49,7 +49,7 @@
           </div>
           <a class="commAccueil" @click="viewComments(mess.id)"
             ><i class="fas fa-comment-dots"></i>
-            <p class="nbcomm">{{ mess.nbComm }} Commentaires</p></a
+            <p class="nbcomm">{{ mess.nbComm }} Commentaire<span v-if="mess.nbComm > 1">s</span></p></a
           >
           <a class="signaler" @click="report(mess.id)" v-if="mess.userId != userId"
             ><i class="far fa-flag"></i><span>Signaler ce commentaire</span></a

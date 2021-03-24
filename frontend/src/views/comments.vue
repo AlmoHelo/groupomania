@@ -50,7 +50,7 @@
               ><i class="far fa-thumbs-down" id="bad"></i></a
             >{{ mess.dislikes }}
           </div>
-          <a><i class="fas fa-comment-dots"></i>Commentaires</a>
+          <a><i class="fas fa-comment-dots"></i>Commentaire<span v-if="mess.nbComm > 1">s</span></a>
           <a
             class="signaler"
             @click="report(mess.id)"

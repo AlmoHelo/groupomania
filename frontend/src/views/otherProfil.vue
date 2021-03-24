@@ -54,7 +54,7 @@
             </div>
             <a class="commAccueil" @click="viewComments(mess.id)"
               ><i class="fas fa-comment-dots"></i>
-              <p class="nbcomm">{{ mess.nbComm }} Commentaires</p></a
+              <p class="nbcomm">{{ mess.nbComm }} Commentaire<span v-if="mess.nbComm > 1">s</span></p></a
             >
             <a class="signaler"
               ><i class="far fa-flag"></i
