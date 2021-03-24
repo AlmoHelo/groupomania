@@ -380,7 +380,7 @@ export default {
         })
         .then((response) => {
           console.log(response);
-          window.location.href = "http://localhost:8080/report";
+          window.location.href = "http://localhost:8080/item";
         })
         .catch((error) => {
           alert("Une erreur s'est produite. Veuillez réessayer la page");

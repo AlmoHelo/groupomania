@@ -156,6 +156,7 @@ export default {
     deleteIsAdmin: function (messId) {
       console.log(messId);
       let user = JSON.parse(localStorage.getItem("user"));
+      let profil = localStorage.getItem("searchProfil")
       axios
         .delete(`http://localhost:3000/api/items/${messId}`, {
           headers: {
@@ -164,7 +165,7 @@ export default {
         })
         .then((response) => {
           console.log(response);
-          //window.location.href = "http://localhost:8080/report";
+          window.location.href = `http://localhost:8080/item/profil/${profil}`;
         })
         .catch((error) => {
           alert("Une erreur s'est produite. Veuillez réessayer la page");
