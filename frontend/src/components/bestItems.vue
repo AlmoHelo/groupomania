@@ -4,8 +4,8 @@
     <div class="allBest">
       {{ errorMessage }}
       <div class="article" v-for="(mess, index) in msg" :key="mess.idMessages">
-        <a @click="viewComments(mess.id)">
-          <div class="headArt">
+        <div class="headArt">
+          <a @click="viewComments(mess.id)" class="myHead">
             <p class="profilArt">
               <img
                 v-bind:src="mess.pictureProfil"
@@ -14,12 +14,15 @@
               />{{ mess.pseudoUser }}
             </p>
             <p class="dateArt">{{ mess.date }}</p>
-            <div v-if="userAdmin == 1">
-              <a @click="deleteIsAdmin(mess.id)" id="reportItem"
-                ><i class="fas fa-times"></i
-              ></a>
-            </div>
+          </a>
+          <div v-if="userAdmin == 1">
+            <a @click="deleteIsAdmin(mess.id)" id="reportItem"
+              ><i class="fas fa-times"></i
+            ></a>
           </div>
+        </div>
+
+        <a @click="viewComments(mess.id)">
           <div class="descrip">
             <a
               v-bind:href="'http://localhost:3000/images/' + mess.imageURL"
@@ -49,9 +52,14 @@
           </div>
           <a class="commAccueil" @click="viewComments(mess.id)"
             ><i class="fas fa-comment-dots"></i>
-            <p class="nbcomm">{{ mess.nbComm }} Commentaire<span v-if="mess.nbComm > 1">s</span></p></a
+            <p class="nbcomm">
+              {{ mess.nbComm }} Commentaire<span v-if="mess.nbComm > 1">s</span>
+            </p></a
           >
-          <a class="signaler" @click="report(mess.id)" v-if="mess.userId != userId"
+          <a
+            class="signaler"
+            @click="report(mess.id)"
+            v-if="mess.userId != userId"
             ><i class="far fa-flag"></i><span>Signaler ce commentaire</span></a
           >
         </div>
@@ -72,7 +80,7 @@ export default {
       msg: "",
       errorMessage: "",
       userAdmin: "",
-      userId: ""
+      userId: "",
     };
   },
   methods: {
@@ -164,7 +172,7 @@ export default {
       console.log(messId);
       let user = JSON.parse(localStorage.getItem("user"));
       axios
-        .delete(`http://localhost:3000/api/report/one/${messId}`, {
+        .delete(`http://localhost:3000/api/items/${messId}`, {
           headers: {
             authorization: "Bearer " + user.token,
           },
@@ -182,7 +190,7 @@ export default {
   mounted() {
     //Appel à l'api pour l'affichage du top 3
     let user = JSON.parse(localStorage.getItem("user"));
-    this.userId = user.userId
+    this.userId = user.userId;
     this.userAdmin = user.admin;
     axios
       .get("http://localhost:3000/api/items/", {
@@ -267,14 +275,23 @@ section {
   box-shadow: 0 3px 5px grey;
   & .headArt {
     align-items: center;
-    & .profilArt {
+    & .dateArt {
+      margin-left: 30%;
+    }
+    & .myHead {
+      width: 90%;
+      margin-left: 10px;
       display: flex;
       align-items: center;
-      & .myImgProfil {
-        max-width: 80px;
-        max-height: 80px;
-        margin-right: 20px;
-        border-radius: 40px;
+      & .profilArt {
+        display: flex;
+        align-items: center;
+        & .myImgProfil {
+          max-width: 80px;
+          max-height: 80px;
+          margin-right: 20px;
+          border-radius: 40px;
+        }
       }
     }
   }
@@ -310,15 +327,17 @@ section {
     margin: auto;
     margin-bottom: 10px;
     & .headArt {
-      & .profilArt {
-        & .myImgProfil {
-          max-width: 40px;
-          max-height: 40px;
-          margin-right: 10px;
+      & .myHead {
+        & .profilArt {
+          & .myImgProfil {
+            max-width: 40px;
+            max-height: 40px;
+            margin-right: 10px;
+          }
         }
-      }
-      & .dateArt {
-        width: 30%;
+        & .dateArt {
+          width: 30%;
+        }
       }
     }
     & .footArt {
@@ -336,15 +355,17 @@ section {
     & .article {
       font-size: 14px;
       & .headArt {
-        & .profilArt {
-          & .myImgProfil {
-            max-width: 50px;
-            max-height: 50px;
-            margin-right: 10px;
+        & .myHead {
+          & .profilArt {
+            & .myImgProfil {
+              max-width: 50px;
+              max-height: 50px;
+              margin-right: 10px;
+            }
           }
-        }
-        & .dateArt {
-          width: 40%;
+          & .dateArt {
+            width: 40%;
+          }
         }
       }
       & .descrip {

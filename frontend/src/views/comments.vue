@@ -373,7 +373,7 @@ export default {
       console.log(messId);
       let user = JSON.parse(localStorage.getItem("user"));
       axios
-        .delete(`http://localhost:3000/api/report/one/${messId}`, {
+        .delete(`http://localhost:3000/api/items/${messId}`, {
           headers: {
             authorization: "Bearer " + user.token,
           },

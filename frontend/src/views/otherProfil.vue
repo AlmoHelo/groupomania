@@ -22,22 +22,31 @@
       <div v-for="(mess, index) in msg" :key="mess.idMessages">
         <article class="article">
           <div class="headArt">
-            <p>{{ mess.pseudoUser }}</p>
-            <p>{{ mess.date }}</p>
+            <a @click="viewComments(mess.id)" class="myHead">
+              <p class="profilArt">{{ mess.pseudoUser }}</p>
+              <p class="dateArt">{{ mess.date }}</p>
+            </a>
+            <div v-if="userAdmin == 1">
+              <a @click="deleteIsAdmin(mess.id)" id="reportItem"
+                ><i class="fas fa-times"></i
+              ></a>
+            </div>
           </div>
 
-          <div class="descrip">
-            <a
-              v-bind:href="'http://localhost:3000/images/' + mess.imageURL"
-              class="myLinkPict"
-              ><img
-                v-bind:src="'http://localhost:3000/images/' + mess.imageURL"
-                class="myImg"
-                title="Cliquer pour agrandir"
-                v-if="mess.imageURL != null"
-            /></a>
-            <p class="texte" id="texte">{{ mess.description }}</p>
-          </div>
+          <a @click="viewComments(mess.id)">
+            <div class="descrip">
+              <a
+                v-bind:href="'http://localhost:3000/images/' + mess.imageURL"
+                class="myLinkPict"
+                ><img
+                  v-bind:src="'http://localhost:3000/images/' + mess.imageURL"
+                  class="myImg"
+                  title="Cliquer pour agrandir"
+                  v-if="mess.imageURL != null"
+              /></a>
+              <p class="texte" id="texte">{{ mess.description }}</p>
+            </div>
+          </a>
 
           <div class="footArt">
             <div class="like">
@@ -54,7 +63,11 @@
             </div>
             <a class="commAccueil" @click="viewComments(mess.id)"
               ><i class="fas fa-comment-dots"></i>
-              <p class="nbcomm">{{ mess.nbComm }} Commentaire<span v-if="mess.nbComm > 1">s</span></p></a
+              <p class="nbcomm">
+                {{ mess.nbComm }} Commentaire<span v-if="mess.nbComm > 1"
+                  >s</span
+                >
+              </p></a
             >
             <a class="signaler"
               ><i class="far fa-flag"></i
@@ -140,6 +153,24 @@ export default {
       localStorage.setItem("commentOneItem", messId);
       window.location.href = "http://localhost:8080/comment";
     },
+    deleteIsAdmin: function (messId) {
+      console.log(messId);
+      let user = JSON.parse(localStorage.getItem("user"));
+      axios
+        .delete(`http://localhost:3000/api/items/${messId}`, {
+          headers: {
+            authorization: "Bearer " + user.token,
+          },
+        })
+        .then((response) => {
+          console.log(response);
+          //window.location.href = "http://localhost:8080/report";
+        })
+        .catch((error) => {
+          alert("Une erreur s'est produite. Veuillez réessayer la page");
+          console.log(error);
+        });
+    },
   },
   data() {
     return {
@@ -156,6 +187,7 @@ export default {
       //for errors
       errorMessageGetOne: "",
       errItem: "",
+      userAdmin: "",
     };
   },
   mounted() {
@@ -173,6 +205,7 @@ export default {
       .then((response) => {
         this.pseudo = response.data.pseudo;
         this.mail = response.data.email;
+        this.userAdmin = user.admin;
         this.date = DATE_FORMAT(response.data.creationDate);
         if (
           response.data.biographie == null ||
@@ -293,6 +326,19 @@ export default {
     margin-bottom: 10px;
     & .headArt {
       border-bottom: 1px solid #b6b3b39d;
+      & .dateArt {
+        margin-left: 30%;
+      }
+      & .myHead {
+        width: 90%;
+        margin-left: 10px;
+        display: flex;
+        align-items: center;
+        & .profilArt {
+          display: flex;
+          align-items: center;
+        }
+      }
       & .modifSuppItem {
         display: flex;
         justify-content: center;
