@@ -69,7 +69,10 @@
                 >
               </p></a
             >
-            <a class="signaler"
+            <a
+              class="signaler"
+              @click="report(mess.id)"
+              v-if="mess.userId != userId"
               ><i class="far fa-flag"></i
               ><span>Signaler ce commentaire</span></a
             >
@@ -156,7 +159,7 @@ export default {
     deleteIsAdmin: function (messId) {
       console.log(messId);
       let user = JSON.parse(localStorage.getItem("user"));
-      let profil = localStorage.getItem("searchProfil")
+      let profil = localStorage.getItem("searchProfil");
       axios
         .delete(`http://localhost:3000/api/items/${messId}`, {
           headers: {
@@ -169,6 +172,27 @@ export default {
         })
         .catch((error) => {
           alert("Une erreur s'est produite. Veuillez réessayer la page");
+          console.log(error);
+        });
+    },
+    report: function (messId) {
+      //signaler un article
+      let user = JSON.parse(localStorage.getItem("user"));
+      axios
+        .post(
+          `http://localhost:3000/api/report/`,
+          { itemId: messId, userId: user.userId },
+          {
+            headers: {
+              authorization: "Bearer " + user.token,
+            },
+          }
+        )
+        .then((response) => {
+          console.log(response);
+          alert(response.data);
+        })
+        .catch((error) => {
           console.log(error);
         });
     },
